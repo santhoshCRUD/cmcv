@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Your Gateway to Campus, Wherever You Go">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMC V Connect</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="stylesheet" href="./styles/styles.css">
+  <!-- <link rel="manifest" href="./manifest.webmanifest"> -->
+  <!-- Bootstrap CSS and JS -->
+  <link href="./assets/bootstrap.min.css" rel="stylesheet" />
+  <script src="./assets/bootstrap.bundle.min.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XM2L6RJS58"></script>
+  <script>   window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-XM2L6RJS58'); </script>
+  <!-- maps  -->
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwln9Lfdk4lJMfbIKbJyk7ctVL3fe3Bfk&loading=async"></script>
+
+  <!-- JQuery Script -->
+  <script defer src="./assets/jquery-3.7.1.min.js"></script>
+
+  <script src="./assets/html2pdf.bundle.min.js"></script>
+
+  <script src="./assets/pdfmake.min.js"></script>
+  <script src="./assets/vfs_fonts.js"></script>
+
+  <!-- MSAL Script -->
+  <script defer src="./assets/msal-browser.js"></script>
+
+  <!-- DataTables CSS -->
+  <link defer rel="stylesheet" href="./assets/dataTables.dataTables.css">
+  <link defer rel="stylesheet" href="./assets/buttons.dataTables.min.css">
+
+  <!-- DataTables core and extensions -->
+  <script defer src="./assets/jquery.dataTables.min.js"></script>
+  <script defer src="./assets/dataTables.buttons.min.js"></script>
+  <script defer src="./assets/buttons.html5.min.js"></script>
+  <script defer src="./assets/buttons.print.min.js"></script>
+  <script defer src="./assets/dataTables.select.min.js"></script>
+  <script defer src="./assets/dataTables.responsive.min.js"></script>
+
+  <!-- Moment.js -->
+  <script defer src="./assets/moment.min.js"></script>
+
+  <!-- Form IO -->
+  <link defer rel="stylesheet" href="./assets/formio.full.min.css">
+  <script defer src="./assets/formio.full.min.js"></script>
+
+  <!-- Google Script -->
+  <script defer src="https://accounts.google.com/gsi/client"></script>
+
+  <!-- FontAwesome -->
+  <link defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+  <!-- FullCalendar Library - Load first without defer to ensure availability -->
+  <script src="./assets/index.global.min.js"></script>
+
+  <!-- Easy Ticker -->
+  <script defer src="./assets/jquery.easy-ticker.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link defer rel="preconnect" href="https://fonts.googleapis.com">
+  <link defer rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link defer
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Trirong:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+
+  <script src="./assets/chart.js"></script>
+
+  <!-- Socket.io client (exposes global `io`) -->
+  <script src="./assets/socket.io.js"></script>
+
+  <script src="./assets/chartjs-plugin-datalabels@2.js"></script>
+
+  <!-- FlipBook -->
+  <script src="./assets/pdf.min.js"></script>
+
+  <script src="./assets/page-flip.browser.min.js"></script>
+
+  <script src="./assets/xlsx.full.min.js"></script>
+
+  <link href="./assets/quill.snow.css" rel="stylesheet">
+
+  <script src="./assets/quill.js"></script>
+  <!-- S3 Upload -->
+  <script src="./assets/aws-sdk.min.js"></script>
+</head>
+
+<body>
+  <div id="header-content" class="w-100"></div>
+  <div id="content" class="w-100 overflow-y-auto preLog"></div>
+  <div id="footer-content" class="w-100"></div>
+  <div class='position-absolute w-100 h-100 top-0 left-0 d-none overflow-hidden' id="modal-content"></div>
+  <div class='position-absolute w-100 h-100 top-0 left-0 d-none overflow-hidden' id="popup-content"></div>
+  <button id="backToTopBtn" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <!-- Application Scripts -->
+  <script src="app.js" defer></script>
+  <script src="templates.js" defer></script>
+  <script src="login.js" defer></script>
+  <script src="utils.js" defer></script>
+  <script src="dynamicRender.js" defer></script>
+  <script src="modal.js" defer></script>
+  <script src="popup.js" defer></script>
+  <script src="chatWorker.js" defer></script>
+  <script src="formLoad.js" defer></script>
+</body>
+
+</html>
