@@ -161,6 +161,10 @@
         <div class="section-head">
           <h2 class="partition-heading">Available Equipment</h2>
           <div class="section-head-actions">
+            <button type="button" class="btn btn-outline" id="dashboard-btn" hidden>
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+              Admin Dashboard
+            </button>
             <button type="button" class="btn btn-outline" id="history-btn">
               <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               History
@@ -361,6 +365,55 @@
     </div>
   </section>
 
+  <!-- ============ VIEW: ADMIN DASHBOARD ============
+       Missions/admin role only (see dashboard-btn's hidden toggle and
+       showRequestsCol in formLoad.js). Read-only KPI + activity summary
+       across every request currently in the local requests store, plus
+       an editable asset manager (units left, per-request cap) for every
+       item ever added. switchEqpView()/renderDashboard() in formLoad.js
+       drive this section; it shares the page's own .eqp-dash-* styles
+       (see styles.scss, appended after the existing Asset styles). -->
+  <section class="view" id="view-dashboard" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="partition-heading" style="color:var(--navy);">Admin Dashboard</h2>
+        <button type="button" class="btn btn-outline" id="dashboard-back-btn" style="margin-left:auto;">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          Back to Equipment
+        </button>
+      </div>
+      <p class="eqp-dash-note" style="margin:-8px 0 20px;">A consolidated view of every request and every listed asset. Counts reflect this browser's request data.</p>
+
+      <div class="eqp-dash-kpis" id="eqp-dash-kpis"></div>
+
+      <div class="eqp-dash-section">
+        <h3>Activity by Hospital</h3>
+        <div class="eqp-dash-table-wrap">
+          <table class="eqp-dash-table">
+            <thead>
+              <tr><th>Hospital</th><th>Requests</th><th>Approved</th><th>Pending</th><th>Rejected</th><th>Last activity</th></tr>
+            </thead>
+            <tbody id="eqp-dash-hospitals"></tbody>
+          </table>
+        </div>
+        <p class="eqp-dash-note" id="eqp-dash-hospitals-note" hidden>Requests aren't reliably tagged with a hospital yet, so activity currently groups under "Not specified" until that's added to the request form.</p>
+      </div>
+
+      <div class="eqp-dash-section">
+        <h3>Asset Manager</h3>
+        <div class="eqp-dash-table-wrap">
+          <table class="eqp-dash-table">
+            <thead>
+              <tr><th>Item</th><th>Category</th><th>Units left</th><th>Max per request</th><th>Status</th><th>Requests</th></tr>
+            </thead>
+            <tbody id="eqp-dash-assets"></tbody>
+          </table>
+        </div>
+        <p class="eqp-dash-note">Set "Max per request" to cap how many units a hospital can ask for in one application. Leave blank for no limit. Changes save as soon as you leave the box.</p>
+      </div>
+    </div>
+  </section>
+
 
 
 </div>
@@ -421,6 +474,17 @@
           <p class="drawer-status-msg" id="drawer-status-msg"></p>
           <div class="drawer-status-meta" id="drawer-status-meta"></div>
 
+          <!-- ============ Admin decision (Missions/admin side only) ============
+               Only shown when viewing this request from the Requests
+               (connect) column and its status is still Pending/Under
+               Review — see openRequestDetail() and setRequestStatus() in
+               formLoad.js. Approving reduces the asset's units by the
+               quantity requested; rejecting does not touch stock. -->
+          <div class="drawer-admin-actions" id="drawer-admin-actions" hidden>
+            <button type="button" class="btn btn-outline" id="drawer-reject-btn">Reject</button>
+            <button type="button" class="btn btn-gold" id="drawer-approve-btn">Approve</button>
+          </div>
+
           <!-- ============ Two-way chat on this request ============
                Shared by both the hospital side and the Missions Office /
                connect side — which "side" is posting is decided by
@@ -447,6 +511,8 @@
           <div class="field">
             <label>How many do you need?</label>
             <input type="number" min="1" id="apply-qty" placeholder="e.g. 1" required>
+            <p class="field-hint" id="apply-qty-hint" hidden></p>
+            <p class="field-error" id="apply-qty-error" hidden></p>
           </div>
           <div class="field">
             <label>Could you tell us a little about why this would help?</label>
@@ -523,6 +589,11 @@
           <label>Units available</label>
           <input type="number" min="0" id="asset-units" placeholder="e.g. 2" required>
         </div>
+      </div>
+      <div class="field">
+        <label>Max units per request <span class="optional-tag">(optional)</span></label>
+        <input type="number" min="1" id="asset-max-per-request" placeholder="e.g. 2 — leave blank for no limit">
+        <p class="field-hint">Caps how many units one hospital can ask for in a single request. Doesn't limit how many units are in stock.</p>
       </div>
       <div class="field">
         <label>Description</label>
