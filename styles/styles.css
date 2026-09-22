@@ -7051,6 +7051,135 @@ h4 {
   background: var(--panel);
 }
 
+.eqp-page .eqp-dash-note {
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.eqp-page .eqp-dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.eqp-page .eqp-kpi {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-panel);
+  border-left: 4px solid var(--navy-soft);
+}
+
+.eqp-page .eqp-kpi-label {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.eqp-page .eqp-kpi-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-top: 4px;
+}
+
+.eqp-page .eqp-kpi.accent-gold {
+  border-left-color: var(--gold);
+}
+
+.eqp-page .eqp-kpi.accent-green {
+  border-left-color: var(--green-dot);
+}
+
+.eqp-page .eqp-kpi.accent-amber {
+  border-left-color: var(--amber-dot);
+}
+
+.eqp-page .eqp-kpi.accent-red {
+  border-left-color: var(--red);
+}
+
+.eqp-page .eqp-dash-section {
+  margin-bottom: 30px;
+}
+
+.eqp-page .eqp-dash-section h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.eqp-page .eqp-dash-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+  background: var(--panel);
+}
+
+.eqp-page .eqp-dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.eqp-page .eqp-dash-table th {
+  background: #F7F8FA;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.eqp-page .eqp-dash-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.eqp-page .eqp-dash-table tr:last-child td {
+  border-bottom: none;
+}
+
+.eqp-page .eqp-dash-table tr:hover td {
+  background: #FAFBFC;
+}
+
+.eqp-page .eqp-dash-table .empty-note {
+  padding: 20px;
+}
+
+.eqp-page .eqp-unit-input {
+  width: 76px;
+  padding: 5px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  font: inherit;
+  color: var(--text);
+}
+
+.eqp-page .eqp-unit-input:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 1px;
+}
+
+@media (max-width: 720px) {
+  .eqp-page .eqp-dash-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .guide-navigation {
   display: flex;
   justify-content: center;

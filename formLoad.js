@@ -6965,6 +6965,17 @@ async function loadAssets() {
 
     populateHospitalSelect(document.getElementById("apply-hospital"));
     document.getElementById("apply-qty").placeholder = "e.g. 1 (up to " + item.units + " available)";
+    var qtyHintEl = document.getElementById("apply-qty-hint");
+    var qtyErrorResetEl = document.getElementById("apply-qty-error");
+    if(qtyHintEl){
+      if(item.maxPerRequest){
+        qtyHintEl.textContent = "You can request up to " + item.maxPerRequest + " unit" + (item.maxPerRequest === 1 ? "" : "s") + " of this item per request.";
+        qtyHintEl.hidden = false;
+      }else{
+        qtyHintEl.hidden = true;
+      }
+    }
+    if(qtyErrorResetEl){ qtyErrorResetEl.hidden = true; qtyErrorResetEl.textContent = ""; }
     document.getElementById("apply-situation").placeholder = item.situationPh;
     document.getElementById("apply-collection").placeholder = item.impactPh;
     document.getElementById("apply-form").reset();
@@ -7021,6 +7032,16 @@ async function loadAssets() {
       : "";
     document.getElementById("drawer-status-block").hidden = false;
 
+    // Approve/Reject only makes sense from the Requests (connect/admin)
+    // column, and only while the request hasn't already been decided —
+    // see setRequestStatus() below, which is what these buttons call.
+    var adminActionsEl = document.getElementById("drawer-admin-actions");
+    if(adminActionsEl){
+      var actionable = ["Pending", "Under Review"].indexOf(app.status) !== -1;
+      adminActionsEl.hidden = !(forcedRole === "connect" && showRequestsCol && actionable);
+      adminActionsEl.dataset.ref = app.ref;
+    }
+
     document.getElementById("apply-form").hidden = true;
     document.getElementById("drawer-foot").hidden = true;
     document.getElementById("apply-toast").classList.remove("show");
@@ -7039,6 +7060,62 @@ async function loadAssets() {
         if(input) input.focus();
       }, 200);
     }
+  }
+
+  /* ---------------- Admin decision (Approve / Reject) ----------------
+     The only status-changing action available on this page today — every
+     other transition in the STATUS_META pipeline (Under Review, Ready for
+     Collection, Dispatched, Collected/Completed) still belongs to the real
+     Missions Office workflow this page doesn't own. Approving a request
+     also deducts its qty from the asset's remaining units (floored at 0),
+     since that's the moment the units actually get committed to a
+     hospital; qty is only ever set when the request was made through
+     "View & Apply" (see the apply-form handler above) — older/other
+     request kinds have no qty and simply don't touch stock. */
+  function setRequestStatus(ref, newStatus){
+    var apps = loadApps();
+    var app = apps.find(function(a){ return a.ref === ref; });
+    if(!app) return;
+    var now = timeLabel();
+    app.status = newStatus;
+    if(!Array.isArray(app.statusHistory)) app.statusHistory = [];
+    app.statusHistory.push({
+      status: newStatus, when: now,
+      note: newStatus === "Approved" ? "Approved by Missions Office" : "Not approved"
+    });
+    if(newStatus === "Approved" && app.assetId && app.qty){
+      var asset = EQUIPMENT.find(function(i){ return i.id === app.assetId; });
+      if(asset){
+        asset.units = Math.max(0, (asset.units || 0) - app.qty);
+        saveEquipment(EQUIPMENT);
+      }
+    }
+    saveApps(apps);
+    renderApps();
+    renderConnectView();
+    renderRegister();
+    renderDashboard();
+    openRequestDetail(ref, "connect");
+  }
+  var drawerApproveBtn = document.getElementById("drawer-approve-btn");
+  var drawerRejectBtn = document.getElementById("drawer-reject-btn");
+  if(drawerApproveBtn){
+    drawerApproveBtn.addEventListener("click", function(){
+      var ref = document.getElementById("drawer-admin-actions").dataset.ref;
+      if(!ref) return;
+      if(confirm("Approve this request? This will reduce the item's remaining units by the quantity requested.")){
+        setRequestStatus(ref, "Approved");
+      }
+    });
+  }
+  if(drawerRejectBtn){
+    drawerRejectBtn.addEventListener("click", function(){
+      var ref = document.getElementById("drawer-admin-actions").dataset.ref;
+      if(!ref) return;
+      if(confirm("Reject this request?")){
+        setRequestStatus(ref, "Rejected");
+      }
+    });
   }
 
   /* ---------------- Two-way chat on a request ----------------
@@ -7369,6 +7446,8 @@ async function loadAssets() {
       var condition = document.getElementById("asset-condition").value;
       var model = document.getElementById("asset-model").value.trim();
       var units = parseInt(document.getElementById("asset-units").value, 10) || 0;
+      var maxPerRequestRaw = parseInt(document.getElementById("asset-max-per-request").value, 10);
+      var maxPerRequest = (maxPerRequestRaw && maxPerRequestRaw > 0) ? maxPerRequestRaw : null;
       var description = document.getElementById("asset-description").value.trim();
       var closeIso = document.getElementById("asset-close-date").value;
       var photoUrl = document.getElementById("asset-photo-url").value.trim();
@@ -7417,6 +7496,7 @@ async function loadAssets() {
         // "no photo" placeholder icon.
         images: photoUrl ? [photoUrl] : [emojiImage(emojiFor(name), EMOJI_BG_HEX[category] || "#ECE9E1")],
         units: units,
+        maxPerRequest: maxPerRequest,
         condition: condition,
         conditionClass: conditionClassFor(condition),
         description: description,
@@ -7438,6 +7518,7 @@ async function loadAssets() {
       saveEquipment(EQUIPMENT);
       renderRegister();
       renderHistory();
+      renderDashboard();
       showToast("asset-form-toast", "asset-form-toast-text", "Added — it's now showing in Available Equipment.");
       setTimeout(closeAssetForm, 1100);
     });
@@ -7526,6 +7607,138 @@ async function loadAssets() {
   document.addEventListener("keydown", function(e){
     if(e.key === "Escape" && historyDrawer && historyDrawer.classList.contains("open")) closeHistoryDrawer();
   });
+
+  /* ---------------- Admin Dashboard ----------------
+     Missions-role-only consolidated view: KPI counts across every request
+     in the local requests store, a per-hospital activity breakdown, and
+     an editable Asset Manager table (units left + the maxPerRequest cap
+     enforced by the apply-form handler above). Everything here reads the
+     same EQUIPMENT/loadApps() stores as the rest of the page — see the
+     Mongo TODO on loadApps()/loadEquipment() for what this becomes once
+     requests carry a real, reliable hospital field. */
+  var APPROVED_LIKE_STATUSES = ["Approved", "Ready for Collection", "Dispatched", "Collected", "Completed"];
+
+  function renderDashboard(){
+    var kpisEl = document.getElementById("eqp-dash-kpis");
+    if(!kpisEl) return; // dashboard markup not on this page render — nothing to do
+
+    var apps = loadApps();
+    var totalUnits = EQUIPMENT.reduce(function(sum, i){ return sum + (i.units || 0); }, 0);
+    var pendingCount = apps.filter(function(a){ return APPROVED_LIKE_STATUSES.indexOf(a.status) === -1 && a.status !== "Rejected" && a.status !== "Cancelled"; }).length;
+    var approvedCount = apps.filter(function(a){ return APPROVED_LIKE_STATUSES.indexOf(a.status) !== -1; }).length;
+    var rejectedCount = apps.filter(function(a){ return a.status === "Rejected"; }).length;
+
+    var kpis = [
+      { label: "Assets Listed", value: EQUIPMENT.length, accent: "" },
+      { label: "Units In Stock", value: totalUnits, accent: "accent-gold" },
+      { label: "Total Requests", value: apps.length, accent: "" },
+      { label: "Pending Review", value: pendingCount, accent: "accent-amber" },
+      { label: "Approved", value: approvedCount, accent: "accent-green" },
+      { label: "Rejected", value: rejectedCount, accent: "accent-red" }
+    ];
+    kpisEl.innerHTML = kpis.map(function(k){
+      return (
+        '<div class="eqp-kpi ' + k.accent + '">' +
+          '<div class="eqp-kpi-label">' + k.label + '</div>' +
+          '<div class="eqp-kpi-value">' + k.value + '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    /* -------- Activity by hospital --------
+       app.hospital is "" for every request today (the hospital picker on
+       this page is currently a disabled placeholder — see
+       populateHospitalSelect()'s call sites), so this will mostly show one
+       "Not specified" row until that's wired up. The grouping logic itself
+       is real and ready for when it is. */
+    var hospitalsEl = document.getElementById("eqp-dash-hospitals");
+    var hospitalsNoteEl = document.getElementById("eqp-dash-hospitals-note");
+    var byHospital = {};
+    apps.forEach(function(a){
+      var h = a.hospital || "Not specified";
+      if(!byHospital[h]) byHospital[h] = { total: 0, approved: 0, pending: 0, rejected: 0, last: null };
+      var row = byHospital[h];
+      row.total++;
+      if(APPROVED_LIKE_STATUSES.indexOf(a.status) !== -1) row.approved++;
+      else if(a.status === "Rejected") row.rejected++;
+      else row.pending++;
+      if(!row.last || a.when > row.last) row.last = a.when;
+    });
+    var hospitalNames = Object.keys(byHospital).sort();
+    if(hospitalsEl){
+      hospitalsEl.innerHTML = hospitalNames.length === 0
+        ? '<tr><td colspan="6"><div class="empty-note">No requests have come in yet.</div></td></tr>'
+        : hospitalNames.map(function(h){
+            var r = byHospital[h];
+            return (
+              '<tr><td>' + h + '</td><td>' + r.total + '</td><td>' + r.approved + '</td>' +
+              '<td>' + r.pending + '</td><td>' + r.rejected + '</td><td>' + (r.last || "—") + '</td></tr>'
+            );
+          }).join("");
+    }
+    if(hospitalsNoteEl){
+      hospitalsNoteEl.hidden = !(hospitalNames.length > 0 && hospitalNames.every(function(h){ return h === "Not specified"; }));
+    }
+
+    /* -------- Asset manager -------- */
+    var assetsEl = document.getElementById("eqp-dash-assets");
+    if(assetsEl){
+      if(EQUIPMENT.length === 0){
+        assetsEl.innerHTML = '<tr><td colspan="6"><div class="empty-note">Nothing added to the register yet.</div></td></tr>';
+      }else{
+        assetsEl.innerHTML = EQUIPMENT.map(function(item){
+          var reqCount = apps.filter(function(a){ return a.assetId === item.id; }).length;
+          var st = historyStatus(item);
+          return (
+            '<tr>' +
+              '<td>' + item.name + '</td>' +
+              '<td>' + item.category + '</td>' +
+              '<td>' + item.units + '</td>' +
+              '<td><input type="number" min="1" class="eqp-unit-input" data-max-per-request="' + item.id + '" value="' + (item.maxPerRequest || "") + '" placeholder="No limit"></td>' +
+              '<td><span class="status-chip ' + st.cls + '"><span class="dot"></span>' + st.label + '</span></td>' +
+              '<td>' + reqCount + '</td>' +
+            '</tr>'
+          );
+        }).join("");
+        assetsEl.querySelectorAll("[data-max-per-request]").forEach(function(input){
+          input.addEventListener("change", function(){
+            var id = input.getAttribute("data-max-per-request");
+            var asset = EQUIPMENT.find(function(i){ return i.id === id; });
+            if(!asset) return;
+            var val = parseInt(input.value, 10);
+            asset.maxPerRequest = (val && val > 0) ? val : null;
+            saveEquipment(EQUIPMENT);
+            input.value = asset.maxPerRequest || "";
+          });
+        });
+      }
+    }
+  }
+
+  function switchEqpView(name){
+    // Visibility here is driven by the .active class (see
+    // .eqp-page .view / .view.active in styles.scss, the same mechanism
+    // view-register already used) — hidden is also kept in sync since
+    // [hidden] carries !important and would otherwise fight it.
+    var regView = document.getElementById("view-register");
+    var dashView = document.getElementById("view-dashboard");
+    if(regView){
+      regView.classList.toggle("active", name === "register");
+      regView.hidden = (name !== "register");
+    }
+    if(dashView){
+      dashView.classList.toggle("active", name === "dashboard");
+      dashView.hidden = (name !== "dashboard");
+    }
+    if(name === "dashboard") renderDashboard();
+  }
+  var dashboardBtn = document.getElementById("dashboard-btn");
+  if(dashboardBtn){
+    dashboardBtn.hidden = !showRequestsCol;
+    dashboardBtn.addEventListener("click", function(){ switchEqpView("dashboard"); });
+  }
+  var dashboardBackBtn = document.getElementById("dashboard-back-btn");
+  if(dashboardBackBtn) dashboardBackBtn.addEventListener("click", function(){ switchEqpView("register"); });
 
   /* ---------------- My Requests log ---------------- */
   function timeLabel(){
@@ -7669,6 +7882,7 @@ async function loadAssets() {
     apps.push({
       ref: nextRequestId(), kind: kind, name: name, when: now,
       hospital: opts.hospital || "", assetId: opts.assetId || null,
+      qty: opts.qty || null,
       status: "Pending", rin: null,
       statusHistory: [{ status: "Pending", when: now, note: "Submitted" }],
       chatThread: [],
@@ -7677,6 +7891,7 @@ async function loadAssets() {
     saveApps(apps);
     renderApps();
     renderConnectView();
+    renderDashboard();
   }
 
   function showToast(id, textId, msg){
@@ -7696,7 +7911,19 @@ async function loadAssets() {
     // Hospital" label on this page right now, so the element may not
     // exist — don't let that throw and block the whole submit.
     var hospital = document.getElementById("apply-hospital")?.value || "";
-    addApp("Application", item.name, { hospital: hospital, assetId: item.id });
+    var qty = parseInt(document.getElementById("apply-qty").value, 10) || 0;
+    var qtyErrorEl = document.getElementById("apply-qty-error");
+    // Per-request cap only (see asset.maxPerRequest, set from the Add
+    // Equipment form / Admin Dashboard's Asset Manager table) — this is
+    // deliberately not also checked against item.units (remaining stock);
+    // that's enforced later, when a nodal/admin Approves the request.
+    if(item.maxPerRequest && qty > item.maxPerRequest){
+      qtyErrorEl.textContent = "You can request up to " + item.maxPerRequest + " unit" + (item.maxPerRequest === 1 ? "" : "s") + " of this item per request.";
+      qtyErrorEl.hidden = false;
+      return;
+    }
+    if(qtyErrorEl){ qtyErrorEl.hidden = true; qtyErrorEl.textContent = ""; }
+    addApp("Application", item.name, { hospital: hospital, assetId: item.id, qty: qty || null });
     showToast("apply-toast", "apply-toast-text", "Sent — check My Requests to see it.");
     setTimeout(closeDrawer, 1100);
   });
