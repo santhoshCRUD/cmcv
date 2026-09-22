@@ -108,19 +108,35 @@ ${data.preLogin ? `
 `:''}
 
 ${data.postLogin?`
-<nav class="navbar navbar-expand-lg px-1 roboto-regular bg-primarycolor">
-  <div class="position-absolute w-100">
+<!-- ============ Mobile topbar (<lg) ============
+     Logo + hamburger only. The hamburger opens the SAME #navbarText
+     offcanvas that already existed here (untouched below) - that drawer
+     already was this app's mobile nav pattern, so it's reused as-is. -->
+<div class="app-topbar d-flex d-lg-none align-items-center justify-content-between bg-primarycolor">
+  <div class="d-flex align-items-center">
+    <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="40px" />
+    <span class="d-flex align-items-center text-white text-center fw-bold trirong-bold ms-1"><span>CMC</span><span
+        class="primarycolor fs-3">V</span><span>CONNECT</span></span>
   </div>
-  <div class="d-lg-none d-flex align-items-center">
-    <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="50px" />
-    <span class=" d-flex align-items-center text-white text-center fw-bold trirong-bold"><span>&nbsp; CMC</span><span
-        class="primarycolor fs-1 ">V</span><span>CONNECT</span> </span>
-  </div>
-  <button class="btn me-2 d-lg-none d-inline" data-bs-toggle="offcanvas" data-bs-target="#navbarText"
+  <button class="btn app-topbar-toggle" data-bs-toggle="offcanvas" data-bs-target="#navbarText"
     aria-controls="navbarText">
     <img src="/images/3dot.svg" alt="3dot" height="20px">
   </button>
-  <div class="collapse navbar-nav navbar-collapse justify-content-around" data-bs-auto-close="false">
+</div>
+
+<!-- ============ Desktop sidebar (>=lg) ============
+     Persistent left navigation - same nav items, same onclick handlers,
+     same role-gated data variables as before (see the mentorBtn /
+     menteeBtn / etc. context built in renderPostHomePage(), app.js) -
+     just laid out as a vertical column instead of a horizontal navbar
+     (RULE 9). -->
+<aside class="app-sidebar navbar d-none d-lg-flex flex-column bg-primarycolor">
+  <div class="app-sidebar-brand d-flex align-items-center text-white trirong-bold">
+    <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="40px" />
+    &nbsp;CMC<span class="primarycolor" style="font-size:30px; line-height: 1;">V</span>CONNECT
+  </div>
+
+  <nav class="app-sidebar-nav flex-grow-1">
     <ul class="navbar-nav">
       <a class="nav-link text-white btn" id="home" data-tab="home"
         onclick="renderPostHomePage(); activateTab('home');">Home</a>
@@ -131,44 +147,38 @@ ${data.postLogin?`
       ${data.msnVisitBtn}
       ${data.serviceCommitmentBtn}
       ${data.fovGrantsBtn}
-      <!-- <a class="nav-link text-white" aria-current="page" id="missions" data-target="missions" onclick="activateTab(this);renderMissionsPage()">Missions</a>
-              <a class="nav-link text-white" aria-current="page" id="council" data-target="council" onclick="activateTab(this);renderCouncilPage()">Council</a> -->
     </ul>
-    <div class="d-none d-lg-block">
-      <div class="d-flex align-items-center text-white fs-1 trirong-bold">
-        <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="50px" />
-        &nbsp; CMC<span class="primarycolor" style="font-size:64px; line-height: 1;">V</span>CONNECT
-      </div>
-    </div>
-    <ul class="navbar-nav align-items-center">
+  </nav>
+
+  <div class="app-sidebar-foot">
+    <ul class="navbar-nav">
       ${data.guideBtn}
       <a class="nav-link text-white btn" id="contactus" data-tab="contactus"
         onclick="openModal('contactMissions')">Contact us</a>
-
-      <a class="nav-link dropdown-toggle" type="button" data-toggle="dropdown" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <img class="profile_icon rounded-circle" src="{{userImg}}" alt="" style="width: 35px; height: 35px;">
+    </ul>
+    <div class="dropdown app-sidebar-profile">
+      <a class="nav-link dropdown-toggle d-flex align-items-center text-white" type="button" data-toggle="dropdown"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <img class="profile_icon rounded-circle me-2" src="{{userImg}}" alt="" style="width: 32px; height: 32px;">
+        <span class="text-truncate small">{{email}}</span>
       </a>
-      <div class="dropdown-menu mb-2 p-3 mx-auto" style="left: auto; width: max-content; ">
-        <div class=" d-flex flex-column align-items-center">
+      <div class="dropdown-menu mb-2 p-3" style="width: max-content;">
+        <div class="d-flex flex-column align-items-center">
           <img class="profile_icon rounded-circle mb-2" src="{{userImg}}" style="width: 65px; height: 65px;">
           <hr class="border-top border-secondary my-auto w-100 mb-2" />
           <span class="connect-text-darkblue"> {{userName}}</span>
           <span class="secondary-color">{{email}}</span>
         </div>
       </div>
-      </li>
-      <li>
-        <button class="btn btn-light align-text-top" type="button" id="{{ email + ':' + loginType }}"
-          onclick="msAndGoogleSignOut(event)">
-          <img
-            src="${data.loginType === 'google' ? '../images/google.svg' : data.loginType === 'microsoft' ? '../images/microsoft.svg' : ''}"
-            class="img-fluid" width="20px" />
-          Sign Out</button>
-      </li>
-    </ul>
+      <button class="btn btn-light btn-sm w-100 mt-2" type="button" id="{{ email + ':' + loginType }}"
+        onclick="msAndGoogleSignOut(event)">
+        <img
+          src="${data.loginType === 'google' ? '../images/google.svg' : data.loginType === 'microsoft' ? '../images/microsoft.svg' : ''}"
+          class="img-fluid" width="16px" />
+        Sign Out</button>
+    </div>
   </div>
-</nav>
+</aside>
 <!-- offscreen -->
 <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="navbarText" aria-labelledby="offcanvas3dot">
   <div class="offcanvas-header">
