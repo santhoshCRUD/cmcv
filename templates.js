@@ -6325,27 +6325,27 @@ ${data.postLogin?`
     <div class="collapse navbar-collapse justify-content-end" id="ncNavbar">
  
       <div class="navbar-nav gap-lg-2 mt-3 mt-lg-0">
- 
-        <button class="nav-btn active" data-page="introPage">
-          <i class="fa-solid fa-home"></i>
+
+        <button class="nav-btn active" data-page="introPage" title="Go to Home">
+          <i class="fa-solid fa-home"></i> Home
         </button>
- 
-        <button class="nav-btn" data-page="themesPage">
+
+        <button class="nav-btn" data-page="themesPage" title="See the topics our specialists can advise on">
           Themes
         </button>
- 
-        <button class="nav-btn d-none" data-page="requestPage">
+
+        <button class="nav-btn d-none" data-page="requestPage" title="Add or track your patient requests">
           Request
         </button>
- 
-        <button class="nav-btn d-none" data-page="consultPage">
+
+        <button class="nav-btn d-none" data-page="consultPage" title="Cases sent to your department">
           Consult
         </button>
- 
-        <button class="nav-btn d-none" data-page="nodalPage">
+
+        <button class="nav-btn d-none" data-page="nodalPage" title="Assign incoming patient cases">
           Nodal
         </button>
- 
+
       </div>
  
     </div>
@@ -6364,12 +6364,46 @@ ${data.postLogin?`
         with specialists at CMC to seek expert opinions on patient treatment and care.
       </p>
       <div class="mt-3" id="registrationTrigger">
-        <p>We invite you to register to begin participating in this collaborative consultation process.</p>
-        <button class="btn btn-primary px-4"
-          onclick="openModal('formIO', null, ''); loadNetConsltRegForm()">Register</button>
+        <div class="nc-register-card">
+          <div class="nc-register-icon"><i class="fa-solid fa-user-plus"></i></div>
+          <div>
+            <p>We invite you to register to begin participating in this collaborative consultation process.</p>
+            <button class="btn btn-primary px-4"
+              onclick="openModal('formIO', null, ''); loadNetConsltRegForm()">Register Now</button>
+          </div>
+        </div>
       </div>
 
-
+      <div class="nc-welcome-menu">
+        <button type="button" class="nc-welcome-tile" onclick="ncGoToPage('requestPage')">
+          <span class="nc-welcome-icon"><i class="fa-solid fa-notes-medical"></i></span>
+          <span class="nc-welcome-text">
+            <span class="nc-welcome-title">My Patient Requests</span>
+            <span class="nc-welcome-desc">Add a new patient, or check the status of ones you already sent.</span>
+          </span>
+        </button>
+        <button type="button" class="nc-welcome-tile" onclick="ncGoToPage('consultPage')">
+          <span class="nc-welcome-icon"><i class="fa-solid fa-user-doctor"></i></span>
+          <span class="nc-welcome-text">
+            <span class="nc-welcome-title">Department Consults</span>
+            <span class="nc-welcome-desc">See the patient cases sent to your department for review.</span>
+          </span>
+        </button>
+        <button type="button" class="nc-welcome-tile" onclick="ncGoToPage('nodalPage')">
+          <span class="nc-welcome-icon"><i class="fa-solid fa-diagram-project"></i></span>
+          <span class="nc-welcome-text">
+            <span class="nc-welcome-title">Nodal Overview</span>
+            <span class="nc-welcome-desc">Review new patient cases and assign them to a specialist.</span>
+          </span>
+        </button>
+        <button type="button" class="nc-welcome-tile" onclick="ncGoToPage('themesPage')">
+          <span class="nc-welcome-icon"><i class="fa-solid fa-layer-group"></i></span>
+          <span class="nc-welcome-text">
+            <span class="nc-welcome-title">Consult Topics</span>
+            <span class="nc-welcome-desc">Browse the areas our specialists are available to advise on.</span>
+          </span>
+        </button>
+      </div>
 
 <div class="nc-dash d-none" id="ncDashboard">
  
@@ -6582,12 +6616,21 @@ ${data.postLogin?`
     </div>
 
     <div id="themesPage" class="content-page d-none">
+      <button type="button" class="nc-back-home" onclick="ncGoToPage('introPage')">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+      <h3 class="fw-semibold mb-1 bg-nc text-white rounded-3 text-center p-2">Consult Topics</h3>
+      <p class="nc-section-help">These are the areas our specialists can advise you on.</p>
       <div id="ncThemesList"></div>
- 
+
     </div>
- 
+
     <div id="requestPage" class="content-page d-none">
-      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2">My Patient Requests</h3>
+      <button type="button" class="nc-back-home" onclick="ncGoToPage('introPage')">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+      <h3 class="fw-semibold mb-1 bg-nc text-white rounded-3 text-center p-2">My Patient Requests</h3>
+      <p class="nc-section-help">Add a new patient case here, or click any row below to see its full summary.</p>
       <div class="row g-3">
         <div class="col-md-8">
           <div class="overflow-auto p-1 scrollBar-thin">
@@ -6597,11 +6640,11 @@ ${data.postLogin?`
         <div class="col-md-4">
           <div class="card">
             <div class="card-header bg-nc text-white rounded-top">
-              <h5 class="text-center">Patient Summary</h5>
+              <h5 class="text-center"><i class="fa-solid fa-id-card-clip me-2"></i>Patient Summary</h5>
             </div>
             <div class="card-body">
               <div class="border border-black rounded-3 p-2 mb-2">
-                <h6 class="fw-bold text-center">Demographics</h6>
+                <h6 class="fw-bold text-center"><i class="fa-solid fa-user me-1"></i>Demographics</h6>
                 <p>Name: <strong id="ncPatientName"></strong></p>
                 <p>Age: <strong id="ncPatientAge"></strong></p>
                 <p>Place: <strong id="ncPatientPlace"></strong></p>
@@ -6609,15 +6652,15 @@ ${data.postLogin?`
                 <p>Last seen date: <strong id="ncPatientLastSeenDate"></strong></p>
               </div>
               <div class="border border-black rounded-3 p-2 mb-2">
-                <h6 class="fw-bold text-center">History</h6>
+                <h6 class="fw-bold text-center"><i class="fa-solid fa-clock-rotate-left me-1"></i>History</h6>
                 <span id="ncPatientHistory"></span>
               </div>
               <div class="border border-black rounded-3 p-2 mb-2">
-                <h6 class="fw-bold text-center">Investigations</h6>
+                <h6 class="fw-bold text-center"><i class="fa-solid fa-flask me-1"></i>Investigations</h6>
                 <span id="ncPatientInvestigations"></span>
               </div>
               <div class="border border-black rounded-3 p-2 mb-2">
-                <h6 class="fw-bold text-center">Plan</h6>
+                <h6 class="fw-bold text-center"><i class="fa-solid fa-clipboard-list me-1"></i>Plan</h6>
                 <span id="ncPatientPlan"></span>
               </div>
             </div>
@@ -6627,7 +6670,11 @@ ${data.postLogin?`
     </div>
  
     <div id="consultPage" class="content-page d-none">
-      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2" id="ncDepartmentName"></h3>
+      <button type="button" class="nc-back-home" onclick="ncGoToPage('introPage')">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+      <h3 class="fw-semibold mb-1 bg-nc text-white rounded-3 text-center p-2" id="ncDepartmentName"></h3>
+      <p class="nc-section-help">Patient cases sent to your department, waiting for your opinion.</p>
       <div class="row overflow-auto p-3 bg-body-secondary rounded scrollBar-thin mb-3">
         <div id="myApprovedPatient"></div>
       </div>
@@ -6635,9 +6682,13 @@ ${data.postLogin?`
         <table id="ncMyDeptConsltTable" class="table table-hover border"></table>
       </div>
     </div>
- 
+
     <div id="nodalPage" class="content-page d-none">
-      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2">Nodal Overview</h3>
+      <button type="button" class="nc-back-home" onclick="ncGoToPage('introPage')">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+      <h3 class="fw-semibold mb-1 bg-nc text-white rounded-3 text-center p-2">Nodal Overview</h3>
+      <p class="nc-section-help">New patient cases waiting for you to assign them to the right specialist.</p>
       <div class="row overflow-auto p-3 bg-body-secondary rounded scrollBar-thin mb-3">
         <div id="newPatientReq"></div>
       </div>
@@ -7212,26 +7263,32 @@ ${data.postLogin?`
                     <button class="btn sidebar-btn text-start w-100 active" data-page="patientDetailsPage"
                         data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-user-injured me-2"></i> Overview
+                        <span class="btn-caption">Patient details and diagnosis</span>
                     </button>
                     <button class="btn sidebar-btn text-start w-100" data-page="queriesPage" data-bs-dismiss="offcanvas"
                         data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-comments me-2"></i> Case Discussion - Q&A
+                        <span class="btn-caption">Ask CMC specialists a question</span>
                     </button>
                     <button class="btn sidebar-btn text-start w-100" data-page="reportsPage" data-bs-dismiss="offcanvas"
                         data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-file-medical me-2"></i> Reports
+                        <span class="btn-caption">Lab and medical reports</span>
                     </button>
                     <button class="btn sidebar-btn text-start w-100" data-page="imagesPage" data-bs-dismiss="offcanvas"
                         data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-x-ray me-2"></i> Images
+                        <span class="btn-caption">X-rays and scans</span>
                     </button>
                     <button id="callPageBtn" class="btn sidebar-btn text-start w-100 d-none" data-page="callPage"
                         data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-phone me-2"></i> Conference Call
+                        <span class="btn-caption">Join the discussion call</span>
                     </button>
                     <button id="allotLogBtn" class="btn sidebar-btn text-start w-100 d-none" data-page="allotLogPage"
                         data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
                         <i class="fas fa-user-md me-2"></i> Allotted Doctors
+                        <span class="btn-caption">Doctors assigned to this case</span>
                     </button>
                 </div>
             </div>
@@ -7243,7 +7300,7 @@ ${data.postLogin?`
                     <div class="col-md-6">
                         <div class="card h-100 shadow-sm border-0 rounded-3">
                             <div class="card-body">
-                                <h5 class="fw-bold mb-3">Demographics</h5>
+                                <h5 class="fw-bold mb-3"><i class="fas fa-id-card me-2"></i>Demographics</h5>
                                 <div class="table-responsive">
                                     <table class="table align-middle mb-0">
                                         <tr>
@@ -7279,7 +7336,7 @@ ${data.postLogin?`
                     <div class="col-md-6">
                         <div class="card h-100 shadow-sm border-0 rounded-3">
                             <div class="card-body">
-                                <h5 class="fw-bold mb-3">Diagnosis</h5>
+                                <h5 class="fw-bold mb-3"><i class="fas fa-stethoscope me-2"></i>Diagnosis</h5>
                                 <div class="table-responsive">
                                     <table class="table align-middle mb-0">
                                         <tr>
@@ -7307,7 +7364,7 @@ ${data.postLogin?`
                     <div class="col-12">
                         <div class="card shadow-sm border-0 rounded-3">
                             <div class="card-body">
-                                <h5 class="fw-bold mb-2">Clinical Details</h5>
+                                <h5 class="fw-bold mb-2"><i class="fas fa-notes-medical me-2"></i>Clinical Details</h5>
                                 <p class="card-text text-dark">${data.patientClinicalDetails || '-'}</p>
                             </div>
                         </div>

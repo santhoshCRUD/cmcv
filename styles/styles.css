@@ -8867,4 +8867,142 @@ h4 {
   .nc-bar-row {
     grid-template-columns: 92px minmax(60px, 1fr) 32px;
   }
-}/*# sourceMappingURL=styles.css.map */
+}
+
+/* =====================================================================
+   FRIENDLIER NETWORK CONSULTS UI (demo pass)
+   Presentation-only additions - every color reuses the --nc-* tokens
+   already defined above. No existing id, class or JS behaviour changes.
+   ===================================================================== */
+
+.nc-welcome-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 18px 0 26px;
+}
+
+.nc-welcome-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--nc-line);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--nc-panel-shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.nc-welcome-tile:hover,
+.nc-welcome-tile:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(20, 48, 79, 0.14);
+  outline: none;
+}
+
+.nc-welcome-icon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nc-hero-gradient);
+  color: #fff;
+  font-size: 18px;
+}
+
+.nc-welcome-title {
+  display: block;
+  font-weight: 700;
+  color: var(--nc-navy);
+  margin-bottom: 3px;
+}
+
+.nc-welcome-desc {
+  display: block;
+  font-size: 13px;
+  color: var(--nc-text-muted);
+  line-height: 1.4;
+}
+
+.nc-register-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid var(--nc-line);
+  border-left: 5px solid var(--nc-gold-bright);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: var(--nc-panel-shadow);
+}
+
+.nc-register-icon {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nc-amber-bg);
+  color: var(--nc-amber-text);
+  font-size: 20px;
+}
+
+.nc-register-card p {
+  margin: 0 0 12px;
+}
+
+.nc-section-help {
+  color: var(--nc-text-muted);
+  font-size: 13.5px;
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.nc-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid var(--nc-line);
+  color: var(--nc-navy);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.nc-back-home:hover {
+  background: var(--nc-canvas);
+}
+
+.sidebar-btn .btn-caption {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--nc-text-faint);
+  margin-top: 2px;
+  margin-left: 22px;
+}
+
+.sidebar-btn.active .btn-caption {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 576px) {
+  .nc-welcome-menu {
+    grid-template-columns: 1fr;
+  }
+}
+/*# sourceMappingURL=styles.css.map */
