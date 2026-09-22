@@ -1,0 +1,50 @@
+<div class="bg-white position-relative">
+
+  <i class="fa fa-arrow-left position-absolute start-0 top-0 m-3 fs-2 text-white" style="cursor: pointer; z-index: 10;"
+    onclick="${data.backTo}">
+  </i>
+  <div class="text-center py-5 mb-4"
+    style="background: url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_2269f308e1a93aea5d3eb315fd52cb07_Pictures.jpg') center center / cover no-repeat; border-bottom: 1px solid #dee2e6;">
+    <div class="container pb-5">
+      <h3 class="display-6 fw-bold text-dark mb-3">Welcome to Grand Rounds!</h3>
+      <div class="mx-auto mb-5 px-4" style="max-width: 700px;">
+        <p class="lead fw-normal fs-md-5 pb-3">A webinar series by senior clinicians, addressing key clinical topics
+          relevant to practitioners in peripheral hospital settings.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid mt-2">
+
+    <div class="row g-4">
+
+      <div class="col-lg-4 col-md-6 col-12">
+        <h4 class="text-center mb-3">Ongoing Grand Rounds</h4>
+        <div id="ongoingGrandRounds" class="border rounded p-3 shadow-sm bg-white"></div>
+      </div>
+
+      <div class="col-lg-5 col-md-12 col-12">
+        <h4 class="text-center mb-3">Schedule</h4>
+
+        <div class="table-responsive shadow-sm rounded bg-white p-3 border">
+          <table id="grandRoundsTable" class="table table-striped border w-100"></table>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-12">
+        <div class="align-items-center mb-3">
+          <h4 class="text-center mb-0"> Recent Videos</h4>
+          <button class="btn btn-sm btn-primary" style="position: absolute; right: 1%;"
+            onclick="navigateTo('grandRoundsVideos', {}, ['loadGrandRoundsVideos', []]);">
+            All Videos
+          </button>
+        </div>
+
+        <div id="grandRoundsVideos" class="overflow-auto border rounded p-2 shadow-sm mt-5" style="max-height: 800px;">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

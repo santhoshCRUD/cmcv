@@ -1,0 +1,313 @@
+<div class="bg-white">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Christian Medical College Vellore</h1>
+            <div class="d-flex align-items-center justify-content-center mb-5">
+                <div style="flex: 1; height: 3px; background: #14067c;"></div>
+                <div class="d-flex align-items-center px-3 fw-bold">Transformative care for over 125 years</div>
+                <div style="flex: 1; height: 3px; background: #14067c;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-light">
+        <div class="container">
+            <h2>Thought for the day</h2>
+            <p class="py-3 fw-medium fs-5">${data.thoughtOfDay}</p>
+        </div>
+    </section>
+
+    <div class="container-fluid py-5" style="background-color: #fdf8ef;">
+        <div class="row g-4 align-items-stretch">
+
+            <div class="col-md-6">
+                <div class="h-100 card shadow p-3 bg-white ">
+                    ${data.whatsNew}
+                </div>
+            </div>
+
+            <div class="col-md-3 d-flex flex-column gap-4">
+                <div class="card text-center shadow p-2 w-100 h-100 custom-card"
+                    onclick="navigateTo('clinicalSnip', '', ['loadClinicalSnip',[]])">
+
+                    <div class="card-main-content d-flex flex-column h-100">
+                        <div
+                            class="card-content picture px-md-4 py-3 d-flex justify-content-center align-items-center flex-grow-1">
+                            <img src="../images/icons/Open_Book.png" class="img-fluid card-icon" alt="Icon">
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 w-100">
+                            <h5 class="text-wrap connect-text-darkblue mb-0">
+                                Clinical Snippets
+                            </h5>
+                        </div>
+
+                    </div>
+
+                    <div class="card-hover-overlay d-flex justify-content-center align-items-center">
+                        <p class="hover-message m-0 px-3 fs-4">
+                            Take a Quiz
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 d-flex flex-column gap-4">
+                <div class="card text-center shadow p-2 w-100 h-100 custom-card"
+                    onclick="navigateTo('contact',{postLogin: true,currPage: 'renderGuestHomePage()', role: 'VConnect Guest'}, ['loadHospitalIdsAndMap',[]]);">
+
+                    <div class="card-main-content d-flex flex-column h-100">
+                        <div
+                            class="card-content picture px-md-4 py-3 d-flex justify-content-center align-items-center flex-grow-1">
+                            <img src="./images/icons/india-icon1.png" class="img-fluid card-icon" alt="Icon">
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 w-100">
+                            <h5 class="text-wrap connect-text-darkblue mb-0">
+                                Mission Hospitals
+                            </h5>
+                        </div>
+
+                    </div>
+
+                    <div class="card-hover-overlay d-flex justify-content-center align-items-center">
+                        <p class="hover-message m-0 px-3 fs-4">
+                            View Our Mission Hospitals
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <section class="lookingFor d-flex align-items-center">
+        <div class="container px-lg-5 text-center position-relative z-2">
+
+            <h2 class="mb-4 fw-bold">What are you looking for?</h2>
+
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-lg-5 col-md-6">
+                    <div class="custom-box h-100 card-hover rounded bg-white">
+                        <h4>Learning Resources</h4>
+                        <p>
+                            Explore our curated learning resources designed to enhance knowledge, build skills, and
+                            support continuous professional growth.
+                        </p>
+                        <button
+                            onclick="navigateTo('learningResources', {}, ['renderLoadResources', ['learningResources', 'renderPostHomePage()']]);"
+                            class="btn btn-dark mt-3">
+                            Click here to see our learning resources
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-6">
+                    <div class="custom-box h-100 card-hover rounded bg-white">
+                        <h4>Grand Rounds</h4>
+                        <p>
+                            A webinar series by senior clinicians, addressing key clinical topics relevant to
+                            practitioners in peripheral hospital settings.
+                        </p>
+                        <button
+                            onclick="navigateTo('grandRounds', {backTo: 'renderPostHomePage()'}, [['loadGrandRoundsTable', []], ['loadGrandRoundsVideos', [10]]]);"
+                            class="btn btn-dark mt-3">
+                            Click here to register or see the recorded lectures
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: #fdf8ef;">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-center mb-5">
+                <div style="flex: 1; height: 1px; background: #d3bc8d;"></div>
+                <div class="mx-3 d-flex align-items-center">
+                    <span class="dot mx-1"
+                        style="height: 8px; width: 8px; background: #d3bc8d; border-radius: 50%;"></span>
+                    <h3 class="mb-0 px-3 fw-bold" style="color: #5a1216; font-family: serif;">Latest News</h3>
+                    <span class="dot mx-1"
+                        style="height: 8px; width: 8px; background: #d3bc8d; border-radius: 50%;"></span>
+                </div>
+                <div style="flex: 1; height: 1px; background: #d3bc8d;"></div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                ${data.renderedNews}
+            </div>
+
+            <div class="text-end mt-4">
+                <span class="px-3 py-1 text-decoration-none fw-bold"
+                    style="color: #8e6809; cursor: pointer; border-bottom: 2px solid #8e6809;"
+                    onclick="loadAllNews('guest', 'renderPostHomePage()')">
+                    View all &rarr;
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="services py-5">
+        <div class="container text-center">
+
+            <h2 class="section-title">What we do</h2>
+
+            <div class="row g-4">
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_4daece7c5dd22715dd31b3760b3bcdea_Pictures.jpg"
+                                alt="">
+                        </div>
+                        <h6>MANDATORY MISSION SERVICE</h6>
+                        <p class="fs-6">
+                            We encourage our doctors to visit and work in remote mission hospitals
+                            as part of their trainings and promotions.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="./images/icons/opinionIcon.png" alt="">
+                        </div>
+                        <h6>SECOND-OPINION CONNECT</h6>
+                        <p class="fs-6">
+                            Our Second-Opinion Connect program enables teleconsultations to mission
+                            hospital health providers.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_edb5cc4643467db0ddfe16793635bc92_Pictures.png"
+                                alt="">
+                        </div>
+                        <h6>MISSION MENTORSHIP</h6>
+                        <p class="fs-6">
+                            One-on-one mentorship program supporting students in career and spiritual growth.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_25e9cb969ad54f3805c638e78833d8b6_Pictures.png"
+                                alt="">
+                        </div>
+                        <h6>MISSION DESK</h6>
+                        <p class="fs-6">
+                            We have a dedicated desk to facilitate patients referred from mission hospitals, mission
+                            organizations, churches and CMC Vellore's peripheral Units.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_876292a0ba12efbc36ed0263a839d747_Pictures.png"
+                                alt="">
+                        </div>
+                        <h6>TRAININGS & FELLOWSHIPS</h6>
+                        <p class="fs-6">
+                            Short-term fellowships and trainings to build clinical capacity.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card card-hover">
+                        <div class="icon-circle">
+                            <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_ed9025de53ca5f066a6a3b8bbf636bcc_Pictures.png"
+                                alt="">
+                        </div>
+                        <h6>ASSET RECYCLING</h6>
+                        <p class="fs-6">
+                            We assess & donate reusable medical equipment to hospitals in need.
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p>Want to discover more about what we do? Reach out to us at <a
+                            href="mailto:[missionconnect@cmcvellore.ac.in]">missionconnect@cmcvellore.ac.in</a> or
+                        Explore our website: <a href="https://www.cmch-vellore.edu/"
+                            target="_blank">https://www.cmch-vellore.edu/</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="history">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-md-5 text-center">
+                    <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_3cfe09f4baa8505e263a21673094eb96_Pictures.png"
+                        class="img-fluid">
+                    <div class="mt-2">
+                        <h6>Be Thou My Vision - Ida Scudder of Vellore (Part 1)</h6>
+                        <button class="btn btn-danger"
+                            onclick="window.open('https://www.youtube.com/watch?v=kTlH_VLmM6Q', '_blank')">Watch
+                            Video</button>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-7">
+                    <h2>Our History</h2>
+                    <p>The Christian Medical College (CMC) was founded in the early twentieth century by Dr. Ida
+                        Sophia Scudder with a singular vision: to provide compassionate healthcare to women and
+                        children.</p>
+
+                    <p>In her youth, Dr. Ida had no intention of continuing her family’s missionary legacy. However,
+                        a defining
+                        night in 1890 changed her course forever. She witnessed the tragic deaths of three young
+                        Indian
+                        women
+                        during childbirth—lives that could have been saved had prevailing social norms permitted her
+                        physician
+                        father to attend to them. This experience left an indelible mark on her, inspiring her to
+                        dedicate
+                        her
+                        life to medicine and service.</p>
+
+                    <p>After completing her medical education at the University of Pennsylvania and Cornell
+                        University,
+                        Dr.
+                        Scudder returned to India in 1900. She began her work modestly, establishing a one-bed
+                        hospital
+                        as
+                        the
+                        sole doctor in the region.</p>
+
+                    <p>From these humble beginnings, CMC has grown into one of India’s foremost institutions. Today,
+                        it
+                        stands
+                        as a beacon of excellence in medical education, research, and compassionate patient care,
+                        with
+                        2,500
+                        beds, 1,700 doctors, and nearly 3,500 nurses.</p>
+                    <div class="text-center">
+                        <button class="btn btn-danger"
+                            onclick="window.open('https://www.cmch-vellore.edu/history-missions/', '_blank')">Read
+                            More</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,33 @@
+{% import 'cards.html' as cardComponent %}
+{% block content %}
+<!-- <main class="bg-primarycolor " style="min-height: 100%;"> -->
+  <div class="position-relative z-1 d-flex justify-content-center d-md-none ">
+    ${data.msnbtn}
+  </div>
+  <div class="container-fluid pt-3 ">
+    {% for row, cards in homeCards | groupby('row') %}
+    <div class="row" data-row="row-{{ row }}">
+      {% set groupedColumns = cards | groupby('column') %}
+      {% set totalColumns = groupedColumns | length %}
+      {% set widthClass = 'col-md-4' if totalColumns > 1 else 'col-md-12' %}
+      {% for column, colCards in cards | groupby('column') %}
+      <div class="col-12 mb-0 {{widthClass}}" data-column="col-{{ column }}">
+        {% for card in colCards %}
+        {% set bgClass = 'card shadow bg-opacity-10 overflow-hidden' %}
+        <div class="col-12 mb-2 mb-md-4 {{ card.cardWidth }}" data-row-col="card-row{{ row }}-column-{{ column }}">
+          {% if card.type == 'subCards' %}
+          {{cardComponent.subCardComponent(card.data)}}
+          {% elseif card.type === 'cmcOrg' %}
+          {{cardComponent.orgCard(card.data,card.cardClass)}}
+          {% else %}
+          {{cardComponent.baseCardComponent(card.type, card.heading, card.data, card.redirect, bgClass, card.icon)}}
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+<!-- </main> -->
+{% endblock %}

@@ -1,0 +1,50 @@
+{% import 'cards.html' as cardComponent %}
+
+<div class="bg-white h-100 py-4">
+  <div class="position-relative">
+    <h2 class="text-center bg-white p-3 rounded msnHospTitle connect-primary-border">My Requests for Legal Help</h2>
+    <i class="bg-opacity-10 fa-arrow-left fas rounded position-absolute start-0 top-0 m-3 fs-2 pe-pointer"onclick="renderMissionsPage(); clearGlobalFilters();"></i>
+  </div>
+
+  <div class="container-fluid px-3">
+    <div class="row">
+
+      <!-- Left column: card -->
+      <div class="col-md-4 mt-5 pe-0">
+        <div class="container-fluid pt-3 z-1">
+          {% for row, cards in legalHelpCards | groupby('row') %}
+          <div class="row" data-row="row-{{ row }}">
+            {% set groupedColumns = cards | groupby('column') %}
+            {% set totalColumns = groupedColumns | length %}
+            {% set widthClass = 'col-md-6' if totalColumns > 1 else 'col-md-12' %}
+            {% for column, colCards in groupedColumns %}
+            <div class="col-12 mb-0 {{ widthClass }}" data-column="col-{{ column }}">
+              {% for card in colCards %}
+              <div class="col-12 mb-2 mb-md-4 {{ card.cardWidth }}"
+                data-row-col="card-row{{ row }}-column-{{ column }}">
+                {% if card.type == 'infoCards' %}
+                {{ cardComponent.infoCardComponent(card.data, 'legalHelp') }}
+                {% endif %}
+
+              </div>
+              {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right column: Table -->
+      <div class="col-md-8 mb-3 ps-0">
+        <div class="overflow-auto p-3 ">
+        <table id="missionLegalHelp" class="display mb-3" width="100%"></table>
+      </div></div>
+
+    </div>
+  </div>
+
+  <div class="text-end px-3">Please write to us: <a href="mailto:missionsoffice@cmcvellore.ac.in">missionsoffice@cmcvellore.ac.in</a><br>Or call: +91 416 228 6117</div>
+
+  <div id="viewLegalForm"></div>
+</div>

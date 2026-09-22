@@ -1,0 +1,795 @@
+<div class="bg-white">
+  <section class="bg-white position-relative overflow-hidden">
+    <div class="mb-4">
+      <!-- Hero Section Container with Background Image -->
+      <div class="card fov-hero-card border-0 shadow-sm rounded-bottom-4 overflow-hidden position-relative mb-5" style="
+        background:
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 30%,
+            rgba(255, 255, 255, 0.92) 65%,
+            #ffffff 100%
+          ),
+          url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_e9bf0a77f0bed2c5e5ebddb5f10a87d0_Pictures.jpg') left center / cover
+            no-repeat;
+        min-height: 480px;
+      ">
+        <div class="row h-100 align-items-center g-0">
+          <!-- Spacer Column to push content to the right -->
+          <div class="col-lg-6 col-md-5 d-none d-md-block"></div>
+
+          <!-- Right Content Column -->
+          <div class="col-lg-6 col-md-7 p-4 mt-5 p-md-5 text-center text-md-end ms-auto">
+            <!-- Title & Subtitle -->
+            <h1 class="display-6 fw-bold mb-2" style="color: #1a2b4c; font-family: serif">
+              Mission Hospital Grant Programme
+            </h1>
+
+            <h5 class="fw-normal mb-3 text-muted" style="color: #4a5568">
+              Friends Of Vellore UK
+            </h5>
+
+            <p class="fs-6 text-secondary mb-4 ms-auto" style="max-width: 420px; line-height: 1.6">
+              Supporting mission hospitals serving poor and marginalised
+              communities across India.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2 mb-4">
+              <button onclick="openModal('formIO', null, ''); loadFOVGrantForm()"
+                class="btn px-4 py-2 text-white fw-medium shadow-sm d-inline-flex align-items-center"
+                style="background-color: #11223f; border-radius: 6px">
+                <i class="fa-solid fa-file-pen me-2"></i>Apply For Grant
+              </button>
+
+              <a href="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/FovGuidelines/_5ba358582081c0a06bab681402bc811e_FovGuidelines.pdf"
+                target="_blank"
+                class="btn btn-outline-secondary px-3 py-2 fw-medium bg-white text-dark border-secondary shadow-sm d-inline-flex align-items-center"
+                style="border-radius: 6px">
+                <i class="fa-solid fa-download me-2"></i>Download Guidelines
+              </a>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2 mb-4">
+              <button id="fovAppDashboardBtn"
+                onclick="navigateTo('fovAppDashboard', null, [['loadFovAppDashboard',[]], ['loadFovApplication',['Draft']]])"
+                class="btn px-4 py-2 text-white fw-medium shadow-sm d-inline-flex align-items-center"
+                style="background-color: #11223f; border-radius: 6px">
+                <i class="fa-classic fa-regular fa-window-restore me-2"></i>Applicant Dashboard
+              </button>
+
+              <button id="fovAdminDashboardBtn"
+                onclick="navigateTo('fovAdminDashboard', null, [['loadFovAdminDashboard',[]],['loadFovAppStatusTable',['Pending']]])"
+                class="btn px-4 py-2 text-white fw-medium shadow-sm d-inline-flex align-items-center"
+                style="background-color: #11223f; border-radius: 6px">
+                <i class="fa-classic fa-solid fa-tachograph-digital me-2"></i>Admin Dashboard
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Stat Cards Banner Across Bottom -->
+        <div class="position-absolute bottom-0 start-50 translate-middle-x w-100 px-3 pb-3 d-none d-md-block"
+          style="z-index: 2">
+          <div class="container row g-2 justify-content-center">
+            <div class="col-md-3 col-6">
+              <div
+                class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center">
+                <div class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px">
+                  <img src="../images/icons/Fov Icon/pound-coin.png" class="me-2" style="width: 40px; height: 40px;">
+                </div>
+                <div>
+                  <div class="fw-bold fs-5 lh-1" style="color: #11223f">
+                    £6000 +
+                  </div>
+                  <small style="font-size: 1rem">Awarded in Grants</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+              <div
+                class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center">
+                <div class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px">
+                  <img src="../images/icons/Fov Icon/hospitals.png" class="me-2" style="width: 40px; height: 40px;">
+                </div>
+                <div>
+                  <div class="fw-bold fs-5 lh-1" style="color: #11223f">
+                    140 +
+                  </div>
+                  <small style="font-size: 1rem">Hospitals Supported</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+              <div
+                class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center">
+                <div class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px">
+                  <img src="../images/icons/Fov Icon/partnership-handshake.png" class="me-2"
+                    style="width: 40px; height: 40px;">
+                </div>
+                <div>
+                  <div class="fw-bold fs-5 lh-1" style="color: #11223f">10 +</div>
+                  <small style="font-size: 1rem">Years of Partnership</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+              <div
+                class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center">
+                <div class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px">
+                  <img src="../images/icons/Fov Icon/india-outline.png" class="me-2" style="width: 40px; height: 40px;">
+                </div>
+                <div>
+                  <div class="fw-bold fs-5 lh-1" style="color: #11223f">
+                    15 states
+                  </div>
+                  <small style="font-size: 1rem">Across India</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="px-3 pb-3 d-md-none" style="z-index: 2">
+    <div class="container-fluid px-0">
+      <div class="row g-2 justify-content-center">
+
+        <div class="col-md-3 col-6 d-flex">
+          <div
+            class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center w-100 h-100">
+            <div
+              class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width: 36px; height: 36px">
+              <img src="../images/icons/Fov Icon/pound-coin.png"
+                style="width: 32px; height: 32px; object-fit: contain;">
+            </div>
+            <div class="overflow-hidden">
+              <div class="fw-bold fs-5 lh-1 text-nowrap" style="color: #11223f">£6000 +</div>
+              <small class="text-muted d-block " style="font-size: 0.8rem;">Awarded in Grants</small>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-6 d-flex">
+          <div
+            class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center w-100 h-100">
+            <div
+              class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width: 36px; height: 36px">
+              <img src="../images/icons/Fov Icon/hospitals.png" style="width: 32px; height: 32px; object-fit: contain;">
+            </div>
+            <div class="overflow-hidden">
+              <div class="fw-bold fs-5 lh-1 text-nowrap" style="color: #11223f">140 +</div>
+              <small class="text-muted d-block " style="font-size: 0.8rem;">Hospitals Supported</small>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-6 d-flex">
+          <div
+            class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center w-100 h-100">
+            <div
+              class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width: 36px; height: 36px">
+              <img src="../images/icons/Fov Icon/partnership-handshake.png"
+                style="width: 32px; height: 32px; object-fit: contain;">
+            </div>
+            <div class="overflow-hidden">
+              <div class="fw-bold fs-5 lh-1 text-nowrap" style="color: #11223f">10 +</div>
+              <small class="text-muted d-block " style="font-size: 0.8rem;">Years of Partnership</small>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-6 d-flex">
+          <div
+            class="bg-white bg-opacity-75 backdrop-blur rounded-3 p-2 px-3 border border-light shadow-sm d-flex align-items-center w-100 h-100">
+            <div
+              class="rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center flex-shrink-0"
+              style="width: 36px; height: 36px">
+              <img src="../images/icons/Fov Icon/india-outline.png"
+                style="width: 32px; height: 32px; object-fit: contain;">
+            </div>
+            <div class="overflow-hidden">
+              <div class="fw-bold fs-5 lh-1 text-nowrap" style="color: #11223f">15 states</div>
+              <small class="text-muted d-block " style="font-size: 0.8rem;">Across India</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Section Header: Funding at a glance -->
+  <div class="text-center my-5 position-relative">
+    <div class="d-flex align-items-center justify-content-center gap-3">
+      <hr class="flex-grow-1" style="
+            border-color: #11223f;
+            opacity: 1;
+            max-width: 200px;
+            border-width: 4px;
+          " />
+      <h3 class="fw-bold mb-0" style="color: #11223f; font-family: serif">
+        Funding at a glance
+      </h3>
+      <hr class="flex-grow-1" style="
+            border-color: #11223f;
+            opacity: 1;
+            max-width: 200px;
+            border-width: 4px;
+          " />
+    </div>
+  </div>
+
+
+  <!-- Info Cards Row -->
+  <section class="container">
+    <div class="row g-4 justify-content-center">
+      <!-- Card 1 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="card bg-light h-100 border-0 shadow-sm text-center p-4 pt-5 position-relative rounded-3">
+          <div
+            class="position-absolute top-0 start-50 translate-middle rounded-circle p-3 text-white d-flex align-items-center justify-content-center shadow-sm"
+            style="width: 50px; height: 50px">
+            <img src="../images/icons/Fov Icon/pound-coin.png" class="me-2" style="width: 70px; height: 70px;">
+          </div>
+          <h6 class="fw-bold text-uppercase mt-2 mb-2" style="letter-spacing: 0.5px; font-size: 1rem; color: #11223f">
+            Available Funding
+          </h6>
+          <p class="small">Up to £12,000 <br> for one-off grants (approx 14 lakhs)</p>
+          <p class="text-muted small mb-0">Up to £20,000 (approx 20 lakhs) <br> over 3 years for ongoing programme
+            grants</p>
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-lg-3 col-md-6">
+        <div
+          class="card h-100 border border-secondary border-opacity-25 shadow-sm text-center p-4 pt-5 position-relative bg-white rounded-3">
+          <div
+            class="position-absolute top-0 start-50 translate-middle rounded-circle p-3 text-white d-flex align-items-center justify-content-center shadow-sm"
+            style="width: 50px; height: 50px">
+            <img src="../images/icons/Fov Icon/hospitals.png" class="me-2" style="width: 70px; height: 70px;">
+          </div>
+          <h6 class="fw-bold text-uppercase mt-2 mb-2" style="letter-spacing: 0.5px; font-size: 1rem; color: #11223f">
+            Eligible Applicants
+          </h6>
+          <p class="small">Mission hospitals in the <br>CMC Vellore network</p>
+          <p class="text-muted small mb-0">or formally affiliated with CMC, with valid FCRA registration</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="card bg-light h-100 border-0 shadow-sm text-center p-4 pt-5 position-relative rounded-3">
+          <div
+            class="position-absolute top-0 start-50 translate-middle rounded-circle p-3 text-white d-flex align-items-center justify-content-center shadow-sm"
+            style="width: 50px; height: 50px">
+            <img src="../images/icons/Fov Icon/app cycle.png" class="me-2" style="width: 70px; height: 70px;">
+          </div>
+          <h6 class="fw-bold text-uppercase mt-2 mb-2" style="letter-spacing: 0.5px; font-size: 1rem; color: #11223f">
+            Application Cycle
+          </h6>
+          <p class="small">Reviewed twice yearly</p>
+          <p class="text-muted small mb-0">April and October</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col-lg-3 col-md-6">
+        <div
+          class="card h-100 border border-secondary border-opacity-25 shadow-sm text-center p-4 pt-5 position-relative bg-white rounded-3">
+          <div
+            class="position-absolute top-0 start-50 translate-middle rounded-circle p-3 text-white d-flex align-items-center justify-content-center shadow-sm"
+            style="width: 50px; height: 50px">
+            <img src="../images/icons/Fov Icon/grant-duration.png" class="me-2" style="width: 70px; height: 70px;">
+          </div>
+          <h6 class="fw-bold text-uppercase mt-2 mb-2" style="letter-spacing: 0.5px; font-size: 1rem; color: #11223f">
+            Grant Duration
+          </h6>
+          <p class="small">Up to 12 months <br>for one-off grants</p>
+          <p class="text-muted small mb-0">Upto 3 years for programme grants</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-body-secondary py-5 mt-5">
+    <div class="container">
+      <div class="row g-4">
+        <!-- What We Fund -->
+        <div class="col-lg-9">
+          <h3 class="text-center fw-bold mb-4" style="color: #11223f;">WHAT WE FUND</h3>
+          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/medical-equip.png" class="me-2" style="width: 50px; height: 50px;">
+                <h6>Medical Equipment</h6>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/patient-treatment.png" class="me-2"
+                  style="width: 50px; height: 50px;">
+                <h6>Patient Treatment Support</h6>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/training.png" class="me-2" style="width: 50px; height: 50px;">
+                <h6>Training and Capacity Building</h6>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/infrastructure.png" class="me-2" style="width: 50px; height: 50px;">
+                <h6>Essential Building or Infrastructure works</h6>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/staffing.png" class="me-2" style="width: 50px; height: 50px;">
+                <h6>Pilot Staffing Positions (Max 3 yrs)</h6>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="navy-card">
+                <img src="../images/icons/Fov Icon/environment.png" class="me-2" style="width: 50px; height: 50px;">
+                <h6>Environmental and Sustainability Projects</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- We Do Not Fund -->
+        <div class="col-lg-3">
+          <h3 class="text-center fw-bold mb-4" style="color: #11223f;">
+            <i class="fa-solid fa-xmark me-2 text-danger"></i>WE DO NOT FUND
+          </h3>
+          <div class="not-fund-card">
+            <ul>
+              <li>Retrospective expenses already incurred</li>
+              <li>Routine operational deficits without a sustainability plan</li>
+              <li>Capital projects lacking long-term viability</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blue Decorative Divider Banner -->
+  <div class="blue-divider"></div>
+
+  <!-- ================= SECTION 2: READY TO APPLY & SELECTION CRITERIA ================= -->
+  <section class="container">
+    <div class="row g-4 align-items-center">
+      <!-- Ready to Apply -->
+      <div class="col-lg-4">
+        <h3 class="fw-bold mb-3 border-bottom pb-2 d-inline-block" style="color: #11223f;">
+          Ready to apply?
+        </h3>
+        <ul class="lh-lg ps-3">
+          <li class="mb-2">
+            <strong>Is your hospital within CMC Vellore's mission network</strong>
+            or formally affiliated with CMC Vellore?
+          </li>
+          <li class="mb-2">
+            <strong>Does your hospital hold a valid Foreign Contribution Regulation Act
+              (FCRA) registration?</strong>
+          </li>
+          <li class="mb-2">
+            <strong>Does your hospital demonstrate commitment to ethical medical
+              practice</strong>, safeguarding, and non-discriminatory patient care?
+          </li>
+          <li class="mb-2">
+            Please ensure that the requested grant falls within the scope
+            permitted by FCRA.
+          </li>
+          <li class="mb-2">Please submit proposal, Buildings/equipment checklist correctly.</li>
+        </ul>
+        <div class="text-center">
+          <button class="btn fw-medium" onclick="openModal('formIO', null, ''); loadFOVGrantForm()"
+            style="background-color: #11223f; color: white;"><i class="fa-solid fa-file-lines me-2"></i>Apply for
+            Grant</button>
+        </div>
+      </div>
+
+      <!-- Selection Criteria -->
+      <div class="col-lg-8 m-0">
+        <div class="circle-container">
+
+          <!-- The Heading Centered -->
+          <div class="center-heading-wrap">
+            <h3 class="fw-bold mb-0">Selection Criteria</h3>
+          </div>
+
+          <!-- Item 1 (Top Center) -->
+          <div class="circle-item item-1">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/community.png" alt="Community Impact">
+              </div>
+              <h6 class="fw-bold mb-2">Community Impact</h6>
+              <p class="small mb-0">
+                How the project benefits the poor and marginalised communities.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 2 (Top Right) -->
+          <div class="circle-item item-2">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/sustainability.png" alt="Sustainability">
+              </div>
+              <h6 class="fw-bold mb-2">Sustainability</h6>
+              <p class="small mb-0">
+                Will the project continue beyond the grant period?
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 3 (Bottom Right) -->
+          <div class="circle-item item-3">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/strategic.png" alt="Strategic Alignment">
+              </div>
+              <h6 class="fw-bold mb-2">Strategic Alignment</h6>
+              <p class="small mb-0">
+                Alignment with the vision of Friends of Vellore UK and CMC Vellore.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 4 (Bottom Center) -->
+          <div class="circle-item item-4">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/institutional.png" alt="Institutional Capacity">
+              </div>
+              <h6 class="fw-bold mb-2">Institutional Capacity</h6>
+              <p class="small mb-0">
+                Leadership, staffing and readiness to deliver
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 5 (Bottom Left) -->
+          <div class="circle-item item-5">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/accountability.png" alt="Accountability">
+              </div>
+              <h6 class="fw-bold mb-2">Accountability</h6>
+              <p class="small mb-0">
+                Previous reporting quality and responsible use of funds
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 6 (Top Left) -->
+          <div class="circle-item item-6">
+            <div class="creative-glass-card">
+              <div class="icon-wrap mb-3">
+                <img src="../images/icons/Fov Icon/fair-distribution.png" alt="Fair Distribution">
+              </div>
+              <h6 class="fw-bold mb-2">Fair Distribution</h6>
+              <p class="small mb-0">
+                We aim to support a broad range of hospitals across India
+              </p>
+            </div>
+          </div>
+
+        </div> <!-- End .circle-container -->
+
+        <!-- Disclaimer Text Below -->
+        <p class="text-center">
+          Submission of an application does not guarantee funding. The Board may decline applications or award
+          grants
+          at a lower level than requested due to limited funds and broader allocation across hospitals and
+          regions.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="my-5 opacity-25" />
+
+  <!-- ================= SECTION 3: APPLICATION TIMELINE ================= -->
+  <section class="container my-5 px-4">
+    <h3 class="text-center fw-bold mb-5" style="color: #11223f;">Application Timeline</h3>
+
+    <div class="row g-1 text-center flex-nowrap overflow-auto py-2">
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <img src="../images/icons/Fov Icon/fag.png" class="img-fluid mb-1" style="max-width: 75px; height: auto;"
+          alt="Flag">
+      </div>
+      <!-- Step 1 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/grant-opens.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Grant Opens">
+          <h6 class="fw-bold mb-1 fs-6">Grant Opens</h6>
+          <p class="small text-muted mb-0 lh-sm" style="font-size: 1rem;">Applications invited</p>
+        </div>
+      </div>
+
+      <!-- Divider 1 -->
+      <div class="col-auto d-flex justify-content-center align-items-center px-0">
+        <div class="arrow-divider"><i class="fa-solid fa-arrow-right fs-5"></i></div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/submit-application.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Submit Application">
+          <h6 class="fw-bold mb-1 fs-6">Submit Application</h6>
+          <p class="small text-muted mb-0 lh-sm" style="font-size: 1rem;">Complete and submit online application
+          </p>
+        </div>
+      </div>
+
+      <!-- Divider 2 -->
+      <div class="col-auto d-flex justify-content-center align-items-center px-0">
+        <div class="arrow-divider"><i class="fa-solid fa-arrow-right fs-5"></i></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/board-review.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Board Review">
+          <h6 class="fw-bold mb-1 fs-6">Board Review</h6>
+          <p class="text-muted mb-0 lh-sm" style="font-size: 1rem;">Trustees review proposals</p>
+        </div>
+      </div>
+
+      <!-- Divider 3 -->
+      <div class="col-auto d-flex justify-content-center align-items-center px-0">
+        <div class="arrow-divider"><i class="fa-solid fa-arrow-right fs-5"></i></div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/funding-decision.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Funding Decision">
+          <h6 class="fw-bold mb-1 fs-6">Funding Decision</h6>
+          <p class="text-muted mb-0 lh-sm" style="font-size: 1rem;">Decision announced on portal</p>
+        </div>
+      </div>
+
+      <!-- Divider 4 -->
+      <div class="col-auto d-flex justify-content-center align-items-center px-0">
+        <div class="arrow-divider"><i class="fa-solid fa-arrow-right fs-5"></i></div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/grant-award.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Grant Award">
+          <h6 class="fw-bold mb-1 fs-6">Grant Award</h6>
+          <p class="text-muted mb-0 lh-sm" style="font-size: 1rem;">Funds transferred upon approval</p>
+        </div>
+      </div>
+
+      <!-- Divider 5 -->
+      <div class="col-auto d-flex justify-content-center align-items-center px-0">
+        <div class="arrow-divider"><i class="fa-solid fa-arrow-right fs-5"></i></div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="col-2 col-lg flex-shrink-0" style="min-width: 140px;">
+        <div class="timeline-step">
+          <img src="../images/icons/Fov Icon/progress-report.png" class="img-fluid mb-2"
+            style="max-width: 50px; height: auto;" alt="Progress Report">
+          <h6 class="fw-bold mb-1 fs-6">Progress Report</h6>
+          <p class="text-muted mb-0 lh-sm" style="font-size: 1rem;">Reports at 6 and 12 months</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4: APPLICATION PROCESS & DOCUMENTS ================= -->
+  <section class="bg-light py-5">
+    <div class="container">
+      <h3 class="text-center fw-bold mb-5" style="color: #11223f;">Application Process</h3>
+
+      <div class="row g-4 align-items-start">
+        <!-- Left: Required Documents -->
+        <div class="col-lg-4">
+          <div class="doc-card">
+            <h5 class="fw-bold text-center mb-1" style="color: #11223f;">Required Documents</h5>
+            <div class="text-center mb-3">
+              <span style="
+                display: inline-block;
+                width: 60px;
+                height: 2px;
+                background-color: var(--accent-gold);
+              "></span>
+            </div>
+
+            <div class="doc-item">
+              <div class="d-flex align-items-center">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>FCRA Certificate</span>
+              </div>
+            </div>
+
+            <div class="doc-item">
+              <div class="d-flex align-items-center">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>Supporting Documents and Photos</span>
+              </div>
+            </div>
+
+            <div class="doc-item">
+              <div class="d-flex align-items-center">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>Building/ Equipment Specifications (If applicable)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Flowchart Process -->
+        <div class="col-lg-8">
+          <!-- Top Row Process -->
+          <div class="row g-2 align-items-center justify-content-end mb-3">
+            <div class="col-md-3">
+              <div class="process-box">
+                Add the names of your project coordinators. Ensure all of them
+                have access to CMCVConnect portal
+              </div>
+            </div>
+
+            <div class="col-md-1 text-center d-none d-md-block">
+              <div class="flow-arrow">
+                <i class="fa-solid fa-arrow-right"></i>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="process-box">
+                You can save the application anytime as draft. Upload all
+                necessary documents
+              </div>
+            </div>
+
+            <div class="col-md-1 text-center d-none d-md-block">
+              <div class="flow-arrow">
+                <i class="fa-solid fa-arrow-right"></i>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="process-box">
+                Once you have verified the application, please save and Submit
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row Process (Connected downwards and then left) -->
+          <div class="row g-2 align-items-center justify-content-end">
+            <div class="col-md-4 text-center mb-2 d-none d-md-block">
+              <!-- Down Arrow Connecting Step 3 to Board Review -->
+              <div class="flow-arrow my-1">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2 align-items-center justify-content-end">
+            <div class="col-md-3">
+              <div class="process-box">
+                You will receive intimation by mail/ portal
+              </div>
+            </div>
+
+            <div class="col-md-1 text-center d-none d-md-block">
+              <div class="flow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="process-box">
+                Board will review and may request more information
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row col-md-9 text-center align-items-baseline mt-4 border p-2 rounded mx-auto">
+        <div class="col-md-2">
+          <img src="../images/icons/Fov Icon/contact.png" alt="">
+        </div>
+        <div class="col-md-6">
+          <h5 class="fw-bold">Have questions or need assistance?</h5>
+          <p>Our team is here to help you through the application process.</p>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text">Ms. Bency - <i class="fa-brands fa-square-whatsapp fs-5"
+                  style="color: rgb(38, 213, 108);"></i> 8925396116</p>
+              <p class="card-text">Mr. Abishek - <i class="fa-brands fa-square-whatsapp fs-5"
+                  style="color: rgb(38, 213, 108);"></i> 9789377354</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="text-white p-2 py-4 my-4" style="background-color: #11223f;">
+    <div class="container">
+      <div class="row align-items-center g-3">
+        <div class="col-md-4 text-center">
+          <div class="row align-items-center">
+            <div class="col-md-6 col-6 text-end">
+              <img class="img-fluid rounded"
+                src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_91e1f0f1b93c1bec08e007c1c9f54fe9_Pictures.webp"
+                alt="FOV Logo" style="width: 100px; height: 100px;">
+            </div>
+            <div class="col-md-6 col-6 text-start">
+              <h3 class="fw-bold"><span class="text-tan">F</span>riends<br> <span class="text-tan">O</span>f
+                <br><span class="text-tan">V</span>ellore UK
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h4 class="fw-bold text-center">Why we do what we do</h4>
+          <div class="border rounded p-2 py-4">
+            <p>
+              <i class="fa-solid fa-star"></i>
+              <span>To support healthcare and education in India at CMC Vellore and partner mission
+                hospitals.</span>
+            </p>
+            <p>
+              <i class="fa-solid fa-star"></i>
+              <span>To assist CMC Vellore and partner institutions in maintaining their Christian character and
+                professional standards through financial, professional, networking and prayer support.
+              </span>
+            </p>
+            <p>
+              <i class="fa-solid fa-star"></i>
+              <span>To give special priority to the needs of the poorest and most excluded patients and
+                communities.</span>
+            </p>
+          </div>
+          <div class="text-end mt-2">
+            <a href="https://friendsofvellore.org/" class="btn text-white text-decoration-underline"
+              target="_blank">Visit
+              FOV Website</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

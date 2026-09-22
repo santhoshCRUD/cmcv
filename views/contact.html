@@ -1,0 +1,159 @@
+${data.preLogin ? `
+<div class="container d-flex flex-column align-items-center justify-content-center h-100">
+    <!-- Contact Card -->
+    <div class="bg-white contact-card p-4 rounded-4 shadow-lg mb-4" style="font-style: italic;">
+        <div class="row align-items-center">
+            <!-- Left Side - CMC Logo -->
+            <div class="col-md-5 text-center">
+                <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_4c238c991d260738541f4b1437bf6349_Pictures.png.png"
+                    class="img-fluid contact-logo" alt="CMC Logo" style="width: 300px;">
+            </div>
+
+            <!-- Right Side - Contact Details -->
+            <div class="col-md-7">
+                <h2 class="fw-bold text-dark mb-3">Contact Info</h2>
+                <hr class="w-50 border-secondary mb-3">
+                <div class="fs-5">
+                    <p class="mb-2">
+                        <i class="fa-envelope fas me-2 secondary-color"></i>
+                        <strong>Email:</strong>
+                        <a href="mailto:missionsoffice@cmcvellore.ac.in" class="text-decoration-none text-dark">
+                            missionsoffice@cmcvellore.ac.in
+                        </a>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fa-phone-alt fas me-2 secondary-color"></i>
+                        <strong>Phone:</strong>
+                        <a href="tel:+914162286171" class="text-decoration-none text-dark">
+                            0416-2286117
+                        </a>
+                    </p>
+                    <p>
+                        <i class="fa-map-marker-alt fas me-2 secondary-color"></i>
+                        <strong>Address:</strong>
+                        <span class="text-dark">CMC Vellore - 632007</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+`:''}
+
+${data.postLogin?`
+<div class="container-fluid fadeIn-up d-flex flex-column bg-white">
+    ${data.currPage ? `<i class="bg-opacity-10 fa-arrow-left fas rounded position-absolute start-0 top-0 m-2 fs-2"
+        onclick="${data.currPage}"></i>` : ''}
+
+    <div class="container text-center mt-3">
+        <h4>Mission Hospitals Map</h4>
+        <p>CMC’s mission hospital network comprises around 200 hospitals across the country, primarily serving rural and
+            underserved regions. In many of these areas, these hospitals are the only source of accessible, affordable,
+            and dependable healthcare. The interactive map allows you to view them and identify opportunities to
+            contribute. ${data.role.includes("Missions") ?` Please use the filter option to
+            refine by state, department and manpower needs.`:` `}
+        </p>
+    </div>
+    <!-- Row 1: Search and Filter -->
+    <div class="row justify-content-center mt-2">
+        <div class="col-12 col-md-4 d-flex align-items-center justify-content-between p-2">
+
+            <!-- Search Input -->
+            <div class="search-container position-relative flex-grow-1 me-2">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search..."
+                    oninput="showSuggestions()">
+                <button id="clearSearch" onclick="clearSearch()" class="clear-btn position-absolute end-0 me-2"
+                    style="display: none;">&times;</button>
+                <div class="suggestions position-absolute w-100 bg-white shadow rounded" id="suggestionsBox"
+                    style="display: none;"></div>
+            </div>
+
+            <!-- Combined Filter Dropdown -->
+            <div class="dropdown" data-bs-auto-close="outside">
+                <button class="btn border d-flex align-items-center bg-white" type="button" data-bs-toggle="dropdown">
+                    <i class="fa fa-filter me-2 secondary-color"></i> Filters
+                </button>
+                <div class="dropdown-menu p-2"
+                    style="width: 270px; max-height: 400px; overflow-y: auto; font-size: small; scrollbar-width: thin;">
+                    <div class="accordion" id="filterAccordion">
+                        <!-- State Filter Accordion -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingState">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseState">
+                                    State<span class="arrow-icon ms-auto"><i class="fa fa-chevron-right"></i></span>
+                                </button>
+                            </h3>
+                            <div id="collapseState" class="accordion-collapse collapse"
+                                data-bs-parent="#filterAccordion">
+                                <ul class="accordion-body list-unstyled p-2" id="stateCheckboxList"></ul>
+                            </div>
+                        </div>
+                        ${data.role.includes("Missions") ?`
+                        <!-- Department Filter Accordion -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingDepartment">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDepartment">
+                                    Department<span class="arrow-icon ms-auto"><i
+                                            class="fa fa-chevron-right"></i></span>
+                                </button>
+                            </h3>
+                            <div id="collapseDepartment" class="accordion-collapse collapse"
+                                data-bs-parent="#filterAccordion">
+                                <ul class="accordion-body list-unstyled p-2" id="departmentCheckboxList"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Manpower Filter Accordion -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingManpower">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseManpower">
+                                    Manpower<span class="arrow-icon ms-auto"><i class="fa fa-chevron-right"></i></span>
+                                </button>
+                            </h3>
+                            <div id="collapseManpower" class="accordion-collapse collapse"
+                                data-bs-parent="#filterAccordion">
+                                <ul class="accordion-body list-unstyled p-2" id="manpowerCheckboxList"></ul>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Clear All Filters -->
+                    <div class="text-center mt-3">
+                        <div id="Clearfilters" class="ms-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3: Map and Cards -->
+    <div class="row flex-grow-1 justify-content-center m-0">
+        <div class="col-12 col-md-8 mb-2 p-0">
+            <div id="contactMap" class="w-100 shadow border rounded-3" style="min-height: 300px; height: 70vh;"></div>
+            <!-- Map Legend -->
+            <div class="d-flex justify-content-start align-items-center mt-2 mb-2 ps-2" id="mapLegend"
+                style="font-size: small;">
+                <div class="d-flex align-items-center me-4">
+                    <span class="text-center"><img src="./images/icons/location-icon.png"
+                            style="height: 25px; width: 25px;">Network Hospitals</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="text-center"><img src="./images/icons/pin.png" style="height: 25px; width: 25px;">Non
+                        Network Hospitals</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-md-3 p-0 d-flex flex-column align-items-center">
+            <div id="hospitalCards" class="w-100 overflow-auto rounded-3"
+                style="max-height: 70vh; scrollbar-width: thin;"></div>
+        </div>
+    </div>
+</div>
+`:''}

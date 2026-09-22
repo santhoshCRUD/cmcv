@@ -1,0 +1,31 @@
+{% import 'cards.html' as cardComponent %}
+{% block content %}
+<div class="container-fluid">
+    <div class="border mb-2 mb-md-3 p-2 p-md-4 rounded-2 text-center bg-white fs-4 fw-medium"> Mission mentors</div>
+    {% for row, cards in mentorCards | groupby('row') %}
+    <div class="row" data-row="row-{{ row }}">
+        {% set groupedColumns = cards | groupby('column') %}
+        {% set totalColumns = groupedColumns | length %}
+        {% set widthClass = 'col-md-6' if totalColumns > 1 else 'col-md-12' %}
+        {% for column, colCards in cards | groupby('column') %}
+        <div class="col-12 mb-0 {{widthClass}}" data-column="col-{{ column }}">
+            {% for card in colCards %}
+            {% set bgClass = 'card shadow bg-opacity-10 overflow-hidden' %}
+            <div class="col-12 mb-2 mb-md-4 {{ card.cardWidth }}" data-row-col="card-row{{ row }}-column-{{ column }}">
+                {% if card.type == 'subCards' %}
+                {{cardComponent.subCardComponent(card.data)}}
+                {% elseif card.type === 'headOfOrgInfo' %}
+                {{cardComponent.dataCard(card.data)}}
+                {% else %}
+                {{cardComponent.baseCardComponent(card.type, card.heading, card.data, card.redirect, bgClass,card.icon,card.readMore)}}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+  

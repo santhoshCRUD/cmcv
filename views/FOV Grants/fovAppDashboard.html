@@ -1,0 +1,95 @@
+<div class="patient-workspace container-fluid p-0">
+    <div class="d-flex d-lg-none align-items-center justify-content-between p-3 bg-white border-bottom z-2">
+        <div class="d-flex align-items-center gap-3">
+            <i class="fas fa-arrow-left fs-5 pe-pointer text-black" onclick="loadFovGrantsPage();"
+                style="cursor:pointer"></i>
+            <div>
+                <h6 class="mb-0 fw-bold">Applicant Name</h6>
+                <small class="text-muted">Welcome to FOV Grants Applicant Dashboard</small>
+            </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+            <i class="fas fa-bars me-1"></i> Menu
+        </button>
+    </div>
+
+    <div class="row g-0">
+        <div class="offcanvas-lg offcanvas-start col-lg-3 col-xl-2 border-end bg-white" tabindex="-1"
+            id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+
+            <div class="offcanvas-header d-lg-none border-bottom">
+                <h5 class="offcanvas-title fw-bold" id="sidebarOffcanvasLabel">Navigation</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    data-bs-target="#sidebarOffcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body patient-sidebar p-3 d-flex flex-column h-100">
+                <div class="d-none d-lg-block mb-4">
+                    <i class="fas fa-arrow-left fs-5 pe-pointer text-black mb-3" onclick="loadFovGrantsPage();"
+                        style="cursor:pointer"></i>
+                    <div class="patient-header">
+                        <h5 class="fw-bold mb-1">Applicant Name</h5>
+                        <small class="text-muted">Welcome to FOV Grants Applicant Dashboard</small>
+                    </div>
+                </div>
+
+                <div class="nav flex-column gap-2 w-100">
+                    <button class="btn sidebar-btn text-start w-100 active" data-page="fovAppDetailsPage"
+                        data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
+                        <i class="fas fa-file-lines me-2"></i> Application Details
+                    </button>
+                    <button class="btn sidebar-btn text-start w-100" data-page="fovAppProRepoPage"
+                        data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
+                        <i class="fas fa-file-arrow-down me-2"></i> Project Reports
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-xl-10 bg-body-tertiary p-3 min-vh-100">
+            <div id="fovApplication">
+                <div class="card border-0 shadow-sm rounded-3 min-vh-50">
+                    <div class="card-header rounded-top">
+                        <h5 class="card-title">Applications</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="container-fluid">
+                                <nav class="navbar navbar-light navbar-design">
+                                    <div class="collapse navbar-collapse show">
+                                        <ul class="nav nav-tabs nav-justified" id="fovTabs">
+                                            <li class="active"><a data-toggle="tab" href="#Draft" id="Draft"
+                                                    class="fovAppTab">Draft</a></li>
+                                            <li><a data-toggle="tab" href="#Submitted" id="Submitted"
+                                                    class="fovAppTab">Submitted</a></li>
+                                            <li><a data-toggle="tab" href="#Reproposal" id="Reproposal"
+                                                    class="fovAppTab">Reproposal</a></li>
+                                            <li><a data-toggle="tab" href="#Approved" id="Approved"
+                                                    class="fovAppTab">Approved by Msn & FOV</a></li>
+                                            <li><a data-toggle="tab" href="#Rejected" id="Rejected"
+                                                    class="fovAppTab">Rejected by Msn & FOV</a></li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                                <div class="overflow-auto p-3 ">
+                                    <table id="fovApplicationTable" class="table table-striped border w-100">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fovAppProRepo" class="d-none">
+                <div class="card border-0 shadow-sm rounded-3 min-vh-50">
+                    <div class="card-header bg-nc text-white rounded-top">
+                        <h5 class="card-title">Project Reports</h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

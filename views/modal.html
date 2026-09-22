@@ -1,0 +1,573 @@
+{% import 'cards.html' as cardComponent %}
+<div
+  class="w-100 h-100 d-flex justify-content-center position-relative z-3 py-2 bg-dark bg-opacity-50 overflow-x-hidden overflow-y-auto">
+  ${data.content?.msgModal? `
+  <img
+    src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_a4d1b50eb124d3d2e7365190f7b2928d_Pictures.gif"
+    alt="">
+  ` : '' }
+  <div class="modal fade show d-block bg-dark bg-opacity-50 align-content-center">
+    <div
+      class="modal-dialog ${ (data.content?.grantsList?.length || data.content?.mmsApprovedPanel || data.content?.eBook ) ? 'modal-xl' : (data.content?.confirmModal || data.content?.msgModal || data.content?.selectListModal ) ? ' ' : (data.content?.fovAppDocs ) ? 'modal-xxl' : 'modal-lg' }">
+      ${data.content.avatarCard
+      ? `<div class="d-flex justify-content-center" style="pointer-events: auto;">${data.content.renderedCard}</div>`
+
+      : `
+      <div class="modal-content" id="modalContent">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            ${data.content?.title || ''}
+            ${data.content?.request ? `
+            ${data.content.request.missionHospitalName
+            ? 'Request from ' + data.content.request.missionHospitalName
+            : 'Request for ' + data.content.request.specialization}
+            ` : ''}
+          </h5>
+          <button type="button" class="btn-close" onclick="closeModal()"></button>
+        </div>
+        <div class="modal-body d-flex flex-column">
+          <div class="position-relative">
+            <!-- Comming Soon -->
+            ${data.content?.cmgSoon ? `
+            Coming Soon
+            `:''}
+
+            <!-- news modal -->
+            ${data.content?.image ? `
+            <div id="navbar" class="d-flex justify-content-end gap-1 mb-1 d-none d-md-flex">
+              <button type="button" onclick="imageZoomIn()" class="btn secondary-bg-color text-white"><i
+                  class="fa-solid fa-magnifying-glass-plus"></i></button>
+              <button type="button" onclick="imageZoomOut()" class="btn secondary-bg-color text-white"><i
+                  class="fa-solid fa-magnifying-glass-minus"></i></button>
+            </div>
+            <img class="z-1 rounded-3 border-bottom pb-3" src="${data.content.image}" id="modalImage" width="100%"
+              alt="Image">` : ''}
+            ${data.content?.subTitle ? `
+            <p class="${!data.content?.subTitle ? 'd-none' : ''}" style="overflow-wrap: break-word;">
+              ${data.content.subTitle }</p>`:''}
+            ${data.content?.description ? `<p style="overflow-wrap: break-word;">${data.content.description}</p>` :
+            ''}
+          </div>
+
+          <!-- manpower request modal Table -->
+          ${data.content?.table ? `
+          <div class=" d-flex flex-column flex-md-row flex-wrap ">
+            ${data.content?.request.tableData}
+          </div>`:''}
+
+          <!-- mission request modal -->
+          ${data.content?.chat ? `
+          <div class=" d-flex flex-column flex-md-row flex-wrap justify-content-between mb-3">
+            <div class="col-12 col-lg-5">${data.content?.request.tableData}</div>
+            <div class="vr border-end "></div>
+            <hr>
+            <div id="msgCont" class="col-12 col-lg-6 px-2 d-flex flex-column" style="max-height: 60vh; overflow: auto">
+              ${data.content?.request.chatTable}</div>
+          </div>
+          <div class="input-group">
+            <input id="chatInput" type="text" class="form-control" placeholder="Type message and hit [Enter] to send."
+              autocomplete="off"
+              onkeydown="if(event.key === 'Enter'){ chatupdate($('#chatInput').val(),'${data.content.request.reqId}');this.value = '';}">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-warning"
+                onclick="chatupdate($('#chatInput').val(),'${data.content.request.reqId}');$('#chatInput').val('')">Send</button>
+            </div>
+          </div>
+          `:''}
+
+          ${data.content.confirmModal ? `
+          <div class="confirmModal">
+            <div class="confirmModal-content">
+              <div class="confirmModal-body">
+                <p>${data.content.message}</p>
+              </div>
+              <div class="confirmModal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="finalConfirmBtn">${data.content.btnText}</button>
+              </div>
+            </div>
+          </div>
+          `:''}
+
+          ${data.content.msgModal ? `
+          <div class="msgModal">
+            <div class="msgModal-content">
+              <div class="msgModal-body">
+                <p>🎉 ${data.content.msgModal.message}</p>
+              </div>
+              <div class="msgModal-footer">
+                <button type="button" class="btn btn-primary"
+                  onclick="closeModal()">${data.content.msgModal.btnText}</button>
+              </div>
+            </div>
+          </div>
+          `:''}
+
+          ${data.content.contactList ?`
+          <div class="content d-flex flex-column justify-content-start ps-1 ps-md-5">
+            ${data.content.contactList.map(item => `
+            <div class="text-start mb-2">
+              <i class="fa-solid fs-5 me-2 ${item.iconImage} secondary-color"></i>
+              <span class="align-top connect-text-darkblue">${item.detail}</span>
+            </div>
+            `).join('')}
+          </div>
+          `:''}
+          ${data.content.cardData ? `
+          {{ cardComponent.baseCardComponent(
+          'cardList',
+          'Mission Office Members',
+          data,
+          '', 'card','${ data.content.cardData.icon}'
+          ) }}
+          ` : ''}
+
+          <!-- Form IO -->
+          ${data.content.formIO ? `
+          <div class="" id="missionsFormIOAdd"></div>
+          <div class="" id="fileStatus"></div>
+          <div class="" id="downloadLinks"></div>
+          <div class="" id="genFormIO"></div>
+          `:''}
+
+          ${data.content.infoModal ? `
+          <div class="${data.content.infoModal.className}">
+            ${data.content.infoModal.title ? `<h4 class="text-center fw-bold mb-3">${data.content.infoModal.title}</h4>
+            `:' '}
+            ${data.content.infoModal.imgUrl ? `<img src="${data.content.infoModal.imgUrl}" alt="Image"
+              class="img-fluid rounded-3">
+            `:' '}
+            ${data.content.infoModal.endText ? `<p class="text-end fw-bold mt-3">${data.content.infoModal.endText}</p>
+            `:' '}
+            <div class="mt-3"> ${data.content.infoModal.data}</div>
+          </div>
+          `:''}
+
+          ${data.content.grandRoundsCal ? `
+          <div class="" id="grandRoundsCal"></div>`: ' '}
+
+          <!-- pdf viewer -->
+          ${data.content.pdf ?`<div class="mb-3 mt-0 text-center">
+            <button class="btn bg-transparent" onclick="zoomOut()"><i
+                class="fa-solid fa-magnifying-glass-minus fs-1 secondary-color"></i></button>
+            <button class="btn bg-transparent" onclick="zoomIn()"><i
+                class="fa-solid fa-magnifying-glass-plus fs-1 secondary-color"></i></button>
+            <button class="btn bg-transparent" onclick="onPrevPage()"><i
+                class="fa-solid fa-circle-arrow-left fs-1 secondary-color"></i></button>
+            <button class="btn bg-transparent" onclick="onNextPage()"><i
+                class="fa-solid fa-circle-arrow-right fs-1 secondary-color"></i></button>
+            <button class="btn bg-transparent" onclick="downloadPdf()"><i
+                class="fa-solid fa-download fs-1 secondary-color"></i></button>
+            <span class="mt-2"><span>Page <input type="number" id="page_num" min="1" style="width: 50px;" value="1"
+                  onkeydown="handlePageInput(event)" />
+              </span> of <span id="page_count"></span></span></span>
+          </div>
+          <div class="text-center" id="pdfViewer" style="min-height: calc(100vh - 210px); overflow-y: auto;"></div> `
+          :''}
+
+          <!-- audio viewer -->
+          ${data.content.audio ?`<div>
+            <h5>${data.content.audioData.title}</h5>
+            <iframe width="100%" scrolling="no" frameborder="no" allow="autoplay"
+              src="https://w.soundcloud.com/player/?url=${data.content.audioData.url}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+            </iframe>
+            <div>
+              <a href="${data.content.audioData.url}" title="${data.content.audioData.author}" target="_blank"
+                style="color: #cccccc; text-decoration: none">${data.content.audioData.author}</a>
+            </div>
+            <hr>
+          </div>`:''}
+
+          <!-- video viewer -->
+          ${data.content.video ?`<div>
+            <h5>${data.content.videoData.title}</h5>
+            <iframe width="100%" style="min-height: 400px;" scrolling="no" src="${ data.content.videoData.url}"
+              title="${ data.content.videoData.title }" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+            <div>
+              <a href="${ data.content.videoData.url}" title="${ data.content.videoData.author }" target="_blank"
+                style="color: #cccccc; text-decoration: none">${ data.content.videoData.author }</a>
+            </div>
+          </div>`:''}
+
+
+          <!-- mentor mentee Instructions -->
+          ${data.content.instructions ?`
+          <div>${data.content.instructionData}</div>
+          `:''}
+
+          <!-- gallery Image -->
+          ${data.content.gallery ? `
+          <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              ${data.content.imageTable}
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>` :''}
+          <!--weekly Manna-->
+          ${data.content.weeklyManna ?`
+          <div class="container mt-4">
+            <div class="row">
+              <div class="col-md-5 text-center">
+                <img
+                  src="${data.content.weMannaData.uploadImage?.url || '.https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'}"
+                  alt="Weekly Manna" class="img-fluid rounded-2">
+              </div>
+              <div class="col-md-7">
+                <p class="text-end"><strong>Date:</strong> ${data.content.weMannaData.formattedDate}</p>
+                <div class="mt-5">
+                  <h3 class="text-center text-md-start"> ${data.content.weMannaData.devotionalTitle}</h3>
+                  <p><strong>Key Verse:</strong> ${data.content.weMannaData.devotionalKeyVerse}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <p><strong>Description:</strong></p>
+              <p style="white-space: pre-line;">${data.content.weMannaData.devotionalDescription}</p>
+              <hr class="my-4" style="width: 50%; margin: 0px auto;">
+              <p><strong>Prayer Points:</strong></p>
+              <p style="white-space: pre-line; margin-left: 35px;">${data.content.weMannaData.prayerpoints}</p>
+            </div>
+          </div>
+
+          `:''}
+
+          ${data.content.researchNews? `
+          <img class="z-1 rounded-3 border-bottom pb-3" src="${data.content.researchNews.image}">
+          <h5 class="text-center"> ${data.content.researchNews.newsTitle}</h5>
+          <div class="d-flex justify-content-end">
+            <a href="${data.content.researchNews.link}" target="_blank" class="btn  btn-sm bg-primary-subtle mb-3">Visit
+              site</a>
+          </div>
+          <p style="white-space: pre-line;">${data.content.researchNews.newsBody}</p>
+          `: ''}
+
+
+          ${data.content.timeline ? `
+          <div id="timelineCarousel" class="carousel slide mb-3" data-bs-ride="false">
+            <div class="carousel-inner">
+              ${data.content.timeline.modalPicture?.map((img, i) => `
+              <div class="carousel-item ${i === 0 ? " active" : "" }">
+                <img src="${img.data?.url || img.url || " placeholder.jpg"}"
+                  class="d-block w-100 rounded-3 border-bottom pb-3" style="object-fit:cover;"
+                  alt="Timeline Image ${i + 1}">
+              </div>
+              `).join("")}
+            </div>
+            ${data.content.timeline.modalPicture?.length > 1 ? `
+            <button class="carousel-control-prev" type="button" data-bs-target="#timelineCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"
+                style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%;"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#timelineCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon"
+                style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%;"></span>
+            </button>
+            ` : ""}
+          </div>
+
+          <h5 class="text-center">${data.content.timeline.pictureCaption || ""}</h5>
+          <p style="white-space: pre-line;">${data.content.timeline.summary || ""}</p>
+          <p style="white-space: pre-line;">${data.content.timeline.listOfPublicationsFurtherReading || ""}</p>
+          ` : ""}
+
+          ${data.content.grandRounds ?`
+          <img class="z-1 rounded-3 border-bottom pb-3" src="${data.content.grandRounds.poster.url}">
+          <div class="d-flex justify-content-start">
+            <a href="${data.content.grandRounds.zoomLink}" target="_blank"
+              class="btn  btn-sm bg-primary-subtle mb-3">Register</a>
+          </div>
+
+          `:''}
+
+          ${data.content.grantsList ?`
+          <div class="overflow-auto scrollBar-thin">
+            <table id="grantsListTable" class="display"></table>
+          </div>
+          `:''}
+
+          ${data.content.grantsAwardee ?`
+          <div class="container mt-4">
+            <div class="row align-items-center">
+              <div class="col-md-4 text-center">
+                <img
+                  src="${data.content.grantsAwardee.awardeePhoto[0]?.url || '.https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'}"
+                  alt="Awardee Profile" class="img-fluid rounded-2">
+              </div>
+              <div class="col-md-8">
+                <p class="text-end"><strong>Year Awarded:</strong> ${data.content.grantsAwardee.yearAwarded}</p>
+                <div class="mt-5">
+                  <h5 class="text-center text-md-start"> ${data.content.grantsAwardee.titleOfResearchProject}</h5>
+                  <p class="fw-bold fst-italic">- ${data.content.grantsAwardee.facultyName.profile?.name || "Awardee"}
+                  </p>
+
+                </div>
+              </div>
+            </div>
+            <p>${data.content.grantsAwardee.summaryOfResearchProposal}</p>
+          </div>
+          `:''}
+
+          ${data.content.connectOneOnOne ?`
+          <img
+            src="${'https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_a49525242f6ec522c99ddefb0d163dd2_Pictures.png' || '.https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'}"
+            alt="Connect Flyer" class="img-fluid rounded-2">
+          `:''}
+
+          ${data.content.preMmsVisits ? `
+          <div class="container mt-4">
+            <div class="row align-items-center">
+              <div class="col-md-6 d-flex flex-column align-items-center">
+                <img
+                  onclick="openModal('image', ' ', '${data.content.preMmsVisits.imageUrl || data.content.preMmsVisits.uploadPicture[0].data.url }')"
+                  src="${data.content.preMmsVisits.imageUrl || data.content.preMmsVisits.uploadPicture[0].data.url || '.https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'}"
+                  alt="Picture" class="img-fluid rounded-2" style="max-height: 200px; object-fit: cover;">
+                <h4 class="fw-bold text-center mt-3"> Dr. ${data.content.preMmsVisits.name || data.content.name || ""}
+                </h4>
+
+              </div>
+
+              <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
+                <h5 class="fw-bold mb-1">
+                  ${data?.content?.preMmsVisits?.missionHospital?.missionHospitalName ||
+                  data?.content?.preMmsVisits?.missionHospitalName || ''}
+                </h5>
+                <p class="text-muted mb-0">
+                  <strong>Date:</strong>
+                  ${data?.content?.preMmsVisits?.formattedDate?.fromDate ||
+                  data?.content?.preMmsVisits?.fromDateFormatted || '-'}
+                  -
+                  ${data?.content?.preMmsVisits?.formattedDate?.toDate || data?.content?.preMmsVisits?.toDateFormatted
+                  || '-'}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="mt-3" style="line-height: 1.6; text-align: justify;">
+                  ${ data.content.preMmsVisits.finalReportForPublicaions || data.content.preMmsVisits.briefReport ||
+                  data.content.summary || ""}
+                </p>
+              </div>
+            </div>
+          </div>
+          ` : ''}
+
+          ${data.content.whatsNew ? `
+          <div class="whats-new-container">
+            ${data.content.whatsNew.link ?
+            `<a href="${data.content.whatsNew.link}" target="_blank" rel="noopener noreferrer">` : ''}
+              <img class="z-1 rounded-3 border-bottom pb-3 w-100" src="${data.content.whatsNew.image}"
+                alt="${data.content.whatsNew.title}">
+              ${data.content.whatsNew.link ? `</a>` : ''}
+
+            <h5 class="text-center mt-2">${data.content.whatsNew.title}</h5>
+
+            <div class="d-flex justify-content-end">
+              ${data.content.whatsNew.link ? `
+              <a href="${data.content.whatsNew.link}" target="_blank" rel="noopener noreferrer"
+                class="btn btn-sm bg-primary-subtle mb-3">
+                Learn more
+              </a>` : ''}
+            </div>
+
+            <p style="white-space: pre-line;">${data.content.whatsNew.description}</p>
+          </div>
+          ` : ''}
+
+          ${data.content.grandRoundSchedule? `
+          <div class="fs-md-5">
+            <p style="white-space: pre-line;">${data.content.grandRoundSchedule.dateTime}</p>
+          </div>
+          `: ''}
+
+
+          ${data?.content?.mmsApprovedPanel ?
+
+          (Array.isArray(data.content.mmsApprovedPanel)
+          ? data.content.mmsApprovedPanel
+          : [data.content.mmsApprovedPanel]
+          ).map(visit => `
+
+          <div class="mms-approved-card border rounded-4 overflow-hidden mb-4">
+
+            <div class="row g-0">
+
+              <!-- Left Panel -->
+              <div
+                class="col-lg-5 col-md-5 col-12 bg-primarycolor mms-left-panel d-flex flex-column justify-content-center align-items-center text-white p-4 pt-0">
+                <div class="visit-star">
+                  <div class="visit-text text-center">Your<br>Upcoming<br>Visit</div>
+                </div>
+                <img src="${visit.hospitalImg || ''}" alt="Hospital Image"
+                  class="mms-hospital-img img-fluid rounded-3 shadow-sm" style="max-width: 75%">
+              </div>
+
+              <!-- Right Panel -->
+              <div class="col-lg-7 col-md-7 col-12 bg-white p-4 p-md-5">
+
+                <h3 class="fw-bold mb-4" style="font-family: 'Playfair Display', serif;">
+                  Dear Dr. ${visit.name || ''}
+                </h3>
+
+                <div class="info-row">
+                  <p>Your Mandatory Mission Service visit is</p>
+                  <span class="info-badge approved
+                                ${visit.status === 'Approved' ? 'bg-success text-white' : 
+                visit.status === 'Submitted' ? 'bg-warning text-dark' : 'bg-secondary'}">
+                    ${visit.status || '-'}
+                  </span>
+                </div>
+
+                <div class="info-row">
+                  <p>Date of Visit</p>
+                  <span class="info-badge">
+                    ${visit.from || '-'} -
+                    ${visit.to || '-'}
+                  </span>
+                </div>
+
+                <div class="info-row">
+                  <p>Hospital chosen for MMS</p>
+                  <span class="info-badge">
+                    ${visit.hospitalName || '-'}
+                  </span>
+                </div>
+
+                ${
+                String(visit.status).toLowerCase() === "approved"
+                ? `
+                <div class="d-flex justify-content-end align-items-center gap-3 mb-4 flex-wrap">
+                  <span class="fs-md-4 fw-medium">
+                    Please upload your indemnity certificate here
+                  </span>
+                  <button class="mms-btn bg-primarycolor" onclick="openModal('formIO', null, 'Application');
+                  loadMmsApplication('indemnityCertificatePanel', '${visit._id}')">
+                    Upload
+                  </button>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center gap-3 flex-wrap">
+                  <span class="fs-md-4 fw-medium blink">
+                    Please update the status of your visit by clicking here...
+                  </span>
+                  <button class="mms-btn bg-primarycolor" onclick="openModal('formIO', null, 'Application');
+                  loadMmsApplication('visitStatusPanel', '${visit._id}')">
+                    Update Visit
+                  </button>
+                </div>
+                `
+                : `
+                <p class="text-center fs-5 fw-medium mt-5">
+                  Your application is submitted and is being processed.
+                </p>
+                `
+                }
+
+              </div>
+            </div>
+          </div>
+
+          `).join("")
+
+          : ''}
+
+          ${data?.content?.conclaveSummary ? `
+          <div class="bg-primarycolor rounded fs-md-5 p-3 text-white" style="font-family: sans-serif;">
+            <h4 class="text-center fw-bold">${data.content.conclaveSummary.title}</h4>
+            <p style="white-space: pre-line;">${data.content.conclaveSummary.content}</p>
+          </div>
+          `: ''}
+
+          ${data?.content?.eBook ?`
+
+          <div id="loading">Loading PDF and initializing flipbook...</div>
+          <div id="controls" style="display: none;" class="d-flex justify-content-center align-items-center gap-2 mb-2">
+            <button id="prev-btn" class="btn btn-primary"><i class="fa-solid fa-caret-left"></i></button>
+            <button id="next-btn" class="btn btn-primary"><i class="fa-solid fa-caret-right"></i></button>
+
+            <button id="zoom-out" class="btn btn-primary"><i class="fa-solid fa-minus"></i></button>
+            <span id="zoom-label">100%</span>
+            <button id="zoom-in" class="btn btn-primary"><i class="fa-solid fa-plus"></i></button>
+
+            <button id="zoom-reset" class="btn btn-primary">Reset</button>
+
+            <button id="fullscreen-btn" class="btn btn-primary"><i class="fa-solid fa-expand"></i></button>
+
+            <span id="page-num"></span>
+          </div>
+
+          <div id="viewer" class="flipbook-wrapper">
+            <div id="flipbook" class="foo">
+            </div>
+          </div>
+          `: ' '}
+
+          <!-- select list modal -->
+
+          ${data?.content?.selectListModal ? `
+          <div class="row align-items-end" id="selectListModal">
+            <div class="col-md-8">
+              <div class="form-group">
+                <select id="modalDropdown" class="form-control">
+                  <option value="">${data.content.selectListModal.title || 'Select'}</option>
+
+                  ${data.content.selectListModal.list.map(item => {
+                  // Helper to safely get nested values (e.g., "cmcDepartments.name")
+                  const getNestedValue = (obj, path) => {
+                  if (!path) return '';
+                  return path.split('.').reduce((acc, part) => acc && acc[part], obj) || '';
+                  };
+
+                  const value = item[data.content.selectListModal.valueField] || '';
+                  const field1 = item[data.content.selectListModal.displayField] || '';
+                  const field2 = getNestedValue(item, data.content.selectListModal.displayField2);
+
+                  return `
+                  <option value="${value}">
+                    ${field1} ${field2 ? `- ${field2}` : ''}
+                  </option>
+                  `;
+                  }).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary d-none addBtn">Allot</button>
+            </div>
+          </div>
+          ` : ' '}
+
+          ${data.content?.fovAppDocs ? `
+          <div class="" id="fovAppDocs"></div>
+          <div id="fovAppComment">
+          </div>
+          <div id="fovNewComment" class="fov-editor"></div>
+
+          ` : ''}
+
+          ${data.content.samAppDocs ? `
+<div class="" id="samAppDocs"></div>
+<div class="" id="samAppComment"></div>
+` : ''}
+
+        </div>
+      </div>`
+      }
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,494 @@
+<div class="container-fluid py-4 px-0" style="background:#e7dfd4;">
+    <h2 class="text-center p-3 rounded connect-primary-border fs-md-1" style="font-size: 50px;
+            margin: 0; background-image: url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_23e47d08d1a6ff0dfb5f9b54189d735a_Pictures.jpg'); background-repeat: no-repeat;
+            background-size: cover; background-position: center; color: transparent;
+            background-clip: text; -webkit-background-clip: text; font-family: fantasy;">
+        Mandatory Missions Service </h2>
+
+    <section id="aboutMms">
+
+        <div class="d-flex justify-content-end mb-4" style="position: relative; right: 10%;">
+            <button class="btn btn-dark rounded-pill px-4 fs-md-5"
+                onclick="document.querySelector('#faq-section').scrollIntoView({ behavior: 'smooth' });">
+                FAQ
+            </button>
+        </div>
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-6 col-md-3 text-center mb-4 mb-md-0 mx-auto">
+                    <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_05342fdcf032ad476b022c764cdde6d3_Pictures.jpg"
+                        class="img-fluid rounded shadow" style="max-height: 400px; width: 100%; object-fit: cover;"
+                        alt="Service Image 1" />
+                </div>
+
+                <div class="col-12 col-md-6 px-lg-5">
+                    <p class="fw-bold text-center"
+                        style="font-size: clamp(0.9rem, 2.5vw, 1.1rem); line-height: 1.6; color: #ada05d;">
+                        The Christian Medical College, Vellore is governed by the Christian Medical College Vellore
+                        Association—representing over 50 diverse Indian churches and organizations. With more than
+                        164 hospitals in our network, many serve as lifelines for rural communities in need.
+                    </p>
+
+                    <p class="mt-3"
+                        style="font-size: clamp(0.85rem, 2vw, 1rem); line-height: 1.5; color: #6f5f40; text-align: justify;">
+                        Our institution stands as a powerful symbol of hope and healing. At the heart of our mission is
+                        our commitment to nurture compassionate healthcare professionals devoted to serving others in
+                        the spirit of Christ. To ensure our faculty are equipped to tackle the pressing healthcare
+                        challenges faced by our nation, and to immerse themselves in the invaluable resources and
+                        practices found within our mission hospitals, those seeking confirmation or promotion to
+                        professorship are encouraged to dedicate at least two weeks of service within this vital
+                        network. This transformative experience is not just a requirement but a profound opportunity for
+                        growth, ensuring our faculty remain deeply connected to our mission and the communities we serve
+                        with unwavering dedication.
+                    </p>
+                </div>
+
+                <div class="col-6 col-md-3 text-center mt-4 mt-md-0 mx-auto">
+                    <img src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_cb590cfd47ad18cbff24c74a6c16b14f_Pictures.jpg"
+                        class="img-fluid rounded shadow" style="max-height: 400px; width: 100%; object-fit: cover;"
+                        alt="Service Image 2" />
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="container-fluid mb-5" style="background:#e7dfd4;">
+        <div class="container">
+            <div id="mmsApprovedPanel">
+            </div>
+        </div>
+    </div>
+    <h5 class="container fw-bold text-center mb-2">
+        "Greatness begins where comfort ends"
+    </h5>
+    <p class="container text-center mb-5">
+        Will you go to a state where only a few have gone and make a
+        difference?
+    </p>
+    <div class="container text-center mb-5">
+        <canvas id="mmsUsersChart" style="width:100%;max-width:100%; height: 400px; max-height:100%"></canvas>
+    </div>
+
+    <h3 class="text-center mb-5">Mission Hospital Visit Approval & Logistics Flow​</h3>
+    <div class="flow-container mb-5">
+
+        <!-- STEP 1 -->
+        <div class="flow-step">
+            <div class="step-number">
+                <div class="step-circle">1</div>
+            </div>
+            <div class="step-card">
+                <div class="step-header">
+                    <h3>Planning and Selection</h3>
+                    <span><i class="fa-solid fa-angle-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <ul>
+                        <li><strong>Obtain Initial Permission:</strong> Secure authorization from the Head of
+                            Department/Unit (HOD/HOU) to pursue the visit.​</li>
+                        <li><strong>Identify Eligible Hospitals :</strong> Use the interactive map provided below to
+                            view the
+                            list of eligible Mission Hospitals for MMS.</li>
+                        <li><strong>Consult and Choose Hospital:</strong> Select a Mission Hospital with guidance from
+                            the Missions Office. The team responds to queries within 1 week. </li>
+                        <li><strong>Contact the Hospital Administrator:</strong> Connect with the Mission Hospital
+                            administrator to confirm scheduling and coordinate visit logistics.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="flow-step">
+            <div class="step-number">
+                <div class="step-circle">2</div>
+            </div>
+            <div class="step-card">
+                <div class="step-header">
+                    <h3>Application and Approval</h3>
+                    <span><i class="fa-solid fa-angle-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <ul>
+                        <li><strong>Submit Application Form:</strong> Fill out and submit the official Application form
+                            on the portal, after assessing the needs of the hospital, to make the best use of your
+                            visit.</li>
+                        <li><strong>Application Review & Decision:</strong> The Missions Office will approve/reject the
+                            application within a week.</li>
+                        <li><strong>Monitor Application Status:</strong> Monitor the application status in the portal
+                            for updates.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="flow-step">
+            <div class="step-number">
+                <div class="step-circle">3</div>
+            </div>
+            <div class="step-card">
+                <div class="step-header">
+                    <h3>Upcoming Visit Preparation</h3>
+                    <span><i class="fa-solid fa-angle-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <ul>
+                        <li><strong>Apply for Deputation Leave:</strong> Upon receiving the Missions Office approval
+                            email, request deputation leave from the Associate Director (Medical)</li>
+                        <li><strong> Issuing of Indemnity Certificate </strong> The MS Office will issue the Indemnity
+                            Certificate.</li>
+                        <li><strong>Final Visit Notification:</strong> The Missions Office will email you, your HOD, and
+                            the Mission Hospital confirming the approved visit.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="flow-step">
+            <div class="step-number">
+                <div class="step-circle">4</div>
+            </div>
+            <div class="step-card">
+                <div class="step-header">
+                    <h3>Visit and Post-Visit Report</h3>
+                    <span><i class="fa-solid fa-angle-down"></i></span>
+                </div>
+                <div class="step-content">
+                    <ul>
+                        <li><strong>Hospital Information:</strong> Please collect information about the hospital that
+                            may be useful for others who are visiting the same hospital.</li>
+                        <li><strong>Update Visit Details:</strong> Please ensure that you update your visit details in
+                            the form to record your visit for confirmation/promotion purposes.</li>
+                        <li><strong>Incorporate Insights:</strong> Use information from these visits into teaching and
+                            research to give future medical professionals a country-wide healthcare perspective.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid py-md-5 mb-5" style="background:#0f101c;">
+        <div class="row justify-content-center mx-0 g-4">
+
+            <div class="col-md-2 p-4 p-md-0">
+                <h5 class="mb-4 text-center text-tan">
+                    <div class="deptName"></div>
+                </h5>
+                <div id="preMmsVisits"></div>
+            </div>
+
+            <div class="col-md-6 text-white text-center px-md-5">
+                <h2 class="m-0 text-tan userName" style="font-family: 'Playfair Display', serif;"></h2>
+                <p class="mt-3" style="line-height:1.6; font-size: 18px;">
+                    If this is your first time applying for MMS, kindly go through the "Mission Hospital Visit Approval
+                    and Logistics Flow" outlined above before clicking here to submit your application.
+                </p>
+                <div class="text-center my-4">
+                    <button class="btn px-4 py-2 fw-medium secondary-bg-color text-white"
+                        onclick="openModal('formIO', null, ''); loadMmsApplication();">Apply Here</button>
+                    <div id="draftMsg"></div>
+                </div>
+                <div id="userMmsVisits" class="row justify-content-center"></div>
+            </div>
+
+            <div class="col-md-2 text-center">
+                <h5 class="text-tan">Other Visits<br><small> (Within The Past Three Years)</small></h5>
+                <p class="border p-2 bg-light rounded" style="line-height: 1.6;"> Please submit supporting documentation
+                    for any Mission Hospital visits (camps, SHPs, or departmental activities) to be considered for
+                    Mandatory Mission Service.</p>
+                <button class="btn text-white secondary-bg-color fw-medium"
+                    onclick="openModal('formIO', null, 'Application'); loadMmsOtherVisitApp();">Enter Other
+                    Visit Details</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row justify-content-center g-4 mb-5 me-0">
+
+        <div class="col-12 text-center">
+            <h2>Mission Network Hospital</h2>
+            <p class="text-center" style="font-weight: 500; line-height: 2;">
+                Explore our interactive map and discover inspiring opportunities where your department's services are
+                needed.
+            </p>
+        </div>
+
+        <div class="col-12 col-md-8">
+            <div id="msnHsptlMap" class="w-100 shadow border rounded-3" style="height: 70vh;"></div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div id="hospitalCards" class="w-100 overflow-auto rounded-3 p-2"
+                style="max-height: 70vh; scrollbar-width: thin;">
+            </div>
+        </div>
+    </div>
+
+    <section class="faq-section" id="faq-section">
+        <div class="container">
+            <h2 class="faq-title">Some Frequently Asked Questions</h2>
+
+
+            <div class="d-flex justify-content-end mb-4">
+                <button class="btn btn-dark rounded-pill px-4 py-2 fs-md-5"
+                    onclick="document.querySelector('#aboutMms').scrollIntoView({ behavior: 'smooth' });">
+                    Back to Top
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">1</div>
+                        <h5 class="fw-bold">How would I benefit?</h5>
+                        <ul>
+                            <li>You will receive an orientation to the country's healthcare needs.</li>
+                            <li>You will learn to work in a resource-limited facility.</li>
+                            <li>You will also learn healthcare practices in mission hospitals.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">2</div>
+                        <h5 class="fw-bold">When is it mandatory?</h5>
+                        <ul>
+                            <li>When you are due for confirmation.</li>
+                            <li>When you are due for promotion to professorship.</li>
+                            <li>Those completing their service obligation can finish the MMS with HOD consultation
+                                during their service obligation period before confirmation.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">3</div>
+                        <h5 class="fw-bold">How many days should I go?</h5>
+                        <ul>
+                            <li>You should preferably go for a single visit of 2 weeks.</li>
+                            <li>Or two visits of one week each.</li>
+                            <li>Visit to mission hospitals undertaken within three years prior to confirmation and
+                                promotion can also be considered. (See FAQ 10)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">4</div>
+                        <h5 class="fw-bold">How can it be done?</h5>
+                        <ul>
+                            <li>Accompanying medical students on a Secondary Hospital Program (SHP).</li>
+                            <li>If the SHP duration is less than two weeks, the remaining duration needs to be
+                                compensated by staying back in the MH for the required number of days post SHP or by
+                                going for another SHP, or by visiting a Mission Hospital later.
+                            </li>
+                            <li>If you are not interested in going for SHP, you can directly apply for a service posting
+                                in the application above based on the hospital's needs.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">5</div>
+                        <h5 class="fw-bold">Choosing a Hospital</h5>
+                        <ul>
+                            <li>MHs in areas of need and/or those that have requested HR may be highlighted in the list.
+                            </li>
+                            <li>Please note that mission hospitals in capital cities in South India / those located near
+                                CMC, are excluded from this list, as the broad objective of MMP is for the faculty to
+                                understand the health and socio-economic dynamics of various regions in our country.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">6</div>
+                        <h5 class="fw-bold">Pre-clinical and Para-Clinical Departments</h5>
+                        <ul>
+                            <li>Pre-clinical and para-clinical department faculty should preferably go to centers with
+                                teaching needs, as many Mission Hospitals run Nursing and Allied Health courses.</li>
+                            <li> Para-clinical faculty may visit MHs for:
+                                - Lab upgradation
+                                - Staff training (based on MH’s existing needs and facilities)</li>
+                            <li> Accompanying students for SHP also counts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">7</div>
+                        <h5 class="fw-bold">Subspecialty</h5>
+                        <ul>
+                            <li>If there aren’t enough hospitals with the subspecialty, a Mission Hospital with the
+                                respective broad specialty may be chosen. </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">8</div>
+                        <h5 class="fw-bold">Travel</h5>
+                        <ul>
+                            <li>Travel as per eligibility. </li>
+                            <li>If air travel is inevitable, taxi travel (at institutional rates) from residence to the
+                                nearest
+                                airport may be claimed.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">9</div>
+                        <h5 class="fw-bold">Food</h5>
+                        <ul>
+                            <li>Faculty can enroll in the campus mess/food service, with charges reimbursed upon bill
+                                submission.</li>
+                            <li>If on-campus food isn't available, Z-city rates will apply to all faculty.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">10</div>
+                        <h5 class="fw-bold">Previous Mission Hospital camps/visits</h5>
+                        <ul>
+                            <li>Service in camps and activities organized by your department at a mission hospital can
+                                count toward your MMS credits. (those which happened within the last 3 years).</li>
+                            <li>However, you must spend at least 7 of the required 14 days working directly at a mission
+                                hospital.</li>
+                            <li>If you have participated in such work, you must submit a report detailing your
+                                contributions and visit dates, signed by the HOD or HOU.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">11</div>
+                        <h5 class="fw-bold">Spouse and Children</h5>
+                        <ul>
+                            <li>Spouses and Children are welcome to join, but please inform the mission hospital in
+                                advance for arrangements.</li>
+                            <li>If the spouse is a clinician or healthcare worker, they can discuss their involvement
+                                with the hospital.</li>
+                            <li>Expenses for children and the spouse (if not visiting for MMP or at the hospital's
+                                request) are the faculty's responsibility.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">12</div>
+                        <h5 class="fw-bold">Hospitals in the MMS list</h5>
+                        <ul>
+                            <li>Mission Hospitals in CMC’s network that have requested specialty assistance or have
+                                potential for service delivery and educational activities are listed.</li>
+                            <li>To maintain equitable faculty distribution, the list is updated periodically,
+                                temporarily removing hospitals that have been previously visited until others are
+                                visited.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">13</div>
+                        <h5 class="fw-bold">Accommodation</h5>
+                        <ul>
+                            <li>Faculty members are encouraged to stay on campus at the mission hospital when possible.
+                                Some hospitals may provide free accommodation.
+                                If there is a charge, faculty must submit the actual bill for reimbursement.</li>
+                            <li>If on-campus accommodation is not available, the hospital will arrange off-campus
+                                housing. Reimbursement will
+                                follow Z-city rates for all eligible faculty members, requiring submission of the actual
+                                bill.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">14</div>
+                        <h5 class="fw-bold">Communicating your visit to the hospital</h5>
+                        <ul>
+                            <li>While official correspondence from CMC communicates the dates and details of the faculty
+                                visiting the mission hospital, to ensure optimal logistics, the faculty should contact
+                                the Mission hospital's nodal person prior to the visit.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">15</div>
+                        <h5 class="fw-bold">What about leave?</h5>
+                        <ul>
+                            <li>Deputation leave can be used for visits, including travel days.</li>
+                            <li>However, travel days are excluded from MMS, but Sundays within the service period can be
+                                counted.</li>
+                            <li>Annual leave can cover any remaining days if there aren’t enough deputation leaves.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">16</div>
+                        <h5 class="fw-bold">What about Expenses?</h5>
+                        <ul>
+                            <li>Expenses will be met from the respective department's special fund.</li>
+                            <li>For SHP, travel expenses will be reimbursed according to SHP guidelines informed by the
+                                principal’s office.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">17</div>
+                        <h5 class="fw-bold">Completion Report from Mission Hospital</h5>
+                        <ul>
+                            <li>The Mission Hospital is to provide the Missions department with a certificate of
+                                completion for your posting, detailing the work done by you during MMS and the dates of
+                                your visit.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="faq-card h-100">
+                        <div class="faq-number">18</div>
+                        <h5 class="fw-bold">Updating Visit details on returning</h5>
+                        <ul>
+                            <li>Please update your visit on the portal with details of clinical/teaching/training work
+                                undertaken by you during the posting, observations about healthcare practices at the MH,
+                                and suggestions for changes.</li>
+                            <li>Possible collaborations between your department and the MH in the future, as well as any
+                                other relevant input, may also be included.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

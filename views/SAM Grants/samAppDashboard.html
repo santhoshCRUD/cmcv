@@ -1,0 +1,114 @@
+<!-- SAM Project — Applicant Dashboard
+     Mirrors the structure/classes of FOV Grants' fovAppDashboard.html
+     (same .patient-workspace / offcanvas sidebar / nav-tabs / DataTable
+     pattern) so it behaves identically for users already familiar with
+     that module — only the labels, tabs and colors are SAM's own. -->
+<div class="patient-workspace container-fluid p-0">
+    <div class="d-flex d-lg-none align-items-center justify-content-between p-3 bg-white border-bottom z-2">
+        <div class="d-flex align-items-center gap-3">
+            <i class="fas fa-arrow-left fs-5 pe-pointer text-black" onclick="navigateTo('samGrants', null, ['loadSamGrantsPage']);"
+                style="cursor:pointer"></i>
+            <div>
+                <h6 class="mb-0 fw-bold">Applicant Name</h6>
+                <small class="text-muted">Welcome to SAM Project Applicant Dashboard</small>
+            </div>
+        </div>
+        <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#samSidebarOffcanvas" aria-controls="samSidebarOffcanvas">
+            <i class="fas fa-bars me-1"></i> Menu
+        </button>
+    </div>
+
+    <div class="row g-0">
+        <div class="offcanvas-lg offcanvas-start col-lg-3 col-xl-2 border-end bg-white" tabindex="-1"
+            id="samSidebarOffcanvas" aria-labelledby="samSidebarOffcanvasLabel">
+
+            <div class="offcanvas-header d-lg-none border-bottom">
+                <h5 class="offcanvas-title fw-bold" id="samSidebarOffcanvasLabel">Navigation</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    data-bs-target="#samSidebarOffcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body patient-sidebar p-3 d-flex flex-column h-100">
+                <div class="d-none d-lg-block mb-4">
+                    <i class="fas fa-arrow-left fs-5 pe-pointer text-black mb-3" onclick="navigateTo('samGrants', null, ['loadSamGrantsPage']);"
+                        style="cursor:pointer"></i>
+                    <div class="patient-header">
+                        <h5 class="fw-bold mb-1">Applicant Name</h5>
+                        <small class="text-muted">Welcome to SAM Project Applicant Dashboard</small>
+                    </div>
+                </div>
+
+                <div class="nav flex-column gap-2 w-100">
+                    <button class="btn sidebar-btn text-start w-100 active sam-sidebar-btn" data-page="samAppDetailsPage"
+                        data-bs-dismiss="offcanvas" data-bs-target="#samSidebarOffcanvas">
+                        <i class="fas fa-file-lines me-2"></i> Application Details
+                    </button>
+                    <button class="btn sidebar-btn text-start w-100 sam-sidebar-btn" data-page="samAppReportPage"
+                        data-bs-dismiss="offcanvas" data-bs-target="#samSidebarOffcanvas">
+                        <i class="fas fa-file-circle-check me-2"></i> Training Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-xl-10 bg-body-tertiary p-3 min-vh-100">
+            <div id="samApplication">
+                <div class="card border-0 shadow-sm rounded-3 min-vh-50">
+                    <div class="card-header rounded-top sam-card-header">
+                        <h5 class="card-title mb-0">My Application</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="container-fluid">
+                                <nav class="navbar navbar-light navbar-design">
+                                    <div class="collapse navbar-collapse show">
+                                        <ul class="nav nav-tabs nav-justified" id="samTabs">
+                                            <li class="active"><a data-toggle="tab" href="#Draft" id="Draft"
+                                                    class="samAppTab">Draft</a></li>
+                                            <li><a data-toggle="tab" href="#Submitted" id="Submitted"
+                                                    class="samAppTab">Submitted</a></li>
+                                            <li><a data-toggle="tab" href="#UnderReview" id="UnderReview"
+                                                    class="samAppTab">Under Review</a></li>
+                                            <li><a data-toggle="tab" href="#Approved" id="Approved"
+                                                    class="samAppTab">Approved</a></li>
+                                            <li><a data-toggle="tab" href="#Rejected" id="Rejected"
+                                                    class="samAppTab">Rejected</a></li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                                <div class="overflow-auto p-3">
+                                    <table id="samApplicationTable" class="table table-striped border w-100">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="samAppReport" class="d-none">
+                <div class="card border-0 shadow-sm rounded-3 min-vh-50">
+                    <div class="card-header rounded-top sam-card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Training Report</h5>
+                        <button type="button" class="btn sam-btn-gold btn-sm" id="samNewReportBtn"
+                            onclick="openModal('formIO', null, ''); loadSamTrainingReportForm();">
+                            <i class="fa-solid fa-file-pen me-1"></i> Submit Training Report
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small mb-3">
+                            Available once your application has been Approved and your training at CMC Vellore is
+                            complete. Reports you've already sent in are listed below.
+                        </p>
+                        <div class="overflow-auto p-3">
+                            <table id="samReportTable" class="table table-striped border w-100">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

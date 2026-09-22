@@ -1,0 +1,49 @@
+<div class="d-flex flex-wrap bg-white">
+    <div class="text-center p-1 p-md-2 col-12  bg-light position-relative">
+        <i class="bg-opacity-10 fa-arrow-left fas fs-2 rounded position-absolute start-0 top-0 m-3"
+            onclick="${data.redirectFun}"></i>
+        <p class="fw-semibold fs-5 mb-1">CMC Connect News</p>
+        <p class=" fw-medium ">Welcome to CMC News page. A place to connect people </p>
+    </div>
+    <div class="col-12 p-2 position-relative" style="background-color: transparent;">
+        <input type="text" id="allNewsFilterInput" placeholder="Search for news.."
+            class="w-100 rounded-pill border ps-3 p-1">
+        <button id="closeSearch" class="btn fs-3 top-0 end-0 position-absolute pe-3 p-0"
+            style="display: none;">&times;</button>
+    </div>
+
+    <div id="searchFilter" class="w-100 px-3" style="transition: all ease-in-out 0.5s;"></div>
+    <div id="mainNews" class="w-100 d-flex flex-wrap">
+        <div class="col-12 col-lg-4 px-3 py-2">
+            <span class="fs-5 ">Latest News</span>
+            <div class="shadow border rounded-3 overflow-hidden pe-pointer"
+                onclick="openModal('News','${data.latestNews._id}')">
+                <img class="w-100" src="${data.latestNews.newsImage}" style="max-height: 80vh;" alt=""
+                    onerror="this.onerror=null; this.src='https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'">
+                <div class="px-2 py-3">
+                    <h5>${data.latestNews.newsTitle}</h5>
+                    <p class="mb-1 fw-semibold fs-5">${data.latestNews.newsSubTitle}</p>
+                    <p class="mb-1 text-end text-secondary">${moment(data.latestNews.newsDate).format('MMMM Do, YYYY')}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5 px-3 py-2">
+            <span class="fs-5 ">Top News</span>
+            ${data.topNews}
+        </div>
+
+        <div class="col-12 col-lg-3 px-3 py-2">
+            <span class="fs-5 ">Recent News</span>
+            ${data.recentNews}
+        </div>
+    </div>
+
+    <div class="col-12 px-3 mt-2" id="archive">
+        <span class="fs-5 mt-2">Archived news</span>
+        ${data.archiveNews}
+        <div id="archiveNews"></div>
+    </div>
+</div>

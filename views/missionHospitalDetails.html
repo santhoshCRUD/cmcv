@@ -1,0 +1,41 @@
+{% import 'cards.html' as cardComponent %}
+<div class="container-fluid p-2 p-md-5 bg-white ">
+  <div class="position-relative">
+    <h2 class="text-center mb-5 p-4 rounded msnHospTitle connect-primary-border">{{missionHospital}}</h2>
+    <i class="bg-opacity-10 fa-arrow-left fas fs-2 rounded position-absolute start-0 top-0 m-3" onclick="{{redirect}}"></i>
+  </div>
+  
+     
+   <!-- Tab content below tabs view -->
+  
+  <div class="tab-content container-fluid p-3 bg-white rounded" style="overflow-x: auto;">
+    <div class="tab-pane fade show active" id="msnUsrHome" role="tabpanel" aria-labelledby="msnUsrHome-tab">
+      
+      {% for row, cards in homeCards | groupby('row') %}
+    <div class="row" data-row="row-{{ row }}">
+      {% set groupedColumns = cards | groupby('column') %}
+      {% set totalColumns = groupedColumns | length %}
+      {% set widthClass = 'col-md-6' if totalColumns > 1 else 'col-md-12' %}
+      {% for column, colCards in cards | groupby('column') %}
+      <div class="col-12 mb-0 {{widthClass}}" data-column="col-{{ column }}">
+        {% for card in colCards %}
+        {% set bgClass = 'card shadow bg-opacity-10 overflow-hidden rounded-3' %}
+        <div class="col-12 mb-2 mb-md-4 {{ card.cardWidth }}" data-row-col="card-row{{ row }}-column-{{ column }}">
+          {% if card.type == 'subCards' %}
+          {{cardComponent.subCardComponent(card.data)}}
+          {% else %}
+          {{cardComponent.baseCardComponent(card.type, card.heading, card.data, card.redirect, bgClass, card.icon)}}
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %} 
+           
+
+    </div>
+
+  </div>
+   
+  </div>

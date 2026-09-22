@@ -1,0 +1,208 @@
+${data.preLogin ? `
+<header class="p-2 position-relative bg-primarycolor">
+  <div class="d-flex flex-row align-items-center justify-content-between">
+
+    <!-- Left spacer -->
+    <div></div>
+
+    <!-- Mobile / Tablet Logo -->
+    <div class="d-block d-lg-none">
+      <div class="d-flex align-items-center text-white fs-4 trirong-bold">
+        <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="40px" />
+        &nbsp; CMC<span class="primarycolor" style="font-size:40px; line-height: 1;">V</span>CONNECT
+      </div>
+    </div>
+
+    <!-- Desktop Logo -->
+    <div class="d-none d-lg-block" style="width: 860px;">
+      <div class="d-flex flex-column align-items-start text-white trirong-bold"
+        style="position: relative; left: 150px;">
+
+        <div class="d-flex align-items-center fs-1" style="position: relative; left: 140px;">
+          <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="80px" />
+          &nbsp; CMC<span class="primarycolor" style="font-size:64px; line-height: 1;">V</span>CONNECT
+        </div>
+        <p class="fst-italic w-100 text-end" style="position: absolute; bottom: -18px; right: 55px; font-size: 14px;">
+          Connect, Communicate, Collaborate </p>
+
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <!-- Mobile 3-dot -->
+      <button class="btn me-2 d-md-none d-inline" data-bs-toggle="offcanvas" data-bs-target="#offcanvas3dot"
+        aria-controls="offcanvas3dot">
+        <img src="/images/3dot.svg" alt="3dot" height="20px">
+      </button>
+
+      <!-- Desktop links -->
+      <div class="d-none d-md-inline">
+
+        <!-- Login Dropdown -->
+        <div class="btn-group dropdown">
+          <button class="btn dropdown-toggle bg-white" id="loginDropdown" aria-expanded="false">
+            Login
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+            <li>
+              <button class="btn dropdown-item" onclick="msSignIn(event)" title="For Microsoft Ids ending in 
+              ***@cmcvellore.ac.in 
+              ***@cmcvellore.edu.in 
+              ***@cmcv.in">
+                <div class="btn border" style="font-size: 15px;">
+                  <img class="me-2" src="./images/microsoft.png" alt="microsoft login" height="20" width="20">
+                  Sign in
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="btn dropdown-item" id="googleSignInButton"
+                title="For Google Ids ending in ***@cmc.edu.in"></button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sign Up -->
+        <button class="btn text-light ms-2 secondary-bg-color"
+          onclick="openModal('formIO', null, 'Request Login Form'), requestLoginForm()">Sign Up</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- offscreen -->
+  <div class="offcanvas offcanvas-start bg-transparent border-0" tabindex="-1" id="offcanvas3dot"
+    aria-labelledby="offcanvas3dot">
+
+    <div class="offcanvas-header justify-content-end">
+      <button type="button" class="btn-close bg-white shadow-sm" data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+
+    <div class="m-3 bg-white rounded-4 h-100 overflow-hidden d-flex flex-column shadow">
+      <ul class="list-group list-group-flush fs-6">
+
+        <li
+          class="list-group-item list-group-item-action py-3 pe-pointer d-flex align-items-center justify-content-center"
+          onclick="msSignIn(event)" data-bs-dismiss="offcanvas">
+          <img src="./images/microsoft.png" alt="microsoft login" height="22" width="22" class="me-2">
+          <span class="fw-semibold">Sign In</span>
+        </li>
+
+        <li class="list-group-item d-flex justify-content-center" id="googleSignInButtonmb">
+        </li>
+
+        <li
+          class="list-group-item list-group-item-action py-3 pe-pointer fw-bold text-white text-center border-0 secondary-bg-color"
+          onclick="openModal('formIO', null, 'Request Login Form'); requestLoginForm();" data-bs-dismiss="offcanvas">
+          <i class="fa-solid fa-pen-to-square"></i> Sign Up
+        </li>
+
+      </ul>
+    </div>
+
+    </ul>
+    <div class=" text-center mb-2">Version ${data.version}
+    </div>
+  </div>
+</header>
+`:''}
+
+${data.postLogin?`
+<nav class="navbar navbar-expand-lg px-1 roboto-regular bg-primarycolor">
+  <div class="position-absolute w-100">
+  </div>
+  <div class="d-lg-none d-flex align-items-center">
+    <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="50px" />
+    <span class=" d-flex align-items-center text-white text-center fw-bold trirong-bold"><span>&nbsp; CMC</span><span
+        class="primarycolor fs-1 ">V</span><span>CONNECT</span> </span>
+  </div>
+  <button class="btn me-2 d-lg-none d-inline" data-bs-toggle="offcanvas" data-bs-target="#navbarText"
+    aria-controls="navbarText">
+    <img src="/images/3dot.svg" alt="3dot" height="20px">
+  </button>
+  <div class="collapse navbar-nav navbar-collapse justify-content-around" data-bs-auto-close="false">
+    <ul class="navbar-nav">
+      <a class="nav-link text-white btn" id="home" data-tab="home"
+        onclick="renderPostHomePage(); activateTab('home');">Home</a>
+      {{councilBtn}}
+      <!-- {{missionBtn}} -->
+      ${data.mentorBtn}
+      ${data.menteeBtn}
+      ${data.msnVisitBtn}
+      ${data.serviceCommitmentBtn}
+      ${data.fovGrantsBtn}
+      <!-- <a class="nav-link text-white" aria-current="page" id="missions" data-target="missions" onclick="activateTab(this);renderMissionsPage()">Missions</a>
+              <a class="nav-link text-white" aria-current="page" id="council" data-target="council" onclick="activateTab(this);renderCouncilPage()">Council</a> -->
+    </ul>
+    <div class="d-none d-lg-block">
+      <div class="d-flex align-items-center text-white fs-1 trirong-bold">
+        <img src="/images/cmc-logo-white-transparent.png" class="img-fluid" width="50px" />
+        &nbsp; CMC<span class="primarycolor" style="font-size:64px; line-height: 1;">V</span>CONNECT
+      </div>
+    </div>
+    <ul class="navbar-nav align-items-center">
+      ${data.guideBtn}
+      <a class="nav-link text-white btn" id="contactus" data-tab="contactus"
+        onclick="openModal('contactMissions')">Contact us</a>
+
+      <a class="nav-link dropdown-toggle" type="button" data-toggle="dropdown" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <img class="profile_icon rounded-circle" src="{{userImg}}" alt="" style="width: 35px; height: 35px;">
+      </a>
+      <div class="dropdown-menu mb-2 p-3 mx-auto" style="left: auto; width: max-content; ">
+        <div class=" d-flex flex-column align-items-center">
+          <img class="profile_icon rounded-circle mb-2" src="{{userImg}}" style="width: 65px; height: 65px;">
+          <hr class="border-top border-secondary my-auto w-100 mb-2" />
+          <span class="connect-text-darkblue"> {{userName}}</span>
+          <span class="secondary-color">{{email}}</span>
+        </div>
+      </div>
+      </li>
+      <li>
+        <button class="btn btn-light align-text-top" type="button" id="{{ email + ':' + loginType }}"
+          onclick="msAndGoogleSignOut(event)">
+          <img
+            src="${data.loginType === 'google' ? '../images/google.svg' : data.loginType === 'microsoft' ? '../images/microsoft.svg' : ''}"
+            class="img-fluid" width="20px" />
+          Sign Out</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- offscreen -->
+<div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="navbarText" aria-labelledby="offcanvas3dot">
+  <div class="offcanvas-header">
+    <span class="d-flex">
+      <img class="rounded-circle border me-2" src="{{userImg}}" alt="" width="30" height="30">
+      <span class="my-auto border rounded-pill px-3 fw-semibold fs-6">{{name}}</span>
+    </span>
+    <button type="button" class="btn-close bg-white  fs-6" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="m-3 h-100 overflow-hidden d-flex flex-column justify-content-between">
+    <ul class=" fs-5 list-group">
+      <li class="list-group-item border-bottom border-top-0 border-start-0 border-end-0 active" data-bs-toggle="tab"
+        data-tab="home" onclick="activateTab('home');renderPostHomePage()" data-bs-dismiss="offcanvas">
+        <a class="nav-link btn">Home</a>
+      </li>
+      ${data.councilBtnmb}
+      ${data.mentorBtnmb}
+      ${data.menteeBtnmb}
+      ${data.msnVisitBtnmb}
+      ${data.serviceCommitmentBtnmb}
+      ${data.fovGrantsBtnmb}
+      ${data.guideBtnmb}
+       ${data.guideBtnmb}
+      <li class="text-center mt-2">
+        <button class="btn btn-light align-text-top" type="button" id="{{ email + ':' + loginType }}"
+          onclick="msAndGoogleSignOut(event)">
+          <img
+            src="${data.loginType === 'google' ? '../images/google.svg' : data.loginType === 'microsoft' ? '../images/microsoft.svg' : ''}"
+            class="img-fluid" width="20px" />
+          Sign Out</button>
+      </li>
+    </ul>
+    <div class="text-center">Version ${data.version}</div>
+  </div>
+
+</div>
+`:''}

@@ -1,0 +1,46 @@
+<div class="container-fluid position-relative bg-white py-4">
+    <h2 class="text-center bg-white p-3 rounded msnHospTitle connect-primary-border"> Grants</h2>
+    <i class="bg-opacity-10 fa-arrow-left fas rounded position-absolute start-0 fs-2 top-0 m-3"
+        onclick="navigateTo('research', {}, ['loadResearchCards', []]);"></i>
+
+    <div class="row mt-4">
+
+        <!-- Grant Awardee Panel -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow rounded-3 h-100">
+                <div class="card-header text-center text-black">
+                    <h4 class="mb-0">Awardee</h4>
+                </div>
+                <div class="card-body" style="min-height: 400px; font-family: math;">
+                    <div class="row mb-3 justify-content-between">
+                        <div class="col-md-4">
+                            <input type="text" id="awardeeSearch" class="form-control border border-black p-1"
+                                placeholder="Search by Name, Department">
+                        </div>
+                        <div class="col-md-2">
+                            <select id="awardeeYearFilter" class="form-select">
+                                <option value="">All Years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="grantsAwardeeList" class="overflow-x-hidden scrollBar-thin" style="max-height: 620px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grants Panel -->
+        <div class="col-md-6 mb-4">
+            <div class="Grant-card-3 position-relative">
+                <div class="position-relative align-items-end d-flex shadow rounded-3"
+                    onclick="openModal('grantsList', '', 'Grants List' ); loadGrantsListTable();"
+                    style="height: 370px;">
+                    <div class="px-2 pb-3">
+                        <h4 class="fs-md-1 ms-3" style="font-size: xxx-large;"></h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

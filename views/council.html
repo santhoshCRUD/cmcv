@@ -1,0 +1,30 @@
+{% import 'cards.html' as cardComponent %}
+{% block content %}
+<!-- <main class="fadeIn-up" > -->
+    <div class="container-fluid pt-3 fadeIn-up bg-white">
+    {% for row, cards in profileCards | groupby('row') %}
+    <div class="row" data-row="row-{{ row }}">
+        {% for card in cards %}
+        {% set bgClass = 'card shadow bg-opacity-10 overflow-hidden' %}
+        <div class="col-12 mb-2 mb-md-4 {{ card.cardWidth }}" data-row-col="card-row{{ row }}-column-{{ column }}">
+            {#card-row{{ row }}-column-{{ column }}#}
+            {% if card.type === 'headOfOrgInfo' %}
+            {{cardComponent.dataCard(card.data)}}
+            {% elseif card.type === 'cmcDocs' %}
+            {{cardComponent.documentCard(card.data)}}
+            {% elseif card.type === 'cmcOrg' %}
+            {{cardComponent.orgCard(card.data,'border-0')}}
+            {% elseif card.type !== 'cardTable' %}
+            {{cardComponent.baseCardComponent(card.type, card.heading, card.data, card.redirect,bgClass, card.icon)}}
+            {% elseif card.type == 'cardTable' and card.data.length>0 %}
+            {{cardComponent.baseCardComponent(card.type, card.heading, card.data, card.redirect,bgClass, card.icon)}}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    </div>
+<!-- </main> -->
+{% endblock %}
+
+

@@ -1,0 +1,607 @@
+<!-- ============ Inline styles for the new bits below ============
+     No SCSS file was supplied alongside this page, so these are kept
+     scoped to the classes introduced here rather than touching the
+     stylesheet blind. Move these into the real SCSS whenever that file
+     is available — nothing here depends on being inline.
+     (Partition / bottom-requests styling now lives in the real SCSS
+     file — see the accompanying equipment-styles.css. It's not
+     page-specific glue like the bits below, it's a general layout
+     pattern, so it belongs with the rest of the section styles.) -->
+<style>
+  /* Full width / full height — the page previously sat in whatever
+     narrower max-width .wrap carried from the site's own stylesheet
+     (not supplied to us), and the outer container only guaranteed
+     500px, so a short list left blank space below it. */
+  .eqp-page{ width:100%; min-height:100vh; box-sizing:border-box; }
+  .eqp-page .wrap{ max-width:100% !important; width:100%; box-sizing:border-box; }
+  .eqp-page .view{ min-height:100%; }
+
+  /* ============ Hero carousel + overlaid intro ============
+     Bigger than before, and the intro text sits on top of the rotating
+     photo (fixed in place — only the background changes) instead of its
+     own box above the carousel. */
+  .eqp-page .hero-carousel.hero-intro-merged{ position:relative; height:600px; min-height:420px; overflow:hidden; border-radius:16px; }
+  .eqp-page .hero-carousel.hero-intro-merged .hc-track{ height:100%; }
+  .eqp-page .hero-carousel.hero-intro-merged .hc-slide{ height:100%; }
+  .eqp-page .hero-carousel.hero-intro-merged .hc-slide img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .eqp-page .hero-intro-overlay{
+    position:absolute; inset:0; z-index:5; display:flex; flex-direction:column; justify-content:center;
+    padding:40px 48px; max-width:640px; pointer-events:none;
+    background:linear-gradient(90deg, rgba(20,48,79,0.90) 0%, rgba(20,48,79,0.68) 55%, rgba(20,48,79,0.05) 100%);
+  }
+  .eqp-page .hero-intro-overlay .page-intro-icon{ width:44px; height:44px; margin-bottom:14px; color:#D9A62B; }
+  .eqp-page .hero-intro-overlay .page-intro-icon .icon{ width:100%; height:100%; }
+  .eqp-page .hero-intro-overlay .page-intro-kicker{ color:#D9A62B; font-weight:700; letter-spacing:.04em; text-transform:uppercase; font-size:12.5px; margin:0 0 8px; }
+  .eqp-page .hero-intro-overlay .page-intro-lead{ font-size:clamp(24px,3.4vw,38px); font-weight:800; margin:0 0 12px; color:#fff; line-height:1.15; }
+  .eqp-page .hero-intro-overlay .page-intro-sub{ font-size:14.5px; line-height:1.5; color:rgba(255,255,255,0.92); margin:0; max-width:520px; }
+  @media (max-width:800px){
+    .eqp-page .hero-carousel.hero-intro-merged{ height:300px; min-height:300px; }
+    .eqp-page .hero-intro-overlay{ padding:22px 20px; max-width:none; background:linear-gradient(180deg, rgba(20,48,79,0.15) 0%, rgba(20,48,79,0.88) 78%); }
+  }
+
+  /* ============ Compact request cards (My Requests / Requests) ============
+     A wide multi-column table row doesn't fit a narrow side-by-side
+     column, so each request renders as a small stacked card instead. */
+  .eqp-page .req-card-list{ display:flex; flex-direction:column; gap:10px; }
+  .eqp-page .req-card{ border:1px solid #eceef2; border-radius:10px; padding:10px 12px; cursor:pointer; }
+  .eqp-page .req-card:hover{ border-color:#c9d0db; background:#FAFBFC; }
+  .eqp-page .req-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .eqp-page .req-card-name{ font-weight:600; font-size:13.5px; color:#14304F; }
+  .eqp-page .req-card-meta{ font-size:12px; color:#6b7280; margin:4px 0 8px; }
+  .eqp-page .req-card .rin-note{ display:block; font-size:11px; color:#6b7280; margin-top:2px; }
+
+  /* Bigger + visually highlighted so it reads as its own action, not a
+     minor icon tacked onto the row — gold border/tint echoes the site's
+     accent color (same gold used in the hero overlay icon). Requests with
+     unread messages get a stronger highlight still (gold fill) so an
+     unread conversation is easy to spot at a glance, on top of the count
+     badge. */
+  .eqp-page .chat-icon-btn{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:999px; border:1.5px solid #D9A62B; background:#FBF3DE; color:#14304F; cursor:pointer; padding:0; flex:none; transition:transform .12s ease, background .12s ease, box-shadow .12s ease; }
+  .eqp-page .chat-icon-btn:hover{ background:#F5E4B4; transform:scale(1.06); box-shadow:0 2px 10px rgba(217,166,43,0.35); }
+  .eqp-page .chat-icon-btn:active{ transform:scale(0.97); }
+  .eqp-page .chat-icon-btn .icon{ width:20px; height:20px; }
+  .eqp-page .chat-icon-btn .chat-unread-badge{ position:absolute; top:-7px; right:-7px; margin-left:0; }
+  .eqp-page .chat-icon-btn.has-unread{ background:#D9A62B; border-color:#C9971F; color:#fff; }
+  .eqp-page .chat-icon-btn.has-unread:hover{ background:#C9971F; }
+
+  /* ============ Chat popup (small modal) ============
+     Fixed, centered, self-contained — deliberately NOT reusing
+     .drawer/.drawer-overlay (that's an external bottom-sheet pattern from
+     the site's own stylesheet, not something meant for a quick chat). */
+  .chat-popup-overlay{ position:fixed; inset:0; background:rgba(20,48,79,0.45); z-index:60; display:none; }
+  .chat-popup-overlay.open{ display:block; }
+  .chat-popup{
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:min(420px, calc(100vw - 32px)); max-height:min(560px, calc(100vh - 64px));
+    background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(20,48,79,0.35);
+    z-index:61; display:none; flex-direction:column; overflow:hidden;
+  }
+  .chat-popup.open{ display:flex; }
+  .chat-popup-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:16px 18px; border-bottom:1px solid #e5e7eb; flex:none; }
+  .chat-popup-title{ font-size:15px; font-weight:700; color:#14304F; }
+  .chat-popup-sub{ font-size:12px; color:#6b7280; margin-top:2px; }
+  .chat-popup-close{ appearance:none; border:none; background:none; font-size:22px; line-height:1; color:#6b7280; cursor:pointer; padding:0 2px; flex:none; }
+  .chat-popup-close:hover{ color:#14304F; }
+  .chat-popup-thread{ flex:1; overflow-y:auto; padding:16px 18px; display:flex; flex-direction:column; gap:8px; min-height:120px; }
+  .chat-popup-editor{ display:flex; gap:8px; align-items:flex-end; padding:14px 18px; border-top:1px solid #e5e7eb; flex:none; }
+  .chat-popup-editor textarea{ flex:1; min-height:44px; max-height:110px; resize:vertical; border:1px solid #d1d5db; border-radius:8px; padding:8px 10px; font:inherit; }
+  .chat-popup #chat-popup-error{ margin:0 18px 12px; }
+  @media (max-width:480px){
+    .chat-popup{ width:calc(100vw - 24px); }
+  }
+
+  .eqp-page .pagination{ display:flex; align-items:center; justify-content:center; gap:14px; padding:16px 0; }
+  .eqp-page .pagination:empty{ padding:0; }
+  .eqp-page .page-btn{ appearance:none; border:1px solid #d7dbe3; background:#fff; color:#14304F; font-weight:600; font-size:13px; padding:6px 14px; border-radius:8px; cursor:pointer; }
+  .eqp-page .page-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .eqp-page .page-indicator{ font-size:13px; color:#6b7280; }
+
+  .eqp-page .section-head-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .eqp-page .field-hint{ margin:6px 0 0; font-size:12.5px; color:#6b7280; }
+  .eqp-page .field-error{ margin:6px 0 0; font-size:12.5px; color:#b3261e; }
+  .eqp-page .checkbox-field{ display:flex; align-items:flex-start; gap:8px; cursor:pointer; font-weight:600; }
+  .eqp-page .checkbox-field input[type="checkbox"]{ margin-top:3px; width:16px; height:16px; flex:none; }
+  .eqp-page .optional-tag{ font-weight:400; color:#6b7280; }
+
+  .eqp-page .drawer-chat{ margin-top:20px; padding-top:16px; border-top:1px solid #e5e7eb; }
+  .eqp-page .drawer-chat-title{ margin:0 0 10px; font-size:14px; font-weight:700; color:#14304F; }
+  .eqp-page .drawer-chat-thread{ max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+  .eqp-page .chat-bubble-row{ display:flex; }
+  .eqp-page .chat-bubble-row.mine{ justify-content:flex-end; }
+  .eqp-page .chat-bubble-row.theirs{ justify-content:flex-start; }
+  .eqp-page .chat-bubble{ max-width:80%; padding:8px 12px; border-radius:12px; font-size:13.5px; line-height:1.4; }
+  .eqp-page .chat-bubble-row.mine .chat-bubble{ background:#14304F; color:#fff; border-bottom-right-radius:3px; }
+  .eqp-page .chat-bubble-row.theirs .chat-bubble{ background:#F1F3F6; color:#1f2937; border-bottom-left-radius:3px; }
+  .eqp-page .chat-bubble-meta{ font-size:11px; opacity:0.75; margin-bottom:2px; }
+  .eqp-page .chat-empty-note{ font-size:13px; color:#6b7280; padding:8px 0; }
+  .eqp-page .drawer-chat-editor{ display:flex; gap:8px; align-items:flex-end; }
+  .eqp-page .drawer-chat-editor textarea{ flex:1; min-height:44px; max-height:120px; resize:vertical; border:1px solid #d1d5db; border-radius:8px; padding:8px 10px; font:inherit; }
+  .eqp-page .chat-unread-badge{ display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-left:6px; border-radius:999px; background:#b3261e; color:#fff; font-size:11px; font-weight:700; vertical-align:middle; }
+</style>
+
+<div class="position-relative text-white eqp-page" style="min-height: 100vh; width: 100%;">
+  <i class="fa-arrow-left fas eqp-back position-absolute start-0 top-0 m-3 fs-2"
+     style="z-index: 10; cursor: pointer; pointer-events: auto;"
+     onclick="renderMissionsPage();"></i>
+
+     <!-- ============ VIEW: ASSET REGISTER ============ -->
+  <section class="view active" id="view-register">
+    <div class="wrap">
+      <!-- Intro text is now a fixed overlay on the carousel itself (stays
+           put while the background photo rotates underneath) instead of
+           its own box above/below it — see hero-intro-overlay in the
+           style block. renderCarousel() in formLoad.js no longer draws a
+           per-slide caption, so there's only ever one headline on screen. -->
+      <div class="hero-carousel hero-intro-merged" id="hero-carousel">
+        <div class="hc-track" id="hc-track"></div>
+        <div class="hero-intro-overlay">
+          <!-- <div class="page-intro-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 8v13H3V8" stroke-linejoin="round"/><path d="M1 3h22v5H1z" stroke-linejoin="round"/><path d="M12 3v18"/><path d="M12 3C9 2 5 3 5 5.5S9 8 12 3Z" stroke-linejoin="round"/><path d="M12 3c3-1 7 0 7 2.5S15 8 12 3Z" stroke-linejoin="round"/></svg>
+          </div> -->
+          <h1 class="page-intro-lead">Equipment &amp; Resources</h1>
+          <p class="page-intro-kicker">A shared shelf for mission hospitals</p>
+          <p class="page-intro-sub">CMC lists equipment it no longer needs here first. Each listing stays open for a couple of weeks, so if something below helps, don't wait too long to ask.</p>
+        </div>
+        <button type="button" class="hc-nav prev" id="hc-prev" aria-label="Previous slide">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button type="button" class="hc-nav next" id="hc-next" aria-label="Next slide">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="hc-dots" id="hc-dots"></div>
+      </div>
+
+      <!-- ============ PARTITION 1: Available Equipment ============
+           Everything about browsing/adding equipment lives inside this
+           one highlighted panel (navy accent) — heading, toolbar, the
+           register itself, and the "how allocation works" banner — so
+           it reads as one clearly bounded block rather than blending
+           into "Equipment You Want" below it. -->
+      <div class="eqp-partition eqp-partition-available">
+        <div class="section-head">
+          <h2 class="partition-heading">Available Equipment</h2>
+          <div class="section-head-actions">
+            <button type="button" class="btn btn-outline" id="history-btn">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              History
+            </button>
+            <button type="button" class="btn btn-outline add-asset-btn" id="add-asset-btn">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              Add Equipment
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-box">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="search" placeholder="Search...">
+          </div>
+          <select class="filter-select" id="cat-filter">
+            <option value="all">All types</option>
+            <option value="Computer">Computer</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Accessory">Accessory</option>
+            <option value="Spare">Spare</option>
+            <option value="Consumables">Consumables</option>
+            <option value="Instrument">Instrument</option>
+          </select>
+          <div class="view-switch" id="view-switch" role="group" aria-label="Change layout">
+            <button type="button" data-view="table" title="Table view" aria-label="Table view">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 10h18M9 4v16"/></svg>
+            </button>
+            <button type="button" class="active" data-view="tiles" title="Tiles view" aria-label="Tiles view">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+            </button>
+            <button type="button" data-view="list" title="List view" aria-label="List view">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="eqp-col eqp-col-items" id="col-items">
+          <div class="register mode-tiles" id="register-panel">
+            <div class="reg-row reg-head">
+              <div>Item</div>
+              <div>Available</div>
+              <div>Status</div>
+              <div></div>
+            </div>
+            <div id="register-body"></div>
+          </div>
+          <div class="pagination" id="register-pagination"></div>
+        </div>
+
+        <!-- ============ How allocation works ============
+             Used to sit behind the (i) button as a popover; shown
+             directly instead — the same information, no tap required. -->
+        <div class="allocation-info">
+          <div class="allocation-info-text">
+            <h3>How allocation works</h3>
+            <p>Every application is reviewed against the same criteria we use for grants — so hospitals with the greatest need and the clearest impact are prioritised, not whoever applies first.</p>
+          </div>
+          <div class="allocation-info-criteria">
+            <div class="ac-item">
+              <span class="ac-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.8C.9 8 2.3 4.5 5.8 4c2.1-.3 3.9.8 6.2 3 2.3-2.2 4.1-3.3 6.2-3 3.5.5 4.9 4 3.3 7.2C19 15.65 12 20 12 20Z"/></svg></span>
+              <span class="ac-label">Level of Need</span>
+            </div>
+            <div class="ac-item">
+              <span class="ac-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></span>
+              <span class="ac-label">Expected Impact</span>
+            </div>
+            <div class="ac-item">
+              <span class="ac-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span>
+              <span class="ac-label">Readiness to Deploy</span>
+            </div>
+            <div class="ac-item">
+              <span class="ac-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+              <span class="ac-label">Fair Distribution</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PARTITION 2: Equipment You Want ============
+           Its own separately highlighted panel (gold accent, distinct
+           from the navy "Available Equipment" panel above) so it's
+           unmistakably a different kind of thing: not stock to browse,
+           but a request form for what isn't listed. -->
+      <div class="eqp-partition eqp-partition-want">
+        <div class="section-head">
+          <h2 class="partition-heading">Equipment You Want</h2>
+          <button type="button" class="info-btn" data-info="info-want" aria-expanded="false" aria-label="About this form">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/></svg>
+          </button>
+          <div class="info-pop" id="info-want" hidden>
+            <p>Can't find what you need above? Tell us and we'll look into it.</p>
+            <ul>
+              <li><b>Reviewed regularly</b> — checked every few months.</li>
+              <li><b>Urgent needs first</b> — mark it Critical for faster follow-up.</li>
+              <li><b>Track it anytime</b> — see its status under My Requests.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-panel">
+          <form id="request-form">
+            <div class="field">
+              <label>Test Hospital</label>
+              <!-- <select id="req-hospital" required>
+                <option value="" disabled selected>Select your hospital</option>
+              </select> -->
+            </div>
+            <div class="field-row" style="margin-bottom:16px;">
+              <div class="field" style="margin-bottom:0;">
+                <label>What do you need?</label>
+                <input type="text" id="req-name" placeholder="" required>
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>Category</label>
+                <select id="req-category">
+                  <option>Computer</option>
+                  <option>Furniture</option>
+                  <option>Accessory</option>
+                  <option>Spare</option>
+                  <option>Consumables</option>
+                  <option>Instrument</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-row" style="margin-bottom:16px;">
+              <div class="field" style="margin-bottom:0;">
+                <label>How many?</label>
+                <input type="number" min="1" id="req-qty" placeholder="" required>
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>Urgency</label>
+                <select id="req-urgency">
+                  <option>Critical — patient care affected now</option>
+                  <option>High — needed within weeks</option>
+                  <option>Medium — planned improvement</option>
+                  <option>Low — would be useful eventually</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Could you tell us a little about why this would help?</label>
+              <textarea id="req-why" placeholder="Tell us about the situation this would help solve..." required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="req-draft">Save for later</button>
+              <button type="submit" class="btn btn-gold">Send Request</button>
+            </div>
+            <div class="toast" id="req-toast" style="margin:14px 0 0;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+              <span id="req-toast-text">Sent — check My Requests to see it.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ Bottom: My Requests / Requests ============
+           Moved out from beside the item register (that grid used to
+           put Available Equipment and someone's own request history
+           side by side, which is what made the whole area read as one
+           confusing block) and down here instead, below both partitions
+           above. Column 1 (My Requests) shows for role="Missions";
+           column 2 (Requests) shows for role="Admin" — see
+           showMyRequestsCol/showRequestsCol in formLoad.js, unchanged.
+           data-cols on this element (still id="eqp-columns", still set
+           from JS) drives whether one or both columns are visible; it
+           always stacks to one below 900px regardless. -->
+      <div class="eqp-columns eqp-requests-bottom" id="eqp-columns" data-cols="1">
+        <div class="eqp-col eqp-col-side" id="col-myrequests" hidden>
+          <div class="eqp-col-head">
+            <h3>My Requests</h3>
+            <span class="tab-badge" id="tab-badge-myrequests" hidden></span>
+          </div>
+          <p class="eqp-col-sub">Everything you've asked for, and where it stands.</p>
+          <div id="apps-empty" class="apps-empty">You haven't asked for anything yet. Tap View &amp; Apply on an item.</div>
+          <div id="apps-table-wrap" style="display:none;">
+            <div id="apps-list" class="req-card-list"></div>
+            <div class="pagination" id="apps-pagination"></div>
+          </div>
+        </div>
+
+        <div class="eqp-col eqp-col-side" id="col-requests" hidden>
+          <div class="eqp-col-head">
+            <h3>Requests</h3>
+            <span class="tab-badge" id="tab-badge-connectview" hidden></span>
+          </div>
+          <p class="eqp-col-sub">Every request and application, from every hospital.</p>
+          <div id="connect-empty" class="apps-empty">No requests have come in yet.</div>
+          <div id="connect-table-wrap" style="display:none;">
+            <div id="connect-list" class="req-card-list"></div>
+            <div class="pagination" id="connect-pagination"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+</div>
+
+<!-- ============ Chat popup (small modal) ============
+     A dedicated small popup for the request chat, separate from the full
+     request-detail drawer below. The per-row chat icon opens THIS instead
+     of the full drawer now — tapping the row itself still opens the full
+     detail. Self-contained markup + CSS (see .chat-popup rules in the
+     style block above) rather than reusing .drawer/.drawer-overlay, since
+     those come from the site's own stylesheet (not supplied to us) and
+     are a bottom-sheet pattern, not a small centered popup. -->
+<div class="chat-popup-overlay" id="chat-popup-overlay"></div>
+<div class="chat-popup" id="chat-popup" role="dialog" aria-modal="true" aria-labelledby="chat-popup-title">
+  <div class="chat-popup-head">
+    <div>
+      <div class="chat-popup-title" id="chat-popup-title">Messages</div>
+      <div class="chat-popup-sub" id="chat-popup-sub"></div>
+    </div>
+    <button type="button" class="chat-popup-close" id="chat-popup-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="chat-popup-thread" id="chat-popup-thread"></div>
+  <div class="chat-popup-editor">
+    <textarea id="chat-popup-input" placeholder="Write a message..."></textarea>
+    <button type="button" class="btn btn-gold" id="chat-popup-send">Send</button>
+  </div>
+  <p class="field-error" id="chat-popup-error" hidden></p>
+</div>
+
+<div class="drawer-overlay eqp-page" id="drawer-overlay"></div>
+<div class="drawer eqp-page" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+  <div class="drawer-grabber" aria-hidden="true"></div>
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="drawer-title"></div>
+      <div class="drawer-sub" id="drawer-sub"></div>
+    </div>
+    <button type="button" class="drawer-close" id="drawer-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-columns">
+
+      <div class="drawer-photos" id="drawer-photos">
+        <div class="drawer-gallery" id="drawer-gallery">
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
+        <p class="drawer-desc" id="drawer-desc"></p>
+        <span class="status-chip open drawer-status" id="drawer-avail-chip"><span class="dot"></span>Available to request</span>
+      </div>
+
+      <div class="drawer-main">
+
+        <!-- Shown instead of the form when viewing an existing request from
+             My Requests (openRequestDetail) rather than applying for a new
+             one (openDrawer). Hidden by default / in apply mode. -->
+        <div class="drawer-status-block" id="drawer-status-block" hidden>
+          <span class="status-chip" id="drawer-req-status-chip"><span class="dot"></span><span id="drawer-req-status-label"></span></span>
+          <p class="drawer-status-msg" id="drawer-status-msg"></p>
+          <div class="drawer-status-meta" id="drawer-status-meta"></div>
+
+          <!-- ============ Two-way chat on this request ============
+               Shared by both the hospital side and the Missions Office /
+               connect side — which "side" is posting is decided by
+               isConnectSide() in formLoad.js, not by anything in this
+               markup. -->
+          <div class="drawer-chat" id="drawer-chat" hidden>
+            <h4 class="drawer-chat-title">Messages about this request</h4>
+            <div class="drawer-chat-thread" id="drawer-chat-thread"></div>
+            <div class="drawer-chat-editor">
+              <textarea id="drawer-chat-input" placeholder="Write a message..."></textarea>
+              <button type="button" class="btn btn-gold" id="drawer-chat-send">Send</button>
+            </div>
+            <p class="field-error" id="drawer-chat-error" hidden></p>
+          </div>
+        </div>
+
+        <form id="apply-form">
+          <div class="field">
+            <label>Test Hospital</label>
+            <!-- <select id="apply-hospital" required>
+              <option value="" disabled selected>Select your hospital</option>
+            </select> -->
+          </div>
+          <div class="field">
+            <label>How many do you need?</label>
+            <input type="number" min="1" id="apply-qty" placeholder="e.g. 1" required>
+          </div>
+          <div class="field">
+            <label>Could you tell us a little about why this would help?</label>
+            <textarea id="apply-situation" required></textarea>
+          </div>
+          <div class="field">
+            <label>How will you collect it?</label>
+            <textarea id="apply-collection" required></textarea>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <div class="toast" id="apply-toast">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+    <span id="apply-toast-text">Sent — check My Requests to see it.</span>
+  </div>
+  <div class="drawer-foot" id="drawer-foot">
+    <button type="button" class="btn btn-outline" id="apply-draft">Save for later</button>
+    <button type="submit" form="apply-form" class="btn btn-gold">Send Request</button>
+  </div>
+</div>
+
+<div class="drawer-overlay eqp-page" id="asset-form-overlay"></div>
+<div class="drawer eqp-page" id="asset-form-drawer" role="dialog" aria-modal="true" aria-labelledby="asset-form-title">
+  <div class="drawer-grabber" aria-hidden="true"></div>
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="asset-form-title">Add equipment to the register</div>
+      <div class="drawer-sub">Fill this in once — it shows up in Available Equipment right away.</div>
+    </div>
+    <button type="button" class="drawer-close" id="asset-form-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body">
+    <form id="asset-form">
+      <div class="field">
+        <label>Item name</label>
+        <input type="text" id="asset-name" placeholder="e.g. Oxygen Concentrator" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Category</label>
+          <select id="asset-category" required>
+            <option value="" disabled selected>Select a category</option>
+            <!-- Matches the "What type is this?" filter above (cat-filter)
+                 so anything added here can actually be found by it. -->
+            <option>Computer</option>
+            <option>Furniture</option>
+            <option>Accessory</option>
+            <option>Spare</option>
+            <option>Consumables</option>
+            <option>Instrument</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Condition</label>
+          <select id="asset-condition" required>
+            <option value="" disabled selected>Select condition</option>
+            <option>New</option>
+            <option>Excellent</option>
+            <option>Good — Serviced</option>
+            <option>Fair — Functional</option>
+            <option>Needs Repair</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Brand / model</label>
+          <input type="text" id="asset-model" placeholder="e.g. Philips EverFlo, 2019">
+        </div>
+        <div class="field">
+          <label>Units available</label>
+          <input type="number" min="0" id="asset-units" placeholder="e.g. 2" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="asset-description" placeholder="Condition notes, what it's suited for, anything a hospital should know..." required></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Listing closes on</label>
+          <input type="date" id="asset-close-date" required>
+          <p class="field-hint">Listings need to stay open for at least 2 months, so the earliest close date you can pick is 2 months from today.</p>
+          <p class="field-error" id="asset-close-date-error" hidden></p>
+        </div>
+        <div class="field">
+          <label>Photo URL (optional)</label>
+          <input type="text" id="asset-photo-url" placeholder="Paste an image link — leave blank for a placeholder picture">
+        </div>
+      </div>
+      <div class="field">
+        <label class="checkbox-field">
+          <input type="checkbox" id="asset-has-deadline">
+          <span>Set a deadline to collect it by? <span class="optional-tag">(optional)</span></span>
+        </label>
+      </div>
+      <div class="field" id="asset-deadline-field" hidden>
+        <label>Deadline to collect</label>
+        <input type="date" id="asset-collect-deadline">
+        <p class="field-hint">Only needed if collection has to happen by a specific date. Leave the box above unchecked if not.</p>
+        <p class="field-error" id="asset-collect-deadline-error" hidden></p>
+      </div>
+    </form>
+  </div>
+  <div class="toast" id="asset-form-toast">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+    <span id="asset-form-toast-text">Added — it's now showing in Available Equipment.</span>
+  </div>
+  <div class="drawer-foot">
+    <button type="button" class="btn btn-outline" id="asset-form-cancel">Cancel</button>
+    <button type="submit" form="asset-form" class="btn btn-gold">Add to register</button>
+  </div>
+</div>
+
+<!-- ============ History of equipment ============
+     Every item ever added to the register, whether it's still open,
+     closing soon, fully allotted or closed — nothing drops out of this
+     list the way it drops out of Available Equipment. -->
+<div class="drawer-overlay eqp-page" id="history-overlay"></div>
+<div class="drawer eqp-page" id="history-drawer" role="dialog" aria-modal="true" aria-labelledby="history-title">
+  <div class="drawer-grabber" aria-hidden="true"></div>
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="history-title">Equipment history</div>
+      <div class="drawer-sub">Everything that's been listed here, past and present.</div>
+    </div>
+    <button type="button" class="drawer-close" id="history-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body">
+    <div class="register" id="history-table-wrap">
+      <div class="log-row log-head">
+        <div>Item</div>
+        <div>Added / Closes</div>
+        <div>Status</div>
+        <div></div>
+      </div>
+      <div id="history-list"></div>
+    </div>
+    <div class="pagination" id="history-pagination"></div>
+    <div class="empty-note" id="history-empty" hidden>Nothing has been added to the register yet.</div>
+  </div>
+</div>
+
+<!-- ============ Photo viewer (opened from the drawer's gallery) ============ -->
+<div class="lightbox eqp-page" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close photo viewer">&times;</button>
+  <button type="button" class="lightbox-nav prev" id="lightbox-prev" aria-label="Previous photo">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  <button type="button" class="lightbox-nav next" id="lightbox-next" aria-label="Next photo">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <div class="lightbox-count" id="lightbox-count"></div>
+</div>

@@ -1,0 +1,33 @@
+<div class="d-flex flex-wrap bg-white">
+    <div class="text-center p-1 p-md-2 col-12  bg-light position-relative">
+      <i class="bg-opacity-10 fa-arrow-left fas fa-2x rounded position-absolute start-0 top-0 m-3" onclick="renderLoadResources('learningResources','${data.redirectFun}')"></i>
+      <img class="" src=${data.thumb} alt=""  onerror="this.onerror=null; this.src='./images/icons/module.png';">
+      <p class=" fw-medium ">${data.streamName}(${data.streameCode}) Resources</p>
+    </div>
+    <div class="col-12 p-2 position-relative" style="background-color: transparent;">
+        <input type="text" id="allResourceFilter" placeholder="Search for meta tags and title" class="w-100 rounded-pill border ps-3 p-1">
+        <button id="closeSearch" class="btn fs-3 top-0 end-0 position-absolute pe-3 p-0" style="display: none;">&times;</button>
+    </div>
+    <div id="resourceFilter" class="d-flex flex-wrap container-lg" style="transition: all ease-in-out 0.5s;"></div>
+    <div id="mainResources" class="w-100 d-flex flex-wrap">
+        <div class="col-12 col-lg-4 px-3 py-2">
+          <span class="fs-5 ">Latest Resources</span>
+          ${data.latestResource}
+        </div>
+    
+        <div class="col-12 col-lg-5 px-3 py-2">
+          <span class="fs-5 ">Top Resources</span>
+          ${data.topResource}
+        </div>
+    
+        <div class="col-12 col-lg-3 px-3 py-2">
+          <span class="fs-5 ">Recent Resources</span>
+          ${data.recentResource}
+        </div>
+    </div>
+
+    <div class="col-12 px-3 mt-2" id="archivedResource">
+        <span class="fs-5 mt-2">Archived Resources</span>
+        <div id="archivedOnFetch" class="d-flex flex-wrap"> ${data.archivedResource}</div>
+      </div>
+  </div>

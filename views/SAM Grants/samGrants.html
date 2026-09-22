@@ -1,0 +1,347 @@
+<!-- ============ HERO ============ -->
+<section class="sam-hero-section">
+  <div class="container">
+    <h1 class="sam-hero-title">
+      Dr. <span class="sam-letter">S</span>unil <span class="sam-letter">A</span>garwal <span class="sam-letter">M</span>emorial Project
+      <br class="d-none d-md-inline" />
+      for Mission Hospitals
+    </h1>
+    <p class="sam-hero-sub">
+      &mdash; Established by the MBBS Alumni Batch of 1978, in partnership with the Missions Office, CMC Vellore.
+    </p>
+    <p class="sam-hero-lead">
+      The Dr Sunil Agarwal Memorial Fellowship sends mission and NGO hospital staff to CMC Vellore for focused
+      re&#8209;skilling &mdash; carrying forward the work of a doctor who gave his life travelling to train others.
+    </p>
+    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
+      <a href="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/FovGuidelines/_2c2539e39c0553ca4c9926d35b9e4d20_FovGuidelines.pdf" class="btn sam-btn-outline btn-lg">
+        <i class="fa-solid fa-file-arrow-down me-2" aria-hidden="true"></i>Download Guidelines
+      </a>
+      <a onclick="openModal('formIO', null, ''); samProjectApplication()" href="#" class="btn sam-btn-gold btn-lg">
+        Apply For Grant <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <!-- Dashboard entry points — hidden until loadSamGrantsPage() (called
+         on page load, mirroring loadFovGrantsPage()) decides who should see
+         which one: Applicant Dashboard appears once the signed-in user has
+         at least one SAM application on file, Admin Dashboard appears for
+         SAM_ADMIN_ROLES users. See samDashboard.formLoad.additions.js. -->
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+      <button id="samAppDashboardBtn"
+        onclick="navigateTo('samAppDashboard', null, [['loadSamAppDashboard',[]], ['loadSamApplication',['Draft']]])"
+        class="btn sam-btn-outline d-none">
+        <i class="fa-regular fa-window-restore me-2" aria-hidden="true"></i>Applicant Dashboard
+      </button>
+      <button id="samAdminDashboardBtn"
+        onclick="navigateTo('samAdminDashboard', null, [['loadSamAdminDashboard',[]], ['loadSamAppStatusTable',['Submitted']]])"
+        class="btn sam-btn-gold d-none">
+        <i class="fa-solid fa-tachograph-digital me-2" aria-hidden="true"></i>Admin Dashboard
+      </button>
+    </div>
+  </div>
+
+  <div class="sam-hero-image-wrap">
+    <img
+      src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_b32f2144ef1096520a9d4148ff8df0ca_Pictures.jpeg"
+      class="sam-hero-image rounded"
+      alt="Mission hospital staff training at CMC Vellore"
+      loading="lazy"
+    />
+  </div>
+</section>
+
+<!-- ============ PROJECT STATS ============ -->
+<section class="sam-stats">
+  <div class="container">
+    <div class="row text-center g-4">
+      <div class="col-12 col-md-4">
+        <div class="sam-stat-card">
+          <div class="sam-stat-icon"><i class="fa-solid fa-bed" aria-hidden="true"></i></div>
+          <h6>Grant Covers</h6>
+          <p>Stay and meals</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="sam-stat-card">
+          <div class="sam-stat-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></div>
+          <h6>Duration</h6>
+          <p>1&ndash;4 weeks</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="sam-stat-card">
+          <div class="sam-stat-icon"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></div>
+          <h6>Applications Close</h6>
+          <p>31st May 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEMORIAL ============ -->
+<section class="sam-memorial">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-12 col-md-5">
+        <img
+          src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_ae6b467e3ecc5fb1953b6f683eb88ab3_Pictures.avif"
+          alt="Dr. Sunil Agarwal"
+          loading="lazy"
+        />
+        <h4 class="sam-quote mt-4">&ldquo;He didn&rsquo;t wait for people to come to him. He went to where the need was.&rdquo;</h4>
+      </div>
+      <div class="col-12 col-md-7">
+        <h3>In memory of a doctor who never stopped teaching.</h3>
+        <hr class="sam-hr" />
+        <p>
+          Dr Sunil Agarwal trained countless mission hospital doctors at CMC Vellore &mdash; and often travelled
+          himself to distant hospitals to teach on-site. It was on the way to one such programme, on 4 February
+          2020, that he lost his life in a road accident.
+        </p>
+        <p>
+          His MBBS batch of 1978 created this fellowship so his way of teaching&mdash;patient, hands-on, and
+          willing to go the distance&mdash;would continue through others.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FELLOWSHIP BENEFITS ============ -->
+<section class="sam-benefits">
+  <div class="container">
+    <div class="row align-items-center g-5 flex-md-row-reverse">
+      <div class="col-12 col-md-5">
+        <img
+          src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_04fb610a0b33a22fa1e3820398bd698a_Pictures.avif"
+          alt="Fellow training at CMC Vellore"
+          loading="lazy"
+        />
+      </div>
+      <div class="col-12 col-md-7">
+        <p class="sam-eyebrow-maroon">What the Fellowship Offers</p>
+        <h3>Room to learn, without the worry of cost.</h3>
+        <p>
+          Selected Fellows spend two to four weeks embedded in a CMC Vellore department that matches their
+          hospital&rsquo;s real needs &mdash; set individually by the Missions Office, not off a fixed curriculum.
+        </p>
+        <p>
+          Accommodation and meals in Vellore are fully covered. Training fees are rarely charged to mission
+          hospitals; where they are, the Grant Committee negotiates directly with the department.
+        </p>
+        <p class="sam-note">*Travel to and from the home hospital is not included and is expected to be arranged separately.</p>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-2 sam-benefit-chips">
+      <div class="col-12 col-md-4">
+        <div class="sam-chip">
+          <i class="fa-solid fa-house-chimney" aria-hidden="true"></i>
+          <span>Accommodation &amp; meals covered</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="sam-chip">
+          <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
+          <span>Training fees waived or negotiated</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="sam-chip">
+          <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+          <span>Placement matched to your hospital&rsquo;s needs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ELIGIBILITY ============ -->
+<section class="sam-eligibility">
+  <div class="container">
+    <div class="row align-items-start g-5">
+      <div class="col-12 col-md-5">
+        <p class="sam-eyebrow-maroon">Eligibility</p>
+        <h3>Who can apply?</h3>
+        <p class="text-muted mb-0">
+          The Fellowship is open to permanent mission hospital staff who intend to keep serving where they are.
+        </p>
+      </div>
+      <div class="col-12 col-md-7">
+        <ul class="sam-check-list">
+          <li>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>A permanent employee of a Mission hospital or NGO associated with CMC Vellore, situated in an underserved area.</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>Doctors, nurses, and allied health workers with medical training are all eligible.</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>At least two years of service at the mission hospital prior to applying.</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>A demonstrated long-term commitment to continue serving at the mission hospital.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPLICATION INFO ============ -->
+<section class="sam-application-info">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="sam-eyebrow-maroon">Application Information</p>
+      <h3>How the cycle works, and what&rsquo;s covered</h3>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-md-6">
+        <div class="sam-info-card">
+          <div class="sam-info-card-head">
+            <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+            <h5>Application Cycle</h5>
+          </div>
+          <ul>
+            <li>Advertised each January on the CMC V Connect Portal and through partner networks &mdash; CMAI, CHAI, EMFI and EHA.</li>
+            <li>Applications close three months later, and awards are announced by 15th May.</li>
+            <li>The grant may be used any time within the award year.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="sam-info-card">
+          <div class="sam-info-card-head">
+            <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+            <h5>Duration &amp; Coverage</h5>
+          </div>
+          <ul>
+            <li>Two to four weeks, set individually based on the training need identified.</li>
+            <li>Accommodation and meals at CMC Vellore for the full duration of stay.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <div class="col-12 col-md-6">
+        <div class="sam-coverage-card sam-coverage-yes">
+          <h6><i class="fa-solid fa-circle-check me-2" aria-hidden="true"></i>What&rsquo;s Covered</h6>
+          <p class="mb-0">Accommodation and meals at CMC Vellore for the full duration of training; training fees are rarely charged, and where they are, the Grant Committee negotiates directly with the department.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="sam-coverage-card sam-coverage-no">
+          <h6><i class="fa-solid fa-circle-xmark me-2" aria-hidden="true"></i>What&rsquo;s Not Covered</h6>
+          <p class="mb-0">Travel to and from the home hospital &mdash; this is expected to be arranged separately.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCUMENTS ============ -->
+<section class="sam-documents">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="sam-eyebrow-maroon">Before You Apply</p>
+      <h3>Documents to have ready</h3>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="sam-doc-card">
+          <i class="fa-solid fa-users" aria-hidden="true"></i>
+          <h6>Two References</h6>
+          <p>From the institution head/senior colleague and another colleague.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="sam-doc-card">
+          <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+          <h6>Visitor-Observer Application</h6>
+          <p>CMC Vellore format with required certificates and health declaration.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="sam-doc-card">
+          <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+          <h6>Leave Sanction Letter</h6>
+          <p>Confirming approved leave for the training period.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="sam-doc-card">
+          <i class="fa-solid fa-notes-medical" aria-hidden="true"></i>
+          <h6>Medical Fitness Certificate</h6>
+          <p>Confirming fitness to travel and attend the programme.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPLICATION TIMELINE ============ -->
+<section class="sam-timeline">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h3></h3>
+      <p class="sam-timeline-lead">The cycle runs once a year, giving hospitals time to plan around it.</p>
+    </div>
+
+    <div class="row g-4 sam-step-row">
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><span class="sam-step-num">1</span></div>
+        <h6>Call Opens</h6>
+        <p>Advertised via CMC Vellore&rsquo;s website and partner networks.</p>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-file-signature" aria-hidden="true"></i><span class="sam-step-num">2</span></div>
+        <h6>Apply</h6>
+        <p>Submit the form with two references and required certificates before the closing date.</p>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="sam-step-num">3</span></div>
+        <h6>Screening</h6>
+        <p>A committee with the Associate Director, Missions, and FOV UK reviews the application.</p>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-award" aria-hidden="true"></i><span class="sam-step-num">4</span></div>
+        <h6>Award</h6>
+        <p>Results are announced by 15th May. A tailored training plan is prepared for you.</p>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span class="sam-step-num">5</span></div>
+        <h6>Train at CMC</h6>
+        <p>Two to four weeks of re-skilling, with accommodation and meals arranged.</p>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 sam-step">
+        <div class="sam-step-circle"><i class="fa-solid fa-handshake-angle" aria-hidden="true"></i><span class="sam-step-num">6</span></div>
+        <h6>Return &amp; Report</h6>
+        <p>Fellows return to their hospital and share what they learned with their team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="sam-final-cta">
+  <div class="container text-center">
+    <h3>Ready to Apply?</h3>
+    <p>Two to four weeks at CMC Vellore, fully arranged &mdash; the next call closes 31st May 2026.</p>
+    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
+      <a href="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/FovGuidelines/_2c2539e39c0553ca4c9926d35b9e4d20_FovGuidelines.pdf" class="btn btn-primary btn-lg d-inline-block w-auto sam-btn-outline">
+        <i class="fa-solid fa-file-arrow-down me-2" aria-hidden="true"></i>Download Guidelines
+      </a>
+      <a onclick="openModal('formIO', null, ''); samProjectApplication()" href="#" class="btn sam-btn-gold btn-lg">
+        Apply For Grant <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>

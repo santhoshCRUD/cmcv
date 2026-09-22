@@ -1,0 +1,76 @@
+<div class="whatsapp-container">
+    <div class="position-absolute start-0 top-0 m-3" style="z-index: 10;">
+        <i class="bg-white bg-opacity-75 fa-arrow-left fas p-2 rounded shadow-sm pe-pointer"
+            onclick="renderMissionsPage()" title="Back"></i>
+    </div>
+    <div class="wa-app">
+        <!-- Sidebar -->
+        <aside class="wa-sidebar">
+            <header class="wa-sidebar-header">
+                <h4 class="wa-sidebar-title">Chats</h4>
+                <button id="createRoom" class="wa-icon-btn" title="New Group">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+            </header>
+            <div id="roomList" class="wa-room-list"></div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="wa-main hidden" id="chatPanel">
+            <header id="groupHeader" class="wa-chat-header">
+                <div class="wa-chat-header-info">
+                    <div class="wa-avatar-placeholder">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <span id="roomName" class="wa-room-name"></span>
+                </div>
+                <div class="wa-chat-header-actions">
+                    <span id="usersBtn" class="wa-icon-btn pe-pointer" title="Group Info">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </span>
+                </div>
+            </header>
+
+            <div id="membersModal" class="members-modal hidden">
+                <div class="members-content">
+                    <div class="members-header">
+                        <h3>Group Info</h3>
+                        <span id="closeMembers" class="pe-pointer"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                    <div id="membersList"></div>
+                </div>
+            </div>
+
+            <div id="chatBox" class="wa-chat-box overflow-x-hidden"></div>
+
+            <div class="reply-box" id="replyBox"></div>
+            <div id="mentionList" class="mention-list hidden"></div>
+            <div id="filePreview" class="file-preview hidden"></div>
+
+            <form id="msgForm" class="wa-msg-form">
+                <div class="upload-wrapper">
+                    <button type="button" id="uploadBtn" class="upload-btn wa-icon-btn">
+                        <i class="fa-solid fa-paperclip"></i>
+                    </button>
+                    <div id="uploadMenu" class="upload-menu hidden shadow">
+                        <div class="upload-option" data-type="photo"><i class="fa-solid fa-image text-primary me-2"></i>
+                            Photo</div>
+                        <div class="upload-option" data-type="document"><i
+                                class="fa-solid fa-file-lines text-secondary me-2"></i> Document</div>
+                    </div>
+                </div>
+
+                <input type="file" id="fileInput" hidden multiple>
+                <input id="message" class="wa-msg-input" placeholder="Type a message" autocomplete="off" />
+                <button type="submit" class="wa-send-btn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </main>
+
+        <!-- Placeholder when no chat is selected -->
+        <div id="waPlaceholder" class="wa-placeholder">
+
+        </div>
+    </div>
+</div>

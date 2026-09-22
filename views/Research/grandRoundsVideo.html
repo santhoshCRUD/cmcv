@@ -1,0 +1,13 @@
+<div class="container-fluid bg-white position-relative">
+    <h2 class="text-center bg-white p-3 rounded msnHospTitle connect-primary-border">Grand Rounds Videos</h2>
+    <i class="bg-opacity-10 fa-arrow-left fas rounded position-absolute start-0 top-0 m-3 fs-2"
+        onclick="navigateTo('grandRounds', {}, [['loadGrandRoundsTable', []], ['loadGrandRoundsVideos', [10]]]);
+"></i>
+    <div class="row mt-5">
+        <div class="grand-rounds-container">
+            <input type="text" id="grandRoundsSearch" placeholder="Search Grand Rounds by title, person, or tags..."
+                style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+            <div id="grandRoundsVideos" class="d-flex flex-wrap"></div>
+        </div>
+    </div>
+</div>

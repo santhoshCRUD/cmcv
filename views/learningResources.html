@@ -1,0 +1,13 @@
+<div class="bg-white" style="min-height: 100%;">
+    <div class="text-center py-3 position-relative">
+        <i class="bg-opacity-10 fa-arrow-left fas fa-2x rounded position-absolute start-0 top-0 m-3" onclick="${data.redirectFun}"></i>
+        <img class="me-3" src="../images/file.svg" alt="" width="50">
+        <span class="fs-3"> Learning Resources</span>
+    </div>
+    <div class="col-12 p-2 position-relative" style="background-color: transparent;">
+        <input type="text" id="allResourceFilter" placeholder="Search for meta tags and title" class="w-100 rounded-pill border ps-3 p-1">
+        <button id="closeSearch" class="btn fs-3 top-0 end-0 position-absolute pe-3 p-0" style="display: none;">&times;</button>
+    </div>
+    <div id="resourceFilter" class="d-flex flex-wrap container-lg" style="transition: all ease-in-out 0.5s;"></div>
+    <div id="resource" class="d-flex flex-wrap container-lg">${data.streamCards}</div>
+</div>

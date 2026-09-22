@@ -1,0 +1,132 @@
+<div class="bg-black text-center">
+  <h1 class="text-danger mb-0 m-2 fs-md-1"
+    style="position: relative; font-size: clamp(0.8rem, 5vw, 2.8rem); left: 5px;">Research</h1>
+  <p class="text-warning fst-italic mb-0 fs-md-5" style="position: relative; font-size: 18px;">“It is He
+    who reveals the profound and hidden things; He knows what is in the darkness,​ And the light dwells with Him”<br>
+  <p class="text-end text-warning fst-italic mb-0 w-75 fs-md-5"> Daniel 2:22​</p>
+
+</div>
+<div class="text-center py-5 position-relative"
+  style="background: url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_3eaa82c4e0fc4be5d0d410c4de18cf9a_Pictures.jpg') center center / cover no-repeat; min-height: 250px; font-family: math;">
+  <div style=" position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+  <i class="fa-arrow-left fas text-white position-absolute start-0 top-0 m-3 fs-2 pe-pointer" style="z-index: 2;"
+    onclick="renderPostHomePage();"></i>
+
+  <!-- Offcanvas Toggle Button - Visible Only on Mobile -->
+  <div class="d-block d-md-none position-relative text-end p-3">
+    <button class="btn secondary-bg-color text-white fw-bold" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+      <i class="fas fa-bars me-2"></i> Menu
+    </button>
+  </div>
+
+  <!-- Offcanvas Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="mobileMenuLabel">Research Menu</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column border gap-2">
+      <button class="btn border w-100" onclick="navigateTo('grants', {}, ['loadGrantsListTable',[]])">Grants</button>
+      <button class="btn border w-100"
+        onclick="navigateTo('publications', {}, ['loadPublicationsMap', []])">Publications</button>
+      <button class="btn border w-100" onclick="navigateTo('grandRounds', {}, [
+  ['loadGrandRoundsTable', []],
+  ['loadGrandRoundsVideos', [10]]
+]);
+">Grand
+        Rounds</button>
+      <button class="btn fs-4 text-black bg-warning fw-bold rounded-3 shadow-sm position-relative"
+        onclick="openModal('formIO', null, 'Research Request Form'); loadResearchRequest();"> Research Request
+        Form</span>
+        <i class="fa-brands fa-wpforms fs-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Desktop View Button Grid (hidden on mobile) -->
+  <div class="px-5 d-none d-md-block h-100 position-relative d-flex align-items-center justify-content-center"
+    style="z-index: 2; margin-top: 260px;">
+    <div class="d-flex flex-wrap gap-4 w-100 justify-content-between align-items-center">
+
+      <!-- Left buttons -->
+      <div class="d-flex flex-wrap gap-4">
+        <button class="btn fs-4 text-black bg-body-secondary fw-bold px-4 py-3 rounded-3 shadow-sm"
+          onclick="navigateTo('researchGrant', {}, [['loadGrantsAwardee',[]]])" style="min-width: 180px; height: 70px;">
+          Grants
+        </button>
+        <button class="btn fs-4 text-black bg-body-secondary fw-bold px-4 py-3 rounded-3 shadow-sm"
+          onclick="navigateTo('publications', {}, ['loadPublicationsMap', []])" style="min-width: 180px; height: 70px;">
+          Publications
+        </button>
+        <button class="btn fs-4 text-black bg-body-secondary fw-bold px-4 py-3 rounded-3 shadow-sm" onclick="navigateTo('grandRounds', {backTo: 'loadResearchCards()'}, [
+  ['loadGrandRoundsTable', []],
+  ['loadGrandRoundsVideos', [10]]
+]);
+" style="min-width: 180px; height: 70px;">
+          Grand Rounds
+        </button>
+      </div>
+
+      <!-- Right button -->
+      <div class="ms-auto">
+        <button class="btn px-4 pt-2 text-black fw-bold rounded-3 shadow-sm position-relative"
+          style="background: linear-gradient(180deg, #eee04f, #f5dc5c86);"
+          onclick="openModal('formIO', null, 'Research Request Form'); loadResearchRequest();">
+          <h3 class=" text-center">Research Request Form</h3>
+          <p class="text-start"><i class="fa-brands fa-wpforms" style="font-size: 60px;"></i> Click Here</p>
+          <p class="text-start mb-0">Further Queries: </p>
+          <p>Email - missions.research@cmcvellore.ac.in </p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Two Empty Panels -->
+<div class="">
+  <div class="container-fluid py-4" style="position: relative; z-index: 3;">
+    <div class="row g-4 mb-5">
+      <div class="col-12 col-md-6">
+        <div
+          class="bg-secondary-subtle shadow-sm rounded-3 px-2 py-3 h-100 border align-items-start fixed-card-container">
+          <h5 class="fw-semibold d-flex align-items-center">
+            Recent Interesting Publications
+            <i class="fas fa-info-circle ms-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Curated by the Missions Office from around the world"></i>
+          </h5>
+          <div class="col-12">
+            <div class="bg-white rounded-3" id="recentPublicCards"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div
+          class="bg-secondary-subtle shadow-sm rounded-3 px-2 py-3 h-100 border align-items-start fixed-card-container">
+          <h5 class="fw-semibold d-flex align-items-center">
+            Latest Public Health News
+            <i class="fas fa-info-circle ms-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Curated by the Missions Office from around the world"></i>
+          </h5>
+          <div class="col-12">
+            <div class="bg-white rounded-3" id="recentNewsCards"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="position-relative align-content-center justify-content-center"
+  style="background: url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_b925445e5e3904f4edb0cf9b687f6280_Pictures.jpg') center center / cover no-repeat; height: 70%; font-family: math;">
+  <div style="background: rgba(69, 68, 68, 0.532); position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+  </div>
+  <h4 class="text-center text-white position-relative" style="font-size: 4vmin;"> Research Legacies</h4>
+  <div class="timeline-wrapper clearfix">
+    <div id="timelineContainer"></div>
+  </div>
+</div>

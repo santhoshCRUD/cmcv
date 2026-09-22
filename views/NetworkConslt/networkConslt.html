@@ -1,0 +1,351 @@
+<!-- <div class="bg-white h-100 d-flex align-items-center justify-content-center">
+  <h3 class="text-center connect-text-darkblue">Coming Soon</h3> -->
+
+<nav class="navbar navbar-expand-lg nc-topbar px-3">
+
+  <div class="container-fluid">
+ 
+    <div class="d-flex align-items-center gap-3">
+ 
+      <i class="fas fa-arrow-left fs-5 pe-pointer text-white" onclick="renderMissionsPage();"></i>
+ 
+      <h5 class="mb-0 text-white fw-semibold">
+        Network Consults
+      </h5>
+ 
+    </div>
+ 
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+      data-bs-target="#ncNavbar">
+ 
+      <i class="fas fa-bars text-white"></i>
+ 
+    </button>
+ 
+    <div class="collapse navbar-collapse justify-content-end" id="ncNavbar">
+ 
+      <div class="navbar-nav gap-lg-2 mt-3 mt-lg-0">
+ 
+        <button class="nav-btn active" data-page="introPage">
+          <i class="fa-solid fa-home"></i>
+        </button>
+ 
+        <button class="nav-btn" data-page="themesPage">
+          Themes
+        </button>
+ 
+        <button class="nav-btn d-none" data-page="requestPage">
+          Request
+        </button>
+ 
+        <button class="nav-btn d-none" data-page="consultPage">
+          Consult
+        </button>
+ 
+        <button class="nav-btn d-none" data-page="nodalPage">
+          Nodal
+        </button>
+ 
+      </div>
+ 
+    </div>
+ 
+  </div>
+ 
+</nav>
+ 
+<main class="nc-content">
+  <div id="netConsltMainContainer" class="container-fluid"
+    style="background-image: url(https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_46dd2439429f103ec36ef124712f5240_Pictures.png); background-size: cover; background-position: center; z-index: 0;">
+ 
+    <div id="introPage" class="content-page active-page">
+      <h2>Welcome <span id="ncUserName" class="text-primary"></span> to Network Consults</h2>
+      <p>This initiative provides an opportunity for our network doctors to engage directly
+        with specialists at CMC to seek expert opinions on patient treatment and care.
+      </p>
+      <div class="mt-3" id="registrationTrigger">
+        <p>We invite you to register to begin participating in this collaborative consultation process.</p>
+        <button class="btn btn-primary px-4"
+          onclick="openModal('formIO', null, ''); loadNetConsltRegForm()">Register</button>
+      </div>
+
+
+
+<div class="nc-dash d-none" id="ncDashboard">
+ 
+  <div class="nc-dash-hero d-none">
+    <div>
+      <span class="nc-dash-kicker">Network Consults</span>
+      <h5 class="nc-dash-title">Programme at a Glance</h5>
+      <p class="nc-dash-sub">Live summary of consults, questions and registrations</p>
+    </div>
+    <button type="button" class="nc-dash-refresh" onclick="loadNcDashboard(true)">
+      <i class="fas fa-rotate-right"></i> Refresh
+    </button>
+  </div>
+ 
+  <!-- ---------- KPI tiles ---------- -->
+  <div class="nc-kpi-row">
+ 
+    <div class="nc-kpi-card accent-navy is-clickable" role="button" tabindex="0"
+      onclick="ncShowDetail('cases')">
+      <div class="kpi-top">
+        <span class="kpi-label">Total patient cases</span>
+        <span class="kpi-icon"><i class="fa-solid fa-notes-medical"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiTotalCases">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiTotalCasesFoot">&nbsp;</div>
+    </div>
+ 
+    <div class="nc-kpi-card accent-amber is-clickable" role="button" tabindex="0"
+      onclick="ncShowDetail('openQuestions')">
+      <div class="kpi-top">
+        <span class="kpi-label">Open questions</span>
+        <span class="kpi-icon"><i class="fa-solid fa-comments"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiOpenQueries">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiOpenQueriesFoot">&nbsp;</div>
+    </div>
+ 
+    <div class="nc-kpi-card accent-blue">
+      <div class="kpi-top">
+        <span class="kpi-label">Avg. response time</span>
+        <span class="kpi-icon"><i class="fa-solid fa-stopwatch"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiResponse">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiResponseFoot">&nbsp;</div>
+    </div>
+ 
+    <div class="nc-kpi-card accent-teal is-clickable d-none" role="button" tabindex="0"
+      onclick="ncShowDetail('consultants')">
+      <div class="kpi-top">
+        <span class="kpi-label">Consultants</span>
+        <span class="kpi-icon"><i class="fa-solid fa-user-doctor"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiConsultants">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiConsultantsFoot">&nbsp;</div>
+    </div>
+ 
+    <div class="nc-kpi-card accent-gold is-clickable" role="button" tabindex="0"
+      onclick="ncShowDetail('themes')">
+      <div class="kpi-top">
+        <span class="kpi-label">Consult themes</span>
+        <span class="kpi-icon"><i class="fa-solid fa-layer-group"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiThemes">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiThemesFoot">&nbsp;</div>
+    </div>
+ 
+    <div class="nc-kpi-card accent-orange is-clickable" role="button" tabindex="0"
+      onclick="ncShowDetail('monthCases')">
+      <div class="kpi-top">
+        <span class="kpi-label">Cases this month</span>
+        <span class="kpi-icon"><i class="fa-solid fa-calendar-check"></i></span>
+      </div>
+      <div class="kpi-value is-loading" id="ncKpiMonthCases">&mdash;</div>
+      <div class="kpi-foot" id="ncKpiMonthCasesFoot">&nbsp;</div>
+    </div>
+ 
+  </div>
+ 
+  <!-- ---------- charts row ---------- -->
+  <div class="row g-3" hidden="hidden">
+ 
+    <div class="col-lg-7">
+      <div class="nc-panel h-100 accent-blue">
+        <div class="nc-panel-head">
+          <h6>Consults by Theme</h6>
+          <span class="nc-panel-meta" id="ncThemeChartMeta"></span>
+        </div>
+        <div class="nc-panel-body">
+          <div class="nc-bars" id="ncThemeChart">
+            <div class="nc-empty">Loading&hellip;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="col-lg-5">
+ 
+      <div class="nc-panel mb-3 accent-navy">
+        <div class="nc-panel-head">
+          <h6>Patient Case Status</h6>
+          <span class="nc-panel-meta" id="ncCaseStatusMeta"></span>
+        </div>
+        <div class="nc-panel-body">
+          <div class="nc-status-bar" id="ncCaseStatusBar"></div>
+          <div class="nc-legend" id="ncCaseStatusLegend">
+            <div class="nc-empty">Loading&hellip;</div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="nc-panel accent-teal">
+        <div class="nc-panel-head">
+          <h6>Registration Applications</h6>
+          <span class="nc-panel-meta" id="ncAppStatusMeta"></span>
+        </div>
+        <div class="nc-panel-body">
+          <div class="nc-status-bar" id="ncAppStatusBar"></div>
+          <div class="nc-legend" id="ncAppStatusLegend">
+            <div class="nc-empty">Loading&hellip;</div>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- ---------- activity + actions ---------- -->
+  <div class="row g-3 mt-0">
+ 
+    <div class="col-lg-7">
+      <div class="nc-panel h-100 accent-gold">
+        <div class="nc-panel-head">
+          <h6>Recent Activity</h6>
+          <span class="nc-panel-meta">Newest first</span>
+        </div>
+        <div class="nc-panel-body">
+          <div class="nc-activity" id="ncActivityFeed">
+            <div class="nc-empty">Loading&hellip;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="col-lg-5 d-none">
+      <div class="nc-panel h-100 accent-orange">
+        <div class="nc-panel-head">
+          <h6>Quick Actions</h6>
+        </div>
+        <div class="nc-panel-body">
+          <div class="nc-quick">
+            <button type="button" class="nc-quick-btn is-primary" onclick="ncNewPatient()">
+              <i class="fa-solid fa-plus"></i> Enter New Patient
+            </button>
+            <button type="button" class="nc-quick-btn" onclick="ncGoToPage('requestPage')">
+              <i class="fa-solid fa-list-check"></i> My Patient Requests
+            </button>
+            <button type="button" class="nc-quick-btn" onclick="ncGoToPage('themesPage')">
+              <i class="fa-solid fa-layer-group"></i> Browse Themes
+            </button>
+            <button type="button" class="nc-quick-btn" id="ncQuickRegister"
+              onclick="openModal('formIO', null, ''); loadNetConsltRegForm()">
+              <i class="fa-solid fa-user-plus"></i> Register as Consultant
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+ 
+  <!-- ---------- detail popup (opened by the KPI tiles) ----------
+       Self-contained Bootstrap modal. It does not use openModal() or
+       views/modal.html, so no other screen is affected. -->
+  <div class="modal fade nc-detail-modal" id="ncDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+ 
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="ncDetailTitle">Details</h5>
+            <p class="nc-detail-sub" id="ncDetailSub"></p>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+ 
+        <div class="modal-body">
+          <div class="nc-detail-tools">
+            <div class="nc-detail-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="ncDetailSearch" placeholder="Search these rows"
+                oninput="ncFilterDetail(this.value)">
+            </div>
+            <span class="nc-detail-count" id="ncDetailCount"></span>
+          </div>
+ 
+          <div class="nc-detail-scroll scrollBar-thin">
+            <table class="table nc-detail-table">
+              <thead id="ncDetailHead"></thead>
+              <tbody id="ncDetailBody"></tbody>
+            </table>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+ 
+</div>
+    </div>
+
+    <div id="themesPage" class="content-page d-none">
+      <div id="ncThemesList"></div>
+ 
+    </div>
+ 
+    <div id="requestPage" class="content-page d-none">
+      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2">My Patient Requests</h3>
+      <div class="row g-3">
+        <div class="col-md-8">
+          <div class="overflow-auto p-1 scrollBar-thin">
+            <table id="ncPatientReqtable" class="table table-hover border custom-styled-table"></table>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-nc text-white rounded-top">
+              <h5 class="text-center">Patient Summary</h5>
+            </div>
+            <div class="card-body">
+              <div class="border border-black rounded-3 p-2 mb-2">
+                <h6 class="fw-bold text-center">Demographics</h6>
+                <p>Name: <strong id="ncPatientName"></strong></p>
+                <p>Age: <strong id="ncPatientAge"></strong></p>
+                <p>Place: <strong id="ncPatientPlace"></strong></p>
+                <p>Start date: <strong id="ncPatientStartDate"></strong></p>
+                <p>Last seen date: <strong id="ncPatientLastSeenDate"></strong></p>
+              </div>
+              <div class="border border-black rounded-3 p-2 mb-2">
+                <h6 class="fw-bold text-center">History</h6>
+                <span id="ncPatientHistory"></span>
+              </div>
+              <div class="border border-black rounded-3 p-2 mb-2">
+                <h6 class="fw-bold text-center">Investigations</h6>
+                <span id="ncPatientInvestigations"></span>
+              </div>
+              <div class="border border-black rounded-3 p-2 mb-2">
+                <h6 class="fw-bold text-center">Plan</h6>
+                <span id="ncPatientPlan"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div id="consultPage" class="content-page d-none">
+      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2" id="ncDepartmentName"></h3>
+      <div class="row overflow-auto p-3 bg-body-secondary rounded scrollBar-thin mb-3">
+        <div id="myApprovedPatient"></div>
+      </div>
+      <div class="bg-white overflow-auto p-3 scrollBar-thin rounded">
+        <table id="ncMyDeptConsltTable" class="table table-hover border"></table>
+      </div>
+    </div>
+ 
+    <div id="nodalPage" class="content-page d-none">
+      <h3 class="fw-semibold mb-3 bg-nc text-white rounded-3 text-center p-2">Nodal Overview</h3>
+      <div class="row overflow-auto p-3 bg-body-secondary rounded scrollBar-thin mb-3">
+        <div id="newPatientReq"></div>
+      </div>
+      <div class="bg-white overflow-auto p-3 scrollBar-thin rounded">
+        <table id="ncNodalsListTable" class="table table-hover"></table>
+      </div>
+    </div>
+  </div>
+
+</main>
+

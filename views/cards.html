@@ -1,0 +1,359 @@
+{% macro baseCardComponent(cardtype,cardHeading, data, redirect, cardClass = 'card',
+icon='',readMore=false) %}
+<div class="{{ cardClass }}">
+  {% if cardHeading %}
+  <div class="card-header border-0 ">
+    <h5 class="d-flex justify-content-between align-items-center">{{cardHeading}} <img
+        class='img-thumbnail-rounded {% if redirect %} pe-pointer {% endif %}'
+        src="{% if redirect %} ./images/arrow-up-right-from-square-solid.svg{% else %}{{ icon }}{% endif %}" width="25"
+        height="25" {% if redirect %} onclick="instructionHandler('{{ data.userType }}')" {% endif %}></h5>
+  </div>
+  {% endif %}
+  <div class="card-body p-2 p-md-3">
+    {% if cardtype =='singleData' %}
+    {% if data.noteContent %}<blockquote class="blockstyle fs-5 p-2 p-md-4 fst-italic ">
+      {{ data.noteContent | safe }}
+    </blockquote>{% endif %}
+    <div class="mb-0 {% if redirect %} text-line full_width pe-pointer{% endif %}" {% if redirect %}
+      onclick="instructionHandler('{{ data.userType }}')" {% endif %}>
+      <div class="cnt">{{ data.textData |safe}}</div>
+    </div>
+    {% elseif cardtype == 'ticker' %}
+    <div class="text-end" style="margin-top: -5px;"><span class="px-2 py-1 bg-info-subtle rounded-3 pe-pointer"
+        onclick="loadAllNews('{{data.query}}', '{{data.currPage}}')">View all</span></div>
+    <div class=" demo rounded-3">
+      {{data.rNews}}
+    </div>
+    {% elseif cardtype == 'cardTable' %}
+    <div class="card-header text-center bg-transparent secondary-color">
+      <h3>{{data.councilMemberOrganizationName}} {{data.heading}} </h3>
+    </div>
+    <div class="card-content mt-3" style="max-height: 400px; overflow: auto;">
+      <table class="table table-light table-striped">
+        <thead class="connect-text-darkblue">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">{{data.tableHeader}} Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if data.tableData %}
+          {{data.tableData}}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    {% elseif cardtype == 'cardList' %}
+    {% if data.map %} <!-- Location for maps  -->
+    <div id="mapOnCard" class="w-100" style="min-height: 300px;"></div>
+    {% endif %}
+    {% if data.gallery %} <!-- Gallery for images  -->
+    <div class="d-flex pt-2 pb-2" style="overflow: auto;">
+      {{data.gallery}}
+    </div>
+    {% endif %}
+
+    <div class="d-flex flex-wrap justify-content-start pt-2 pb-2" style="max-height: 400px; overflow: auto;">
+      {% if data.memberCard %}
+      {{data.memberCard}}
+      {% endif %}
+
+
+      {% if data.readMoreCards%}
+      {{data.readMoreCards}}
+      {% endif %}
+
+      {% if data.listData %}
+      <div class="d-flex flex-column">
+        {% for item in data.listData %}
+        <div class="text-start mb-2 d-flex">
+          <i class="fa-solid fs-4 me-3 {{item.iconImage}} secondary-color"></i>
+          <span class="connect-text-darkblue listData">{{item.detail}}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% endif %}
+      {% if data.location%}
+      <div class="w-100 px-3">
+        <table id="formTable{{data.location}}" class="display"></table>
+      </div>
+      {% endif %}
+    </div>
+    {% elseif cardtype == 'weeklyManna' %}
+    <div class="text-end">
+      <i class="fas fa-info-circle ms-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="Maitiri, CMC"></i>
+      <button class="btn bg-info-subtle py-1 px-2 rounded-3"
+        onclick="navigateTo('weeklyManna', {}, ['loadWeeklyMannaTable', []]);">View all</button>
+    </div>
+    {% if data.weeklyMannaCards%}
+    {{data.weeklyMannaCards}}
+    {% endif %}
+
+    {% elseif cardtype == 'grandRounds' %}
+    {% if data.grandRoundsCards%}
+
+    <div class="row g-3 align-items-center">
+      <div class="col-12 col-sm-4 col-md-3 text-center">
+        <img class="me-3 ms-2"
+          src="https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_b5c59b98f37db017af29c626a296f835_Pictures.png"
+          height="100" width="100" alt="Grand Rounds Image">
+      </div>
+      <div class="col-12 col-sm-8 col-md-9">
+        <h6 class="fw-semibold text-center mb-2">
+          Ongoing Grand Rounds
+        </h6>
+        <div class="grandRounds-list">
+          {{data.grandRoundsCards}}
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    <div class="text-end">
+      <button class="btn bg-info-subtle py-1 px-2 rounded-3"
+        onclick="navigateTo('grandRounds', {backTo: 'renderPostHomePage()'}, [['loadGrandRoundsTable', []], ['loadGrandRoundsVideos', [10]]]);">Read
+        More</button>
+    </div>
+
+    {% elseif cardtype == 'whatsNew' %}
+    {% if data.whatsNew %}
+    {{data.whatsNew}}
+    {% endif %}
+
+    {% endif %}
+
+    {% if readMore %}
+    <div class=" fw-medium text-end text-danger pe-2 pe-pointer">Read more..</div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro infoCardComponent(data, context) %}
+<p class="fst-italic text-info" style="font-size: 15px;">
+  <button id="clearStatusFilters" class="btn btn-sm secondary-bg-color text-white ms-2">Clear All</button>* Reclick the
+  cards to unselect
+</p>
+<div class="d-flex flex-wrap w-100 justify-content-around">
+  {% for card in data %}
+  <button type="button" class="p-1 p-md-2 d-flex flex-column flex-wrap align-items-center justify-content-center subcard z-1
+        {% if loop.index <= data.length - data.length % 3 %} mb-2{% endif %}
+        d-flex align-items-center shadow rounded-3 status-filter-btn btn" data-status="{{ card.cardName | lower }}"
+    style="border-top: 5px solid {{ card.bgColor }} !important; background-color: white;">
+
+    <div class="d-flex align-items-center gap-3">
+      <i class="{{ card.chooseAnIcon }}" style="color: {{ card.bgColor }};"></i>
+      <div class="fs-2 text-dark" id="{{ context }}Status{{ loop.index }}"></div>
+    </div>
+    <p class="fw-light text-dark mb-0">{{ card.cardName or '' }}</p>
+  </button>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+
+{% macro subCardComponent(data) %}
+<div class="d-flex flex-wrap w-100 justify-content-around">
+  {% if data.readMoreCards%}
+  {{data.readMoreCards}}
+  {% else %}
+  {% for item in data %}
+  <div class="p-1 p-md-2 d-flex flex-column flex-wrap align-items-center justify-content-center subcard z-1 
+{#    {% if (loop.index - 1) % 3 == 0 or loop.first %}  me-1{% endif %}
+{% if loop.index % 3 == 0 or loop.last %}  ms-1{% endif %}
+{% if (loop.index - 1) % 3 != 0 and loop.index % 3 != 0 and not loop.last %} mx-1{% endif %}
+     #} 
+    {% if loop.index <= data.length  - data.length % 3 %} mb-2{% endif %}"
+    style="color:white;background-color: {{item.bgColor}};"
+    onclick="loadSubcard('{{item.cardKeyName}}','{{item.pathUrl}}','{{item.currPage}}')">
+    <i class=" rounded bg-opacity-10 {{item.chooseAnIcon}} "></i>
+    <p class=" text-bold  text-center mb-0">{{ item.cardName }} </p>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro dataCard(data) %}
+<div class=" mb-2 mb-md-4 profile-card-3 shadow rounded w-100 position-relative overflow-hidden h-100 bg-white style="
+  min-height: 300px;" {% if data.userType %}onclick="dataCardClickManager('{{data.userType}}','{{data.userId}}')" {%
+  endif %}>
+  <div class="d-flex justify-content-center align-items-center w-100 position-relative" style="height: 200px;">
+    {% if data.userType %}<button
+      class="fw-bold bg-warning btn end-0 me-2 mt-2 position-absolute px-2 py-0 top-0 z-2">Edit</button>{% endif %}
+    <img src={{data.imageData}} alt="profile-image" class="profile rounded-circle z-1"
+      onerror="this.onerror=null; this.src='https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'" />
+  </div>
+  <div class="text-center px-2 pb-3">
+    <h2 class="connect-text-darkblue text-capitalize">{{data.headOfOrganizationName}}</h2>
+    <small class="text-secondary">{{data.subTitle}}</small>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro documentCard(data) %}
+<a href="{{data.redirectUrl}}" target="_blank" class="text-decoration-none text-reset">
+  <div class="card custom-card p-1 shadow text-center border-0 mb-4 d-flex h-100" style="color: {{cardInfo.bgColor}};">
+    <div class="card-content navbar-brand ">
+      <div class="card-body media">
+        {% if data.consultIcon %}
+        <img class="p-3 rounded-circle" src="{{ data.consultIcon }}" width="120" alt=""
+          style="background-color:#d2652d !important;">
+        <h4 class="text-secondary mt-4">{{data.cardName}}</h4>
+        {% endif %}
+        {% if data.noteContent %}
+        <i class="{{data.chooseAnIcon}} fa-4x" aria-hidden="true"></i>
+        <hr />
+        <h3 class="connect-text-darkblue">{{data.cardName}}</h3>
+      </div>
+      <div class="card-footer bg-transparent border-0">
+        <em class="text-wrap secondary-color">{{data.noteContent |safe}}</em>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</a>
+{% endmacro %}
+
+{% macro dualCard(data) %}
+<div class="card border-0 bg-transparent">
+  <div class="row g-3 align-items-stretch">
+
+    {% for item in data.cards %}
+    <div class="col-12 {{ item.cardWidth }} d-flex">
+
+      {% if item.subCards %}
+      <div class="d-flex flex-column w-100 h-100 gap-3">
+
+        {% for sub in item.subCards %}
+        <div class="flex-fill d-flex">
+          <span id="{{sub.cardKeyName}}" class="statusCount"></span>
+
+          <div class="card shadow-sm w-100 d-flex align-items-center split-card" onclick='{{ sub.onclick }}'>
+
+            <div class="row align-items-center w-100 g-2 g-md-3">
+
+              <!-- Icon -->
+              <div class="col-4 col-md-5 d-flex justify-content-center">
+                {% if sub.icon %}
+                <img src="{{ sub.icon }}" class="img-fluid split-card-icon" alt="Icon">
+                {% endif %}
+              </div>
+
+              <!-- Text -->
+              <div class="col-8 col-sm-7">
+                <h5 class="mb-0 connect-text-darkblue">
+                  {{ sub.cardName }}
+                </h5>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        {% endfor %}
+
+      </div>
+
+      {% else %}
+      <div class="card text-center shadow p-2 w-100 h-100 {%if item.hoverMessage %} custom-card {% endif %}"
+        onclick='{{ item.onclick }}'>
+
+        <div class="card-main-content">
+          <div class="card-content picture px-md-4 py-3 d-flex justify-content-center align-items-center flex-grow-1">
+            {% if item.icon %}
+            <img src="{{ item.icon }}" class="img-fluid card-icon" alt="Icon">
+            {% endif %}
+          </div>
+
+          <div class="card-footer bg-transparent border-0 w-100">
+            <h5 class="text-wrap connect-text-darkblue mb-0">
+              {{ item.cardName }}
+            </h5>
+          </div>
+        </div>
+        {% if item.hoverMessage %}
+        <div class="card-hover-overlay d-flex justify-content-center align-items-center">
+          <p class="hover-message m-0 px-3">{{ item.hoverMessage }}</p>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endmacro %}
+
+{% macro orgCard(data, cardClass) %}
+
+<div class="card text-center shadow p-2 d-flex h-100 {{ cardClass }}" onclick="{{ data.onclick }}"
+  data-flipbook="{{ data.flipbook }}">
+  {%if data.heading%}
+  <div class="card-header border-0 text-start">
+    <h5 class="mb-0">{{ data.heading }}</h5>
+  </div>
+  {% endif %}
+  <div class="{{ data.cardClass }}">
+    <div class="card-content picture py-1 position-relative">
+      {% if data.chooseAnIcon %}
+      <img class="p-3 rounded-circle" src="{{ data.chooseAnIcon }}" width="120" alt=""
+        style="background-color:#d2652d;">
+      {% endif %}
+      {% if data.icon %}
+      <img src="{{ data.icon }}" width="{{ data.iconWidth or 140 }}" alt="Icon">
+      {% endif %}
+    </div>
+    <div class="card-footer bg-transparent border-0 w-100 {{ data.cardClass2 }}">
+      <h5 class="text-secondary">{{ data.cardName }}</h5>
+      <h2 class="text-wrap {% if data.planet %} text-white {% else %} connect-text-darkblue {% endif %}"
+        style="font-size: {{ data.textSize | default('1.5rem') }};">
+        {{ data.councilMemberOrganizationName }}
+        {% if data.date %}<br><br><small class="text-muted">{{ data.date }}</small> <br>{% endif %}
+        {% if data.url %}
+        <button class="btn btn-sm secondary-bg-color text-white ms-2 mt-3" onclick="{{ data.url }}">{{ data.btnText
+          }}</button>
+        {% endif %}
+      </h2>
+    </div>
+  </div>
+</div>
+{% if data.flipbook %}
+<!-- Model area -->
+
+<div class="modal fade" id="newsletterModal" tabindex="-1">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h5 class="modal-title">
+          Missions Connect Newsletter
+        </h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <div class="modal-body p-0">
+
+        <iframe id="newsletterFrame" width="100%" height="700" frameborder="0" allowfullscreen>
+        </iframe>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endif %}
+{% endmacro %}

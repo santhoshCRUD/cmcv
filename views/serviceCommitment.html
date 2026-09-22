@@ -1,0 +1,227 @@
+<div class="bg-white" style="font-family: sans-serif;">
+
+    <!-- Background Section -->
+    <!-- Hero Section -->
+    <div class="position-relative">
+
+        <!-- Background Image -->
+        <div style="
+        background-image: url('https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_d660916e5d5a6103d7f68782b7c242b5_Pictures.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+    ">
+        </div>
+
+        <!-- Student Card -->
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8">
+                    <div class="bg-white rounded shadow p-4 d-md-flex align-items-center"
+                        style="margin-top: -120px; position: relative; z-index: 10;">
+
+                        <!-- Student Image -->
+                        <div class="text-center mb-3 mb-md-0 me-md-4">
+                            <img src="${data.avatar || 'https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png'}"
+                                alt="Student Image" class="img-fluid rounded"
+                                style="width: 300px; height: 250px; object-fit: cover;">
+                        </div>
+
+                        <!-- Student Details -->
+                        <div>
+
+                            <p class="fs-3 fw-bold mb-2">
+                                ${data.firstName + ' ' + data.lastName}
+                            </p>
+
+                            <p class="fs-5 mb-3">
+                                <b>${data.course_name}</b> - Batch of ${data.batch}
+                            </p>
+
+                            <p class="mb-2">
+                                <b>Admission No:</b> ${data.admissionNo}
+                            </p>
+
+                            <p class="mb-2">
+                                <b>Phone No:</b> ${data.phoneNumber1}
+                            </p>
+
+                            <p class="mb-2">
+                                <b>Email Id:</b> ${data.email}
+                            </p>
+
+                            <p class="mb-2">
+                                <b>Address:</b> ${data.address1}
+                            </p>
+
+                            <p class="mb-0">
+                                <b>Date of Birth:</b> ${new Date(data.dob).toLocaleDateString()}
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Extra Space Below -->
+    <div class="pb-5"></div>
+    <hr class="w-50 mx-auto">
+    <div class="container w-75 py-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center fw-bold">A Bit About Me</h4>
+                <p class="text-center">${data.aboutme}</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="bg-dark text-white text-center pb-4">
+        <div class="pb-4 bg-gradient" style="  mask: 
+    radial-gradient(102.86px at 50% calc(100% - 138px),#000 99%,#0000 101%) calc(50% - 92px) 0/184px 100%,
+    radial-gradient(102.86px at 50% calc(100% + 92px),#0000 99%,#000 101%) 50% calc(100% - 46px)/184px 100% repeat-x;">
+            <h4 class="text-center fw-bold py-5">Service Commitment Details</h4>
+        </div>
+        <div class="container-fluid">
+            <div class="row g-3 w-75 mx-auto" style="font-family: sans-serif">
+                <h5 class="fw-bold">Course Details</h5>
+                <div class="col-md-3">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Quota Name</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${data.quotaName.quotaName}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Quota Category</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${data.quotaCategory.quotaCategory}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Course joining date</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${new
+                                Date(data.doj).toLocaleDateString('en-US', { day: 'numeric',
+                                month: 'short', year: 'numeric' })}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Expected date of completion</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${new
+                                Date(data.expectedDateOfCompletion).toLocaleDateString('en-US',
+                                { day: 'numeric', month: 'short', year: 'numeric' })}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-black text-white text-center py-4">
+        <div class="container">
+            <div class="row g-3 w-75 mx-auto" style="font-family: sans-serif;">
+                <h5 class="fw-bold">Sponsorship Details</h5>
+
+                <div class="col-md-4">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Number of years of service</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${data.serviceDuration}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Sponsoring Body name</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">${data.sponsoringBody.sponsoringBodyName}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="height: 150px;">
+                        <div class="card-body align-content-center">
+                            <h5 class="card-title fw-bold">Allotted Hospital</h5>
+                            <hr class="mx-4">
+                            <h5 class="card-text" style="font-family: math;">
+                                ${data.listOfHsptlVisited[data.listOfHsptlVisited.length -
+                                1]?.hsptlPosted?.missionHospitalName || 'Hospital not allotted yet'}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class=" px-2 py-4">
+        <h4 class="text-black fw-bold text-center">Hospital Associated with the
+            ${data.sponsoringBody.sponsoringBodyName}</h4>
+        <div id="sponsoringBodyCard" class="container"></div>
+    </section>
+    <section class="bg-black text-white py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-11 col-md-8 col-lg-6">
+                    <div class="border rounded-3 p-3 p-md-4">
+
+                        <p class="mb-3">
+                            Please share your journey with us. It would be very helpful
+                            for others wanting to go in the same direction to read about
+                            your experiences.
+                        </p>
+
+                        <div class="dropdown mb-3 w-100">
+                            <button
+                                class="btn btn-light dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center"
+                                type="button" id="hospitalDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <span id="selectedHospitalText">Select Hospital</span>
+                            </button>
+
+                            <ul class="dropdown-menu w-100" id="hospitalList"
+                                style="max-height:250px; overflow-y:auto;">
+                                ${(data.listOfHsptlVisited || []).map(hsptl => `
+                                <li>
+                                    <a class="dropdown-item hospital-item" href="javascript:void(0)"
+                                        data-id="${hsptl.hsptlPosted._id}">
+                                        ${hsptl.hsptlPosted.missionHospitalName}
+                                    </a>
+                                </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <input type="hidden" id="selectedHsptl">
+
+                        <textarea id="feedback" class="form-control mb-3" rows="8"
+                            placeholder="Share your experience..."></textarea>
+
+                        <button id="shareBtn" class="btn btn-primary w-100" disabled>
+                            Click here to share
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
