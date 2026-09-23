@@ -141,6 +141,14 @@ const WRITE_ROLE_RULES = {
 };
 
 
+// Collections that only accept specific update operations.
+// missionHospital: students add their journey feedback
+// (initFeedbackForm in the git code) and nothing else.
+const UPDATE_ONLY = {
+    missionHospital: { $push: ["studentFeedback"] }
+};
+
+
 // -----------------------------------------------------
 // Collections restricted to specific roles.
 // The Council section is "accessible only to Council
@@ -150,6 +158,22 @@ const WRITE_ROLE_RULES = {
 const ROLE_RULES = {
     CouncilMembers: ["Council Member"],
     HeadOfOrganization: ["Council Member"]
+};
+
+
+// -----------------------------------------------------
+// Collections a user may only read their own records of.
+// "students" holds personal data; the git code queries it
+// by the signed-in student's admissionNo only
+// (loadServiceCommitPage) and never reads academic,
+// bills, schedules or eventAttendance.
+// -----------------------------------------------------
+
+const OWNER_SCOPES = {
+    students: {
+        filter: user => ({ admissionNo: user.admissionNo || "\u0000" }),
+        exclude: { academic: 0, bills: 0, schedules: 0, eventAttendance: 0 }
+    }
 };
 
 
@@ -399,9 +423,16 @@ async function runFetch(def, user) {
     assertSafe(def.projection);
     assertSafe(options);
 
-    const filter = normalizeIdFilter(revive(def.query || {}, false));
+    let filter = normalizeIdFilter(revive(def.query || {}, false));
 
-    const projection = def.projection || options.projection;
+    let projection = def.projection || options.projection;
+
+    const scope = OWNER_SCOPES[def.collection];
+
+    if (scope) {
+        filter = { $and: [filter, scope.filter(user)] };
+        projection = scope.exclude;
+    }
 
     const sort = options.sort || def.sort;
 
@@ -440,6 +471,10 @@ async function runInsert(def, user, { meteorIds }) {
 
     assertRole(def.collection, user);
     assertWriteRole(def.collection, user);
+
+    if (UPDATE_ONLY[def.collection]) {
+        throw httpError(403, "This collection is read-only");
+    }
 
     const doc = def.query;
 
@@ -502,6 +537,17 @@ async function runUpdate(def, user) {
             throw httpError(400, `Update operator ${op} is not allowed`);
         }
     });
+
+    const only = UPDATE_ONLY[def.collection];
+
+    if (only) {
+        Object.keys(data).forEach(op => {
+            const fields = Object.keys(data[op] || {});
+            if (!only[op] || !fields.length || fields.some(field => !only[op].includes(field))) {
+                throw httpError(403, "You do not have permission to change this resource.");
+            }
+        });
+    }
 
     assertSafe(selector);
     assertSafe(data);

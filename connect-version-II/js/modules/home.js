@@ -224,7 +224,7 @@
             <article class="card widget">
                 ${widgetHead("bi-hospital", "Your hospitals", "#/hospitals")}
                 <ul class="widget-list">${hospitals.map(h => html`
-                    <li><a href="${h.hospitalDocId ? `#/hospitals/${encodeURIComponent(h.hospitalDocId)}` : "#/hospitals"}">
+                    <li><a href="${h.hospitalDocId ? `#/my-hospital/${encodeURIComponent(h.hospitalDocId)}` : "#/hospitals"}">
                         <span class="widget-list-title">${h.hospitalName || h.missionHospitalName || "Hospital"}</span>
                         <span class="text-muted">${[h.infoLabel, h.hospitalDetail].filter(Boolean).join(" ")}</span>
                     </a></li>`)}</ul>

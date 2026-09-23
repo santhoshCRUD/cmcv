@@ -281,7 +281,12 @@ router.post("/login", async (req, res) => {
                     profile.employeeNo,
 
                 roles:
-                    Array.isArray(user.roles) ? user.roles : []
+                    Array.isArray(user.roles) ? user.roles : [],
+
+                // Scopes the "students" collection to the caller's
+                // own record (Service Commitment).
+                admissionNo:
+                    profile.admissionNo || ""
 
             });
 

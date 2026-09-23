@@ -5,8 +5,8 @@
  * (loadGrantsAwardee / applyFilters / loadGrantsListTable) and the
  * Publications map (loadPublicationsMap). Queries unchanged.
  *
- * The Research Request form (FormIO "researchRequest" -> ResearchRequest)
- * is a write flow and moves over in Phase 2 with the other forms.
+ * The Research Request form (FormIO "researchRequest" -> ResearchRequest,
+ * loadResearchRequest in the git code) opens via HelpForms.researchRequest.
  *
  * Routes: #/research, #/research/grants, #/research/publications
  */
@@ -27,7 +27,6 @@
             title: "Research",
             icon: "bi-clipboard2-pulse",
             color: "blue",
-            description: "Curated publications, public health news and research legacies from the Missions office.",
             actions: html`<a class="btn btn-secondary" href="mailto:missions.research@cmcvellore.ac.in"><i class="bi bi-envelope"></i> missions.research@cmcvellore.ac.in</a>`
         })}
         ${tabs(active)}`;
@@ -43,13 +42,16 @@
             ${header("")}
             <div class="notice card">
                 <i class="bi bi-ui-checks"></i>
-                <div><strong>Research Request Form</strong><br><span class="text-muted">Online submission is moving to the new portal in the next update. Until then, email further queries to missions.research@cmcvellore.ac.in.</span></div>
+                <div><strong>Research Request Form</strong><br><span class="text-muted">Further Queries: Email - missions.research@cmcvellore.ac.in</span></div>
+                <button type="button" class="btn btn-primary btn-sm notice-action" id="researchRequestBtn"><i class="bi bi-pencil-square"></i> Click Here</button>
             </div>
             <div class="two-col">
                 ${section("Recent interesting publications", html`<div id="publications">${skeletonList(3)}</div>`, { description: "Curated by the Missions Office from around the world" })}
                 ${section("Latest public health news", html`<div id="researchNews">${skeletonList(3)}</div>`, { description: "Curated by the Missions Office from around the world" })}
             </div>
             ${section("Research legacies", html`<div id="legacies">${skeletonCards(4, "timeline")}</div>`)}`);
+
+        view.querySelector("#researchRequestBtn").addEventListener("click", () => HelpForms.researchRequest());
 
         const results = await ConnectAPI.fetchMany([
             { collection: "ResearchNews", query: { isDeleted: false, showOnCarousel: "yes" }, options: { sort: { newsDate: -1 } }, projection: { uploadImage: 1, newsTitle: 1, content: 1, link: 1, newsBody: 1 } },

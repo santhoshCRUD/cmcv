@@ -6,13 +6,13 @@
  *   exactly like renderPostHomePage() (userType + roles), and a
  *   module can additionally require roles (e.g. "Council Member")
  * - hash routing: #/            -> dashboard (home view)
- *                 #/explorer    -> version II data explorer
  *                 #/<id>/<...>  -> module view
  *
  * Module shape:
  *   { id, title, icon, color, group, description,
  *     audiences?: ["missions", "student", "guest"],
  *     roles?: ["Council Member"],
+ *     when?: user => boolean,     // extra git rule (e.g. userType checks)
  *     nav?: false,                // hide from sidebar / tiles
  *     render(view, params, ctx) } // may return a cleanup function
  *
@@ -24,6 +24,8 @@
 
     const GROUPS = [
         "Missions",
+        "Mission engagement",
+        "Grants",
         "Learning",
         "Research",
         "News & updates",
@@ -66,6 +68,7 @@
     const user = () => window.currentUser || {};
     const audience = () => audienceOf(user());
     const hasRole = role => (user().roles || []).includes(role);
+    const userType = () => String(user().userType || "").toLowerCase();
 
     function canAccess(module) {
 
@@ -74,6 +77,10 @@
         }
 
         if (module.roles && !module.roles.some(hasRole)) {
+            return false;
+        }
+
+        if (module.when && !module.when(user(), { audience: audience(), hasRole })) {
             return false;
         }
 
@@ -231,16 +238,6 @@
 
         }
 
-        if (id === "explorer") {
-
-            showView("explorer");
-            setActiveNav("explorer");
-            setTitle("Data explorer");
-
-            return;
-
-        }
-
         const module = find(id);
         const view = document.getElementById("moduleView");
 
@@ -278,7 +275,7 @@
     }
 
     function context() {
-        return { user: user(), audience: audience(), hasRole, navigate };
+        return { user: user(), audience: audience(), hasRole, navigate, userType: userType() };
     }
 
     function navigate(path) {
@@ -313,6 +310,7 @@
         audienceOf,
         audience,
         hasRole,
+        userType,
         find,
         modules: () => modules.slice()
     };
