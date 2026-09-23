@@ -12,25 +12,33 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
-    <title>CMC V Connect V2</title>
+    <meta name="theme-color" content="#0b1b3a">
+
+    <title>Sign in | CMC V Connect</title>
 
 
-    <!-- Existing Styles -->
+    <!-- Typography + icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         rel="stylesheet"
-        href="./styles/styles.css"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     >
-
-
-    <!-- Bootstrap -->
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     >
 
+
+    <!-- Design system -->
+    <link rel="stylesheet" href="./styles/design-system.css">
+    <link rel="stylesheet" href="./styles/auth.css">
+
+
+    <!-- Bootstrap JS (kept for parity with the original page) -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
@@ -56,2123 +64,310 @@
         src="https://accounts.google.com/gsi/client">
     </script>
 
-
-    <style>
-
-        /* =========================================================
-           GLOBAL
-        ========================================================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        html,
-        body {
-            width: 100%;
-            min-height: 100%;
-        }
-
-        body {
-            background: #f6f7fb;
-        }
-
-
-        /* =========================================================
-           MAIN LOGIN AREA
-        ========================================================= */
-
-        .auth-section {
-
-            position: relative;
-
-            min-height: calc(100vh - 64px);
-
-            overflow: hidden;
-
-            background: #0b3268;
-
-        }
-
-
-        /* =========================================================
-           BACKGROUND IMAGE
-        ========================================================= */
-
-        .auth-background {
-
-            position: absolute;
-
-            inset: 0;
-
-            width: 100%;
-            height: 100%;
-
-            z-index: 0;
-
-            overflow: hidden;
-
-            background: #0b3268;
-
-        }
-
-
-        .auth-background img {
-
-            width: 100%;
-            height: 100%;
-
-            display: block;
-
-            /*
-             * contain ensures the complete CMC
-             * network image remains visible.
-             */
-            object-fit: cover;
-
-            object-position: center center;
-
-        }
-
-
-        /* =========================================================
-           BACKGROUND SHADE
-        ========================================================= */
-
-        .auth-background::after {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(11, 50, 104, 0.08),
-                    rgba(11, 50, 104, 0.20)
-                );
-
-            pointer-events: none;
-
-        }
-
-
-        /* =========================================================
-           LOGIN OVERLAY
-        ========================================================= */
-
-        .auth-overlay {
-
-            position: relative;
-
-            z-index: 2;
-
-            min-height: calc(100vh - 64px);
-
-            display: flex;
-
-            align-items: flex-end;
-
-            justify-content: center;
-
-            padding:
-
-                40px
-
-                35px
-
-                75px;
-
-        }
-
-
-        /* =========================================================
-           LOGIN OPTIONS
-        ========================================================= */
-
-        .login-options {
-
-            width: 100%;
-
-            max-width: 1080px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 22px;
-
-            align-items: stretch;
-
-        }
-
-
-        /* =========================================================
-           LOGIN CARD
-        ========================================================= */
-
-        .login-provider-card {
-
-            position: relative;
-
-            display: flex;
-
-            flex-direction: column;
-
-            min-height: 270px;
-
-            padding: 27px 25px;
-
-            border-radius: 16px;
-
-            /*
-             * Slight transparency allows the
-             * network background to remain visible.
-             */
-            /* background:
-                rgba(255, 255, 255, 0.94); */
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.8);
-
-            box-shadow:
-                0 15px 40px
-                rgba(0, 0, 0, 0.20);
-
-            backdrop-filter:
-                blur(10px);
-
-            -webkit-backdrop-filter:
-                blur(10px);
-
-            transition:
-                transform 0.25s ease,
-                box-shadow 0.25s ease;
-
-        }
-
-
-        .login-provider-card:hover {
-
-            transform:
-                translateY(-5px);
-
-            box-shadow:
-                0 20px 50px
-                rgba(0, 0, 0, 0.26);
-
-        }
-
-
-        /* =========================================================
-           TOP ACCENT
-        ========================================================= */
-
-        .login-provider-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-            right: 0;
-
-            height: 4px;
-
-            border-radius:
-                16px 16px 0 0;
-
-
-        }
-
-
-        /* =========================================================
-           TITLE
-        ========================================================= */
-
-        .provider-title {
-
-            color: #0b3268;
-
-            font-size: 20px;
-
-            font-weight: 700;
-
-            margin-bottom: 8px;
-
-            letter-spacing: 0.1px;
-
-        }
-
-
-        /* =========================================================
-           DESCRIPTION
-        ========================================================= */
-
-        .provider-description {
-
-            color: #666;
-
-            font-size: 13px;
-
-            line-height: 1.55;
-
-            min-height: 50px;
-
-            margin-bottom: 16px;
-
-        }
-
-
-        .provider-description strong {
-
-            color: #333;
-
-            font-weight: 600;
-
-        }
-
-
-        /* =========================================================
-           INPUT
-        ========================================================= */
-
-        .provider-input {
-
-            width: 100%;
-
-            height: 45px;
-
-            padding:
-                10px 14px;
-
-            border:
-                1px solid #cbd5e1;
-
-            border-radius: 8px;
-
-            background: #ffffff;
-
-            color: #333;
-
-            font-size: 13px;
-
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background 0.2s ease;
-
-        }
-
-
-        .provider-input:hover {
-
-            border-color:
-                #9aa9bc;
-
-        }
-
-
-        .provider-input:focus {
-
-            outline: none;
-
-            border-color:
-                #0b3268;
-
-            background: #ffffff;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(11, 50, 104, 0.12);
-
-        }
-
-
-        .provider-input::placeholder {
-
-            color: #9aa1aa;
-
-        }
-
-
-        /* =========================================================
-           DOMAIN INFORMATION
-        ========================================================= */
-
-        .supported-domains {
-
-            margin-top: 7px;
-
-            font-size: 10px;
-
-            line-height: 1.55;
-
-            color: #777;
-
-        }
-
-
-        .supported-domains strong {
-
-            color: #0b3268;
-
-            font-weight: 600;
-
-        }
-
-
-        /* =========================================================
-           ERROR
-        ========================================================= */
-
-        .login-error {
-
-            color: #dc3545;
-
-            font-size: 11px;
-
-            min-height: 18px;
-
-            margin-top: 4px;
-
-        }
-
-
-        /* =========================================================
-           LOGIN BUTTON
-        ========================================================= */
-
-        .btn-login {
-
-            width: 100%;
-
-            height: 43px;
-
-            margin-top: auto;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #0b3268;
-
-            color: #ffffff;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-
-        }
-
-
-        .btn-login:hover {
-
-            background: #12458d;
-
-            transform:
-                translateY(-1px);
-
-            box-shadow:
-                0 5px 15px
-                rgba(11, 50, 104, 0.25);
-
-        }
-
-
-        .btn-login:active {
-
-            transform:
-                translateY(0);
-
-        }
-
-
-        /* =========================================================
-           REGISTRATION CARD
-        ========================================================= */
-
-        .registration-card {
-
-            text-align: center;
-
-            justify-content: center;
-
-        }
-
-
-        /* .registration-card::before {
-
-            background: #6c757d;
-
-        } */
-
-
-        .registration-card
-        .provider-description {
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .registration-btn {
-
-            background: #6c757d;
-
-        }
-
-
-        .registration-btn:hover {
-
-            background: #555d63;
-
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================= */
-
-        .login-footer {
-
-            position: absolute;
-
-            z-index: 5;
-
-            bottom: 0;
-
-            left: 0;
-
-            width: 100%;
-
-            height: 45px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background:
-                rgba(11, 50, 104, 0.90);
-
-            color: #ffffff;
-
-            font-size: 12px;
-
-            letter-spacing: 0.2px;
-
-            backdrop-filter: blur(6px);
-
-        }
-
-
-        /* =========================================================
-           HIDDEN GOOGLE CONTAINERS
-        ========================================================= */
-
-        #googleSignInButton,
-        #googleSignInButtonmb,
-        #googleSignInButtonhp {
-
-            display: none;
-
-        }
-
-
-        /* =========================================================
-           TABLET
-        ========================================================= */
-
-        @media (max-width: 950px) {
-
-            .login-options {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-                max-width: 720px;
-
-            }
-
-            .registration-card {
-
-                grid-column:
-                    1 / -1;
-
-                min-height: 210px;
-
-            }
-
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 650px) {
-
-            .auth-section {
-
-                min-height: 100vh;
-
-            }
-
-
-            .auth-background {
-
-                position: fixed;
-
-            }
-
-
-            .auth-background img {
-
-                object-fit: cover;
-
-            }
-
-
-            .auth-overlay {
-
-                min-height: 100vh;
-
-                align-items: center;
-
-                padding:
-                    30px
-                    18px
-                    65px;
-
-            }
-
-
-            .login-options {
-
-                grid-template-columns: 1fr;
-
-                max-width: 420px;
-
-                gap: 16px;
-
-            }
-
-
-            .login-provider-card {
-
-                min-height: 245px;
-
-            }
-
-
-            .registration-card {
-
-                grid-column: auto;
-
-                min-height: 200px;
-
-            }
-
-        }
-
-/* =========================================
-   LOGIN CARD TEXT - BRIGHT / READABLE
-========================================= */
-
-.login-provider-card {
-    color: #ffffff;
-}
-
-
-/* Card headings */
-
-.provider-title {
-    color: #ffffff !important;
-
-    font-size: 20px;
-    font-weight: 700;
-
-    /* text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.95),
-        0 0 10px rgba(0, 0, 0, 0.55); */
-}
-
-
-/* Description */
-
-.provider-description {
-    color: #ffffff !important;
-
-    font-size: 13px;
-    line-height: 1.6;
-
-    /* text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.95); */
-}
-
-
-.provider-description strong {
-    color: #ffffff !important;
-
-    font-weight: 700;
-
-    /* text-shadow:
-        0 2px 4px rgba(0, 0, 0, 1); */
-}
-
-
-/* =========================================
-   INPUT
-========================================= */
-
-.provider-input {
-    background: rgba(255, 255, 255, 0.95) !important;
-
-    color: #111827 !important;
-
-    border: 2px solid rgba(255, 255, 255, 0.9);
-
-    font-weight: 500;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.25);
-}
-
-
-.provider-input::placeholder {
-    color: #59636f !important;
-
-    opacity: 1;
-}
-
-
-.provider-input:focus {
-    background: #ffffff !important;
-
-    border-color: #ffffff;
-
-    box-shadow:
-        0 0 0 3px rgba(255, 255, 255, 0.35),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-
-/* =========================================
-   SUPPORTED DOMAINS
-========================================= */
-
-.supported-domains {
-
-    margin-top: 8px;
-
-    padding: 7px 10px;
-
-    border-radius: 7px;
-
-    background:
-        rgba(0, 0, 0, 0.60);
-
-    color: #ffffff !important;
-
-    font-size: 10px;
-
-    line-height: 1.5;
-
-    text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.9);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.25);
-}
-
-
-.supported-domains strong {
-    color: #ffffff !important;
-
-    font-weight: 700;
-}
-
-
-/* =========================================
-   ERROR MESSAGE
-========================================= */
-
-.login-error {
-
-    color: #ffe4e4 !important;
-
-    font-weight: 600;
-
-    text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.9);
-}
-
-
-/* =========================================
-   BUTTON
-========================================= */
-
-.btn-login {
-
-    background: #0b3268 !important;
-
-    color: #ffffff !important;
-
-    border: 1px solid rgba(255, 255, 255, 0.35);
-
-    font-weight: 700;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.4);
-}
-
-
-.btn-login:hover {
-
-    background: #12458d !important;
-
-    color: #ffffff !important;
-
-}
-
-
-/* =========================================
-   REGISTRATION
-========================================= */
-
-.registration-card .provider-title {
-    color: #ffffff !important;
-}
-
-.registration-card .provider-description {
-    color: #ffffff !important;
-}
-        /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
-
-        @media (max-width: 400px) {
-
-            .auth-overlay {
-
-                padding:
-                    20px
-                    12px
-                    60px;
-
-            }
-
-
-            .login-provider-card {
-
-                padding:
-                    22px 18px;
-
-            }
-
-
-            .provider-title {
-
-                font-size: 18px;
-
-            }
-
-        }
-
-    </style>
-
-
-    <!-- =========================================================
-         HOME-PAGE STYLE BLOCK (merged in as requested)
-    ========================================================= -->
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ===================================================== */
-
-        :root {
-
-            --primary: #101331;
-            --primary-light: #152044;
-            --teal: #126b7a;
-            --teal-dark: #0b5260;
-            --blue: #2878c8;
-            --green: #55b85a;
-            --purple: #8e69b7;
-            --orange: #d79b4a;
-            --red: #c94f5b;
-            --pink: #c07ab8;
-            --gray: #77849a;
-            --page-bg: #f3f5f9;
-            --border: #e1e5ea;
-            --text: #263238;
-            --muted: #667085;
-
-        }
-
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .main-header {
-
-            height: 64px;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, .15);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-
-        }
-
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-
-
-        .brand-logo {
-
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            overflow: hidden;
-
-        }
-
-
-        .brand-logo img {
-            width: 34px;
-            height: 34px;
-            object-fit: contain;
-        }
-
-
-        .brand-name {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: .5px;
-        }
-
-
-        .brand-name span {
-            color: #e74c3c;
-        }
-
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 13px;
-        }
-
-
-        .header-link {
-            color: white;
-            transition: .2s;
-        }
-
-
-        .header-link:hover {
-            color: #5fc1ff;
-        }
-
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-
-        .profile-circle {
-
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: #ddd;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-
-        }
-
-
-        .logout-btn {
-
-            border: none;
-            background: rgba(255, 255, 255, .1);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: .2s;
-
-        }
-
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, .2);
-        }
-
-
-        /* =====================================================
-           NOTIFICATIONS
-        ===================================================== */
-
-        .notification-wrapper {
-            position: relative;
-        }
-
-
-        .notification-btn {
-
-            position: relative;
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .12);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            transition: .2s;
-
-        }
-
-
-        .notification-btn:hover {
-            background: rgba(255, 255, 255, .22);
-        }
-
-
-        .notification-badge {
-
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            min-width: 17px;
-            height: 17px;
-            padding: 0 4px;
-            border-radius: 20px;
-            background: #dc3545;
-            color: white;
-            border: 2px solid var(--primary);
-            font-size: 10px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-
-        .notification-modal {
-
-            position: fixed;
-            inset: 0;
-            z-index: 5000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, .48);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .25s ease, visibility .25s ease;
-
-        }
-
-
-        .notification-modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-
-        .notification-card {
-
-            width: 100%;
-            max-width: 480px;
-            max-height: 80vh;
-            overflow: hidden;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, .25);
-            transform: translateY(20px) scale(.97);
-            transition: transform .25s ease;
-
-        }
-
-
-        .notification-modal.show .notification-card {
-            transform: translateY(0) scale(1);
-        }
-
-
-        .notification-header {
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            background: var(--primary);
-            color: white;
-
-        }
-
-
-        .notification-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-
-        .notification-title h4 {
-            margin: 0;
-            font-size: 17px;
-            font-weight: 700;
-        }
-
-
-        .notification-close {
-
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .12);
-            color: white;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-
-        }
-
-
-        .notification-close:hover {
-            background: rgba(255, 255, 255, .25);
-        }
-
-
-        .notification-list {
-            padding: 6px 0;
-            max-height: 55vh;
-            overflow-y: auto;
-        }
-
-
-        .notification-item {
-
-            display: flex;
-            gap: 13px;
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background .2s ease;
-
-        }
-
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-
-        .notification-item:hover {
-            background: #f6f8fc;
-        }
-
-
-        .notification-item.unread {
-            background: #f8fbff;
-        }
-
-
-        .notification-item-icon {
-
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #eef4fb;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-
-        }
-
-
-        .notification-item-content {
-            flex: 1;
-        }
-
-
-        .notification-item-content h6 {
-            margin: 0 0 4px;
-            color: #222;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-
-        .notification-item-content p {
-            margin: 0 0 5px;
-            color: #666;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-
-        .notification-time {
-            color: #999;
-            font-size: 11px;
-        }
-
-
-        .notification-footer {
-
-            padding: 12px 18px;
-            text-align: center;
-            border-top: 1px solid #eee;
-            background: #fafafa;
-
-        }
-
-
-        .notification-footer button {
-
-            border: none;
-            background: transparent;
-            color: var(--primary);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: underline;
-
-        }
-
-
-        /* =====================================================
-           MAIN CONTAINER
-        ===================================================== */
-
-        .home-container {
-            max-width: 1500px;
-            margin: auto;
-            padding: 24px;
-        }
-
-
-        /* =====================================================
-           WELCOME HERO
-        ===================================================== */
-
-        .welcome-section {
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 14px;
-
-            padding: 50px 6%;
-            min-height: 420px;
-
-            color: white;
-            position: relative;
-            overflow: hidden;
-
-            margin-bottom: 24px;
-
-            box-shadow: 0 8px 25px rgba(16, 19, 49, .18);
-
-        }
-
-
-        .welcome-section::after {
-
-            content: "";
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, .08);
-            right: -70px;
-            top: -90px;
-
-        }
-
-
-        .welcome-content {
-            width: 54%;
-            position: relative;
-            z-index: 2;
-        }
-
-
-        .welcome-label {
-
-            font-size: 13px;
-            color: #8bd7e5;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            margin-bottom: 5px;
-
-        }
-
-
-        .welcome-title {
-            font-size: 30px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-
-        .welcome-description {
-
-            font-size: 14px;
-            color: rgba(255, 255, 255, .75);
-            max-width: 560px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-
-        }
-
-
-        /* RIGHT VISUAL */
-
-        .welcome-visual {
-
-            position: relative;
-            width: 42%;
-            min-height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-
-        .india-visual {
-
-            position: relative;
-            width: min(100%, 420px);
-            max-height: 340px;
-            object-fit: contain;
-            z-index: 2;
-
-        }
-
-
-        .india-visual-glow {
-
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(74, 166, 255, .20);
-            filter: blur(70px);
-            z-index: 1;
-
-        }
-
-
-        /* =====================================================
-           GLOBAL SEARCH (filters the module grid below)
-        ===================================================== */
-
-        .global-search-wrapper {
-            position: relative;
-            max-width: 640px;
-            z-index: 50;
-        }
-
-
-        .global-search-box {
-
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            padding: 5px 8px 5px 18px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, .2);
-
-        }
-
-
-        .search-icon {
-            color: var(--teal);
-            font-size: 21px;
-            margin-right: 10px;
-        }
-
-
-        #globalSearch {
-
-            border: none;
-            outline: none;
-            width: 100%;
-            height: 48px;
-            font-size: 14px;
-            color: var(--text);
-
-        }
-
-
-        #globalSearch::placeholder {
-            color: #98a2b3;
-        }
-
-
-        .search-shortcut {
-
-            background: #f1f3f5;
-            border: 1px solid #e1e5ea;
-            border-radius: 5px;
-            padding: 4px 8px;
-            color: #667085;
-            font-size: 11px;
-            white-space: nowrap;
-            margin-right: 10px;
-
-        }
-
-
-        .search-button {
-
-            border: none;
-            background: var(--teal);
-            color: white;
-            height: 40px;
-            padding: 0 20px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-right: 2px;
-            transition: .2s;
-
-        }
-
-
-        .search-button:hover {
-            background: var(--teal-dark);
-        }
-
-
-        .search-suggestions {
-
-            display: none;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: calc(100% + 8px);
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .2);
-            overflow: hidden;
-            max-height: 340px;
-            overflow-y: auto;
-            text-align: left;
-
-        }
-
-
-        .search-suggestions.active {
-            display: block;
-        }
-
-
-        .suggestion-item {
-
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f1f3;
-            transition: .2s;
-            color: var(--text);
-
-        }
-
-
-        .suggestion-item:last-child {
-            border-bottom: none;
-        }
-
-
-        .suggestion-item:hover {
-            background: #f5fafb;
-        }
-
-
-        .suggestion-icon {
-
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            flex-shrink: 0;
-
-        }
-
-
-        .suggestion-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-
-        .suggestion-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-
-        .suggestion-description {
-
-            font-size: 11px;
-            color: #777;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-        }
-
-
-        .suggestion-empty {
-            padding: 20px;
-            text-align: center;
-            color: #777;
-            font-size: 13px;
-        }
-
-
-        /* =====================================================
-           SECTION HEADING
-        ===================================================== */
-
-        .section-heading {
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0 15px;
-
-        }
-
-
-        .section-heading h2 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 0;
-        }
-
-
-        /* =====================================================
-           MODULE GRID (real API-backed modules)
-        ===================================================== */
-
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
-
-
-        .api-card {
-
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            min-height: 155px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
-            cursor: pointer;
-            transition: transform .2s ease, box-shadow .2s ease;
-
-        }
-
-
-        .api-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
-        }
-
-
-        .api-card.highlighted {
-
-            animation: cardHighlight 1.6s ease;
-
-        }
-
-
-        @keyframes cardHighlight {
-
-            0%   { box-shadow: 0 0 0 4px rgba(18, 107, 122, .5); }
-            100% { box-shadow: 0 4px 10px rgba(0, 0, 0, .05); }
-
-        }
-
-
-        .api-card-top {
-
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 15px;
-
-        }
-
-
-        .api-icon {
-
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-
-        }
-
-
-        .api-icon.blue   { background: var(--blue); }
-        .api-icon.green  { background: var(--green); }
-        .api-icon.purple { background: var(--purple); }
-        .api-icon.orange { background: var(--orange); }
-        .api-icon.red    { background: var(--red); }
-        .api-icon.teal   { background: var(--teal); }
-        .api-icon.gray   { background: var(--gray); }
-        .api-icon.pink   { background: var(--pink); }
-
-
-        .api-arrow {
-            color: var(--teal);
-            font-size: 20px;
-        }
-
-
-        .api-card h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--primary);
-        }
-
-
-        .api-card p {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 12px;
-        }
-
-
-        .api-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            color: #55a65a;
-        }
-
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            background: #55b85a;
-            border-radius: 50%;
-        }
-
-
-        /* =====================================================
-           API RESPONSE
-        ===================================================== */
-
-        .api-response {
-
-            margin-top: 25px;
-            background: var(--primary);
-            border-radius: 12px;
-            padding: 18px;
-            color: #d7e1ef;
-            display: none;
-            overflow-x: auto;
-
-        }
-
-
-        .api-response.active {
-            display: block;
-        }
-
-
-        .api-response-header {
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            font-size: 13px;
-            margin-bottom: 10px;
-
-        }
-
-
-        .api-response-header button {
-
-            border: none;
-            background: rgba(255, 255, 255, .1);
-            color: white;
-            border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 11px;
-            cursor: pointer;
-
-        }
-
-
-        #apiResponseJson {
-
-            font-family: Consolas, Monaco, monospace;
-            font-size: 12px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            color: #777;
-            font-size: 12px;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 1200px) {
-
-            .module-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-        }
-
-
-        @media (max-width: 992px) {
-
-            .welcome-section {
-                flex-direction: column;
-                text-align: center;
-                padding: 30px 20px;
-            }
-
-            .welcome-content,
-            .welcome-visual {
-                width: 100%;
-            }
-
-            .welcome-visual {
-                min-height: 240px;
-                margin-top: 20px;
-            }
-
-            .global-search-wrapper {
-                margin: 0 auto;
-            }
-
-        }
-
-
-        @media (max-width: 800px) {
-
-            .module-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .header-right span.user-name {
-                display: none;
-            }
-
-        }
-
-
-        @media (max-width: 550px) {
-
-            .module-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .main-header {
-                padding: 0 15px;
-            }
-
-            .home-container {
-                padding: 14px;
-            }
-
-        }
-
-    </style>
-
 </head>
 
 
 <body>
 
+    <div class="auth-shell">
 
-    <!-- =========================================================
-         HEADER
-    ========================================================= -->
 
-    <div id="header-content" class="w-100">
+        <!-- =========================================================
+             BRAND PANEL (desktop)
+        ========================================================= -->
 
-        <nav
-            class="
-                navbar
-                navbar-expand-lg
-                px-1
-                roboto-regular
-                bg-primarycolor
-            "
-        >
+        <aside class="auth-brand">
 
-            <!-- Mobile Logo -->
+            <div class="auth-brand-bg">
+                <img
+                    src="/images/login-page.png"
+                    alt=""
+                >
+            </div>
 
-            <div
-                class="
-                    d-lg-none
-                    d-flex
-                    align-items-center
-                "
-            >
-
+            <div class="auth-logo">
                 <img
                     src="/images/cmc-logo-white-transparent.png"
-                    class="img-fluid"
-                    width="50"
                     alt="CMC"
                 >
+                <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+            </div>
 
-                <span
-                    class="
-                        d-flex
-                        align-items-center
-                        text-white
-                        text-center
-                        fw-bold
-                        trirong-bold
-                    "
-                >
+            <div class="auth-brand-copy">
 
-                    <span>&nbsp; CMC</span>
-
-                    <span
-                        class="primarycolor fs-1"
-                    >
-                        V
-                    </span>
-
-                    <span>
-                        CONNECT
-                    </span>
-
+                <span class="eyebrow">
+                    <i class="bi bi-broadcast"></i>
+                    CMC V Connect Portal
                 </span>
 
+                <h1>Your gateway to campus, wherever you go.</h1>
+
+                <p>
+                    Connecting CMC with mission hospitals and healthcare
+                    communities to strengthen, support, revive and rebuild
+                    healthcare services.
+                </p>
+
+                <ul class="auth-features">
+                    <li><i class="bi bi-hospital"></i> Mission hospitals &amp; requests</li>
+                    <li><i class="bi bi-book"></i> Learning resources &amp; newsletters</li>
+                    <li><i class="bi bi-file-medical"></i> MMS applications &amp; visits</li>
+                </ul>
+
+            </div>
+
+            <div class="auth-brand-footer">
+                © CMC Vellore 2026 &nbsp;·&nbsp; Version loading
+            </div>
+
+        </aside>
+
+
+
+        <!-- =========================================================
+             SIGN-IN
+        ========================================================= -->
+
+        <main class="auth-main">
+
+
+            <!-- Mobile / tablet hero -->
+
+            <div class="auth-mobile-header">
+
+                <div class="auth-logo">
+                    <img
+                        src="/images/cmc-logo-white-transparent.png"
+                        alt="CMC"
+                    >
+                    <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+                </div>
+
+                <p>Your gateway to campus, wherever you go.</p>
+
             </div>
 
 
-            <!-- Desktop Logo -->
+            <section class="auth-card" aria-labelledby="signInTitle">
 
-            <div
-                class="
-                    collapse
-                    navbar-nav
-                    navbar-collapse
-                    justify-content-around
-                "
-            >
+                <header class="auth-card-header">
 
-                <div
-                    class="d-none d-lg-block"
+                    <h2 id="signInTitle">Sign in</h2>
+
+                    <p>Choose your account type to continue.</p>
+
+                </header>
+
+
+                <!-- Account type tabs -->
+
+                <div class="segmented" role="tablist" aria-label="Account type">
+
+                    <button
+                        type="button"
+                        class="segmented-btn"
+                        role="tab"
+                        id="tab-faculty"
+                        aria-controls="panel-faculty"
+                        aria-selected="true"
+                        data-tab="faculty"
+                    >
+                        <i class="bi bi-briefcase"></i>
+                        Faculty &amp; Staff
+                    </button>
+
+                    <button
+                        type="button"
+                        class="segmented-btn"
+                        role="tab"
+                        id="tab-student"
+                        aria-controls="panel-student"
+                        aria-selected="false"
+                        tabindex="-1"
+                        data-tab="student"
+                    >
+                        <i class="bi bi-mortarboard"></i>
+                        Student
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MICROSOFT (Faculty & Staff)
+                ================================================= -->
+
+                <form
+                    class="provider-panel"
+                    id="panel-faculty"
+                    role="tabpanel"
+                    aria-labelledby="tab-faculty"
+                    novalidate
+                    data-provider="microsoft"
                 >
 
-                    <div
-                        class="
-                            d-flex
-                            align-items-center
-                            text-white
-                            fs-1
-                            trirong-bold
-                        "
-                    >
+                    <div class="provider-intro">
 
-                        <img
-                            src="/images/cmc-logo-white-transparent.png"
-                            class="img-fluid"
-                            width="50"
-                            alt="CMC"
-                        >
-
-                        &nbsp; CMC
-
-                        <span
-                            class="primarycolor"
-                            style="
-                                font-size:64px;
-                                line-height:1;
-                            "
-                        >
-                            V
+                        <span class="provider-logo" aria-hidden="true">
+                            <svg viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
                         </span>
 
-                        CONNECT
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </nav>
-
-    </div>
-
-
-
-    <!-- =========================================================
-         LOGIN SECTION
-    ========================================================= -->
-
-    <section class="auth-section">
-
-
-        <!-- Background -->
-        <div class="auth-background">
-
-            <img
-                src="/images/login-page.png"
-                alt="CMC V Connect Hospital Network"
-            >
-
-        </div>
-
-
-
-        <!-- Login Overlay -->
-
-        <div class="auth-overlay">
-
-
-            <div class="login-options">
-
-
-                <!-- =================================================
-                     MICROSOFT
-                ================================================= -->
-
-                <div
-                    class="login-provider-card"
-                >
-
-                    <div class="provider-title">
-                        Faculty Login
-                    </div>
-
-
-                    <div class="provider-description">
-
-                        <strong>
-                            For CMC Faculty & Staff
-                        </strong>
-
-                        <br>
-
-                        Use your CMC Microsoft account.
+                        <div>
+                            <strong>Faculty Login</strong>
+                            For CMC Faculty &amp; Staff. Use your CMC Microsoft account.
+                        </div>
 
                     </div>
 
 
-                    <input
-                        type="text"
-                        id="microsoftEmail"
-                        class="provider-input"
-                        placeholder="example@cmcvellore.ac.in"
-                        autocomplete="username"
-                    >
+                    <div class="field">
 
+                        <label class="field-label" for="microsoftEmail">
+                            Work email
+                        </label>
 
-                    <div
-                        class="supported-domains"
-                    >
+                        <div class="input-group">
 
-                        Supported domains:
+                            <i class="bi bi-envelope"></i>
 
-                        <strong>
-                            @cmcvellore.ac.in,
-                            @cmcvellore.edu.in,
-                            @cmc.in
-                        </strong>
+                            <input
+                                type="text"
+                                id="microsoftEmail"
+                                class="input provider-input"
+                                placeholder="example@cmcvellore.ac.in"
+                                autocomplete="username"
+                                inputmode="email"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                aria-describedby="microsoftDomains microsoftLoginError"
+                            >
+
+                        </div>
+
+                        <div class="field-hint" id="microsoftDomains">
+
+                            <span class="sr-only">Supported domains:</span>
+
+                            <div class="domain-chips">
+                                <span class="badge">@cmcvellore.ac.in</span>
+                                <span class="badge">@cmcvellore.edu.in</span>
+                                <span class="badge">@cmc.in</span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="microsoftLoginError"
+                            class="login-error field-error"
+                            role="alert"
+                        ></div>
 
                     </div>
-
-
-                    <div
-                        id="microsoftLoginError"
-                        class="login-error"
-                    ></div>
 
 
                     <button
-                        type="button"
-                        class="btn-login"
-                        onclick="loginMicrosoftUser()"
+                        type="submit"
+                        class="btn btn-dark btn-lg btn-block btn-login"
                     >
-                        Continue with Microsoft
+                        <span>Continue with Microsoft</span>
+                        <i class="bi bi-arrow-right"></i>
                     </button>
 
-                </div>
+                </form>
 
 
 
                 <!-- =================================================
-                     GOOGLE
+                     GOOGLE (Students)
                 ================================================= -->
 
-                <div
-                    class="login-provider-card"
+                <form
+                    class="provider-panel"
+                    id="panel-student"
+                    role="tabpanel"
+                    aria-labelledby="tab-student"
+                    novalidate
+                    hidden
+                    data-provider="google"
                 >
 
-                    <div class="provider-title">
-                        Student Login
-                    </div>
+                    <div class="provider-intro">
 
+                        <span class="provider-logo" aria-hidden="true">
+                            <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+                        </span>
 
-                    <div class="provider-description">
-
-                        <strong>
-                            For CMC Students
-                        </strong>
-
-                        <br>
-
-                        Use your CMC student Google account.
+                        <div>
+                            <strong>Student Login</strong>
+                            For CMC Students. Use your CMC student Google account.
+                        </div>
 
                     </div>
 
 
-                    <input
-                        type="text"
-                        id="googleEmailPrefix"
-                        class="provider-input"
-                        placeholder="example@cmc.edu.in"
-                        autocomplete="username"
-                    >
+                    <div class="field">
 
+                        <label class="field-label" for="googleEmailPrefix">
+                            Student email
+                        </label>
 
-                    <div
-                        class="supported-domains"
-                    >
+                        <div class="input-group">
 
-                        Supported domain:
+                            <i class="bi bi-envelope"></i>
 
-                        <strong>
-                            @cmc.edu.in
-                        </strong>
+                            <input
+                                type="text"
+                                id="googleEmailPrefix"
+                                class="input provider-input"
+                                placeholder="example@cmc.edu.in"
+                                autocomplete="username"
+                                inputmode="email"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                aria-describedby="googleDomains googleLoginError"
+                            >
+
+                        </div>
+
+                        <div class="field-hint" id="googleDomains">
+
+                            <span class="sr-only">Supported domain:</span>
+
+                            <div class="domain-chips">
+                                <span class="badge">@cmc.edu.in</span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="googleLoginError"
+                            class="login-error field-error"
+                            role="alert"
+                        ></div>
 
                     </div>
-
-
-                    <div
-                        id="googleLoginError"
-                        class="login-error"
-                    ></div>
 
 
                     <button
-                        type="button"
-                        class="btn-login"
-                        onclick="loginGoogleUser()"
+                        type="submit"
+                        class="btn btn-dark btn-lg btn-block btn-login"
                     >
-                        Continue with Google
+                        <span>Continue with Google</span>
+                        <i class="bi bi-arrow-right"></i>
                     </button>
 
-                </div>
+
+                    <!-- Google renders its sign-in button here (see googleSignIn() in login.js) -->
+                    <div class="google-fallback">
+
+                        <p>If the Google window didn't open, continue here:</p>
+
+                        <div id="googleSignInButton"></div>
+
+                    </div>
+
+                </form>
 
 
 
@@ -2180,66 +375,38 @@
                      REGISTRATION
                 ================================================= -->
 
-                <div
-                    class="
-                        login-provider-card
-                        registration-card
-                    "
+                <div class="auth-divider">New to CMC V Connect?</div>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-block registration-btn"
+                    onclick="newRegistration()"
                 >
-
-                    <div class="provider-title">
-                        New Registration
-                    </div>
-
-
-                    <div
-                        class="provider-description"
-                    >
-
-                        New to CMC V Connect?
-
-                        <br>
-
-                        Register your account
-                        to get started.
-
-                    </div>
+                    <i class="bi bi-person-plus"></i>
+                    <span>Register now</span>
+                </button>
 
 
-                    <button
-                        type="button"
-                        class="
-                            btn-login
-                            registration-btn
-                        "
-                        onclick="newRegistration()"
-                    >
-                        Register Now
-                    </button>
+                <!-- Password help: sign-in is via SSO, so resets
+                     happen at the identity provider. -->
 
+                <div class="auth-help">
+                    <span>Forgot your password?</span>
+                    <a href="https://passwordreset.microsoftonline.com/" target="_blank" rel="noopener">Reset Microsoft</a>
+                    <span aria-hidden="true">·</span>
+                    <a href="https://accounts.google.com/signin/recovery" target="_blank" rel="noopener">Reset Google</a>
                 </div>
 
-
-            </div>
-
-        </div>
+            </section>
 
 
+            <footer class="auth-footer login-footer">
+                © CMC Vellore 2026 &nbsp;|&nbsp; Version loading
+            </footer>
 
-        <!-- =========================================================
-             FOOTER
-        ========================================================= -->
+        </main>
 
-        <footer class="login-footer">
-
-            © CMC Vellore 2026
-            &nbsp; | &nbsp;
-            Version loading
-
-        </footer>
-
-
-    </section>
+    </div>
 
 
 
@@ -2247,17 +414,17 @@
          GOOGLE HIDDEN CONTAINERS
     ========================================================= -->
 
-    <div id="googleSignInButton"></div>
+    <div id="googleSignInButtonmb" class="hidden-google-slot"></div>
 
-    <div id="googleSignInButtonmb"></div>
-
-    <div id="googleSignInButtonhp"></div>
+    <div id="googleSignInButtonhp" class="hidden-google-slot"></div>
 
 
 
     <!-- =========================================================
-         LOGIN JS
+         UI HELPERS + LOGIN JS
     ========================================================= -->
+
+    <script src="ui.js"></script>
 
     <script
         src="login.js"
@@ -2344,6 +511,150 @@
             );
 
         }
+
+
+
+        /* =====================================================
+           UI ENHANCEMENTS (presentation only)
+           The login flow itself still lives in login.js:
+           loginMicrosoftUser() / loginGoogleUser().
+        ===================================================== */
+
+        (function () {
+
+            const TAB_KEY = "cmcLoginTab";
+
+            const tabs =
+                [...document.querySelectorAll(".segmented-btn")];
+
+
+            /* Account-type tabs */
+
+            function selectTab(name, focus) {
+
+                tabs.forEach(tab => {
+
+                    const active = tab.dataset.tab === name;
+
+                    tab.setAttribute("aria-selected", active ? "true" : "false");
+                    tab.tabIndex = active ? 0 : -1;
+
+                    document.getElementById(tab.getAttribute("aria-controls")).hidden = !active;
+
+                    if (active && focus) {
+                        tab.focus();
+                    }
+
+                });
+
+                try {
+                    localStorage.setItem(TAB_KEY, name);
+                } catch (e) { /* storage unavailable */ }
+
+            }
+
+            tabs.forEach((tab, index) => {
+
+                tab.addEventListener("click", () => selectTab(tab.dataset.tab));
+
+                tab.addEventListener("keydown", event => {
+
+                    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+                        return;
+                    }
+
+                    const next = tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+
+                    selectTab(next.dataset.tab, true);
+
+                });
+
+            });
+
+            try {
+
+                const saved = localStorage.getItem(TAB_KEY);
+
+                if (saved === "student" || saved === "faculty") {
+                    selectTab(saved);
+                }
+
+            } catch (e) { /* storage unavailable */ }
+
+
+            /* Submit (click or Enter) -> existing login functions,
+               with a loading state while the user check runs. */
+
+            document.querySelectorAll(".provider-panel").forEach(form => {
+
+                form.addEventListener("submit", async event => {
+
+                    event.preventDefault();
+
+                    const button = form.querySelector("button[type=submit]");
+
+                    UI.setLoading(button, true);
+
+                    try {
+
+                        if (form.dataset.provider === "microsoft") {
+                            await loginMicrosoftUser();
+                        } else {
+                            await loginGoogleUser();
+                        }
+
+                    } finally {
+
+                        UI.setLoading(button, false);
+
+                    }
+
+                });
+
+            });
+
+
+            /* Validation styling: login.js writes messages into
+               #microsoftLoginError / #googleLoginError via innerText.
+               Mirror that onto the matching input. */
+
+            const pairs = [
+                ["microsoftLoginError", "microsoftEmail"],
+                ["googleLoginError", "googleEmailPrefix"]
+            ];
+
+            pairs.forEach(([errorId, inputId]) => {
+
+                const error = document.getElementById(errorId);
+                const input = document.getElementById(inputId);
+
+                new MutationObserver(() => {
+
+                    const hasError = error.textContent.trim().length > 0;
+
+                    input.setAttribute("aria-invalid", hasError ? "true" : "false");
+
+                    if (hasError) {
+
+                        error.classList.remove("is-shaking");
+                        void error.offsetWidth;
+                        error.classList.add("is-shaking");
+
+                    }
+
+                }).observe(error, { childList: true, characterData: true, subtree: true });
+
+                input.addEventListener("input", () => {
+
+                    if (input.getAttribute("aria-invalid") === "true") {
+                        error.innerText = "";
+                    }
+
+                });
+
+            });
+
+        })();
 
     </script>
 

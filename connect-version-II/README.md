@@ -23,3 +23,15 @@ db.js(local testing, mongo)
 decodetoken.js (decoding logics, 256bit hashing algorithm, azure tokens > JWT > client > Bearer token )
 
 readme.md
+
+Front-end (UI)
+
+login.html / home.html (pages; all original element IDs and global functions are kept so login.js and guard.js work unchanged)
+
+styles/design-system.css (tokens: colors, type, spacing, radius, shadows; buttons, inputs + validation, cards, badges, avatars, dropdowns, modals, toasts, spinner/skeleton/progress)
+
+styles/auth.css (login layout) , styles/dashboard.css (sidebar, topbar, module grid, API data drawer, profile modal)
+
+ui.js (presentation-only helpers: UI.toast, UI.setLoading, UI.progress, UI.openModal/closeModal, UI.toggleDropdown, offline banner)
+
+styles/styles.css (legacy stylesheet, no longer linked)
