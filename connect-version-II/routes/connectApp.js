@@ -88,6 +88,7 @@ const READ_COLLECTIONS = new Set([
     "NetConsltRegApp",
     "NetConsltTheme",
     "NewsData",
+    "missionHospital",
     "ResearchLegacies",
     "ResearchNews",
     "ResearchPublications",
@@ -96,18 +97,48 @@ const READ_COLLECTIONS = new Set([
     "WeeklyManna",
     "WhatsNew",
     "samProjectApplicationForm",
+    "samTrainingReportForm",
+    "AssetRequest",
     "students"
 ]);
 
 
 // -----------------------------------------------------
-// Collections the front-end may write to.
-// Kept empty until the Phase 2 form/workflow modules are
-// ported; each one is added together with its module.
+// Collections the front-end may write to - exactly the
+// collections the git code inserts into / updates.
 // -----------------------------------------------------
 
 const WRITE_COLLECTIONS = new Set([
+    "Asset",                        // Equipment register (git: TODO "insertCollectionData Asset")
+    "AssetRequest",                 // Equipment requests (git: local store -> /api/requests TODO)
+    "ConnectFeedback",
+    "FinancialHelp",
+    "FovApplication",
+    "LegalHelp",
+    "LibraryAccess",
+    "ManPowerInterest",
+    "MenteeRole",
+    "MentorRole",
+    "MissionRequests",
+    "MissionsMentorshipMeetings",
+    "MmsApplication",
+    "MmsOtherVisit",
+    "MsnVisitApp",
+    "NCAllotDocLog",
+    "NetConsltPatient",
+    "NetConsltPatientQuery",
+    "NetConsltRegApp",
+    "ResearchRequest",
+    "missionHospital",              // Service Commitment feedback (git writes this exact name)
+    "samProjectApplicationForm",
+    "samTrainingReportForm"
 ]);
+
+
+// Writes that need a role (reads of these stay open).
+const WRITE_ROLE_RULES = {
+    Asset: ["Missions"]
+};
 
 
 // -----------------------------------------------------
@@ -301,6 +332,22 @@ function meteorId() {
 }
 
 
+function assertWriteRole(name, user) {
+
+    const allowed = WRITE_ROLE_RULES[name];
+
+    if (!allowed) {
+        return;
+    }
+
+    const roles = Array.isArray(user.roles) ? user.roles : [];
+
+    if (!allowed.some(role => roles.includes(role))) {
+        throw httpError(403, "You do not have permission to change this resource.");
+    }
+
+}
+
 function collectionFor(name, { write } = {}) {
 
     if (typeof name !== "string" || !READ_COLLECTIONS.has(name)) {
@@ -392,6 +439,7 @@ async function runInsert(def, user, { meteorIds }) {
     const collection = collectionFor(def && def.collection, { write: true });
 
     assertRole(def.collection, user);
+    assertWriteRole(def.collection, user);
 
     const doc = def.query;
 
@@ -424,7 +472,10 @@ async function runUpdate(def, user) {
 
     assertRole(def.collection, user);
 
-    const { selector, data } = (def.query || {});
+    assertWriteRole(def.collection, user);
+
+    const { selector } = (def.query || {});
+    let { data } = (def.query || {});
 
     if (!selector || typeof selector !== "object" || !Object.keys(selector).length) {
         throw httpError(400, "An update needs a selector");
@@ -432,6 +483,18 @@ async function runUpdate(def, user) {
 
     if (!data || typeof data !== "object" || !Object.keys(data).length) {
         throw httpError(400, "An update needs data");
+    }
+
+    // The legacy server treated plain field objects as $set
+    // (e.g. updatePatientStatus / ncCallBtn in the git code).
+    if (Object.keys(data).every(key => !key.startsWith("$"))) {
+        data = { $set: data };
+    }
+
+    // Forms re-submit the loaded record, _id included; _id is immutable.
+    if (data.$set && "_id" in data.$set) {
+        data = { ...data, $set: { ...data.$set } };
+        delete data.$set._id;
     }
 
     Object.keys(data).forEach(op => {

@@ -10,6 +10,9 @@ const authRoutes = require("./routes/auth");
 const academicsRoutes = require("./routes/academics");
 const connectRoutes = require("./routes/connect");
 const connectAppRoutes = require("./routes/connectApp");
+const publicRoutes = require("./routes/public");
+const { router: uploadRoutes, UPLOAD_DIR } = require("./routes/uploads");
+const assistantRoutes = require("./routes/assistant");
 //const graphRoutes = require("./routes/graphapi");
 const v1Routes = require("./routes/v1");
 
@@ -18,8 +21,8 @@ const app = express();
 connectDB();
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "25mb" }));  // FormIO base64 attachments
+app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 
 // API Logger
 app.use((req, res, next) => {
@@ -43,11 +46,22 @@ app.use("/api/auth", authRoutes);
 app.use("/api/academics", academicsRoutes);
 app.use("/api/connect", connectRoutes);
 app.use("/api/connectApp", connectAppRoutes);
+app.use("/api/public", publicRoutes);
+app.use("/api/uploads", uploadRoutes);
+app.use("/api/assistant", assistantRoutes);
 //app.use("/api/graph", graphRoutes);
 app.use("/api/v1", v1Routes);
 
 const path = require("path");
-app.use(express.static(__dirname));
+
+// Uploaded form attachments (see routes/uploads.js).
+app.use("/uploads", express.static(UPLOAD_DIR, { fallthrough: false, index: false }));
+
+// Server-side sources are not static assets.
+const PRIVATE_PATHS = /^\/(routes|services|knowledge|node_modules|scripts)(\/|$)|^\/(app|db|auth-guard|decodetoken)\.js$|^\/package(-lock)?\.json$/i;
+app.use((req, res, next) => PRIVATE_PATHS.test(req.path) ? res.status(404).end() : next());
+
+app.use(express.static(__dirname, { dotfiles: "deny" }));
 app.get("/login", (req, res) => {
 
     res.sendFile(path.join(__dirname, "", "login.html"));

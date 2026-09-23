@@ -109,6 +109,10 @@ function buildUserResponse(user, fallbackEmail) {
         avatar:
             profile.avatar || "",
 
+        // Used by Service Commitment (git: loadServiceCommitPage)
+        admissionNo:
+            profile.admissionNo || "",
+
         // Legacy role names (e.g. "Missions", "Council Member",
         // "Missions Mentor", "VConnect Guest") that the git code
         // uses to show/hide modules.
@@ -194,6 +198,7 @@ router.post("/login", async (req, res) => {
                 "profile.designation": 1,
                 "profile.designationId": 1,
                 "profile.avatar": 1,
+                "profile.admissionNo": 1,
                 "roles": 1
             }
         ).lean();
@@ -592,6 +597,7 @@ router.get(
                     "profile.designation": 1,
                     "profile.designationId": 1,
                     "profile.avatar": 1,
+                "profile.admissionNo": 1,
                     "roles": 1
                 }
             ).lean();
