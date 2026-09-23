@@ -79,3 +79,12 @@ Run locally
 5. npm start  (then open http://localhost:7000/login)
    Do not use "npx serve" - the pages need the API routes served by app.js.
 6. Optional: npm run seed:equipment
+
+Forms: every form (Legal Help, MMS, FOV, Network Consults ...) is a Form.io definition read from the
+FormIO collection by formKey - the same collection the original CMC V Connect uses. They are not in
+the git code, so a new local database needs a copy of that collection:
+
+    mongoexport --uri "<production MONGO_URI>" --collection FormIO --out FormIO.json
+    mongoimport --uri "<your MONGO_URI>" --collection FormIO --file FormIO.json
+
+Then run "npm run check:forms" to see which definitions are present.

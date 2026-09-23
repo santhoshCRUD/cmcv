@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed:equipment": "node scripts/seed-equipment.js"
+    "seed:equipment": "node scripts/seed-equipment.js",
+    "check:forms": "node scripts/check-forms.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",

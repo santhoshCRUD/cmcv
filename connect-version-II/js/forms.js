@@ -96,6 +96,8 @@
 
                 if (bundled) return bundled;
 
+                console.warn(`FormIO definition "${formKey}" was not found in the FormIO collection (run "npm run check:forms" on the server).`);
+
                 throw new Error("This form is not available right now. Please contact the Missions office.");
 
             }).catch(error => {
