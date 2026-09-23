@@ -139,7 +139,7 @@
         const former = person.mentorRoleStatus === "Former" || person.menteeRoleStatus === "Former";
 
         return html`
-            <button type="button" class="card person-card ${former ? "is-former" : ""}" data-person="${person._key}">
+            <button type="button" class="card mentor-card ${former ? "is-former" : ""}" data-person="${person._key}">
                 ${avatar(person.avatar, name)}
                 ${types?.length ? html`<span class="type-dots">${types.map(type => html`<span class="type-dot type-${type}" title="${TYPES[type] || type}"></span>`)}</span>` : ""}
                 <strong>${name || "—"}</strong>
@@ -395,7 +395,7 @@
             ${profileHeader({ avatarUrl: mentor.uploadFacultyImage?.[0]?.thumbnailurl, name: mentor.mentorUserName || "updating", subtitle: formatTypes(types), kind: "mentor", id: mentor._id })}
             ${section("Instructions", html`<div class="prose">${multiline(results.MissionsInstructions.data?.[0]?.instructionsForMentor || "No instructions available")}</div>`)}
             ${section("My mentees", people.length
-                ? html`<div class="person-grid">${people.map(p => personCard(p, { name: p.menteeUserName, line1: p.college, line2: `${p.course || ""} ${p.batch || ""}`.trim() }))}</div>`
+                ? html`<div class="mentor-grid">${people.map(p => personCard(p, { name: p.menteeUserName, line1: p.college, line2: `${p.course || ""} ${p.batch || ""}`.trim() }))}</div>`
                 : emptyState("bi-people", "No current mentees", "Mentees allotted to you will appear here."))}
             ${section("All meetings", html`<div id="allMeetings"></div>`)}`);
 
@@ -480,7 +480,7 @@
             ${profileHeader({ avatarUrl: mentee.uploadStudentImage?.[0]?.thumbnailurl, name: mentee.menteeUserName || "updating", subtitle: mentee.course || "updating", kind: "mentee", id: mentee._id })}
             ${section("Instructions", html`<div class="prose">${multiline(results.MissionsInstructions.data?.[0]?.instructionsForMentees || "No instructions available")}</div>`)}
             ${section("My mentors", people.length
-                ? html`${typeLegend}<div class="person-grid">${people.map(p => personCard(p, { name: p.mentorUserName, line1: p.mentorUserEmail, line2: p.state, types: p.types }))}</div>`
+                ? html`${typeLegend}<div class="mentor-grid">${people.map(p => personCard(p, { name: p.mentorUserName, line1: p.mentorUserEmail, line2: p.state, types: p.types }))}</div>`
                 : emptyState("bi-people", "No mentors assigned yet", "Your mentors will appear here once the Missions office allots them."))}
             ${section("All meetings", html`<div id="allMeetings"></div>`)}`);
 

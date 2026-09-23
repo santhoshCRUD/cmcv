@@ -23,7 +23,7 @@
     const names = (items, key = "name") => (items || []).map(item => (item && typeof item === "object") ? item[key] : item).filter(Boolean);
 
     const bullet = items => items.length
-        ? html`<ul class="plain-list">${items.map(item => html`<li>${item}</li>`)}</ul>`
+        ? html`<ul class="bullet-list">${items.map(item => html`<li>${item}</li>`)}</ul>`
         : html`<span class="text-muted">-nill-</span>`;
 
 
@@ -45,8 +45,8 @@
             ["bi-calendar-range", "Mission Request", html`${formatDate(request.fromMsnHospDate) || "—"} <span class="text-muted">to</span> ${formatDate(request.toMsnHospDate) || "—"}`]
         ].filter(Boolean);
 
-        return html`<dl class="detail-grid">${rows.map(([icon, label, value]) => html`
-            <div class="detail-grid-item"><dt><i class="bi ${icon}"></i> ${label}</dt><dd>${value}</dd></div>`)}</dl>`;
+        return html`<dl class="info-grid">${rows.map(([icon, label, value]) => html`
+            <div class="info-grid-item"><dt><i class="bi ${icon}"></i> ${label}</dt><dd>${value}</dd></div>`)}</dl>`;
 
     }
 

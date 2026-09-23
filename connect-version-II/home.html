@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="./styles/design-system.css">
     <link rel="stylesheet" href="./styles/dashboard.css">
     <link rel="stylesheet" href="./styles/modules.css">
+    <link rel="stylesheet" href="./styles/forms.css">
+    <link rel="stylesheet" href="./styles/phase2.css">
 
 </head>
 
@@ -84,11 +86,6 @@
         <a href="#/modules" class="nav-item" data-route="modules" onclick="toggleSidebar(false)">
             <i class="bi bi-boxes"></i>
             <span>All modules</span>
-        </a>
-
-        <a href="#/explorer" class="nav-item" data-route="explorer" onclick="toggleSidebar(false)">
-            <i class="bi bi-database"></i>
-            <span>Data explorer</span>
         </a>
 
         <button type="button" class="nav-item" onclick="openProfile()">
@@ -170,37 +167,6 @@
             <span>Contact Us</span>
 
         </a>
-
-
-        <div class="dropdown notification-wrapper" id="notificationDropdown">
-
-            <button
-                type="button"
-                class="icon-btn notification-btn"
-                onclick="showNotificationPopup()"
-                aria-haspopup="true"
-                aria-expanded="false"
-                title="Notifications">
-
-                <i class="bi bi-bell"></i>
-
-            </button>
-
-            <div class="dropdown-menu notification-menu" role="menu">
-
-                <div class="dropdown-heading">
-                    Notifications
-                </div>
-
-                <div class="empty-state">
-                    <i class="bi bi-bell-slash"></i>
-                    <strong>You're all caught up</strong>
-                    <span>New notifications will appear here.</span>
-                </div>
-
-            </div>
-
-        </div>
 
 
         <div class="dropdown profile" id="profileDropdown">
@@ -289,14 +255,14 @@
          WELCOME HERO + MODULE SEARCH
     ================================================== -->
 
-    <section class="welcome-section">
+    <section class="welcome-section welcome-section-text">
 
 
         <div class="welcome-content">
 
             <div class="welcome-label">
                 <span class="dot"></span>
-                CMC V Connect Portal
+                Connect, Communicate, Collaborate
             </div>
 
             <div class="welcome-greeting" id="welcomeGreeting">
@@ -308,9 +274,9 @@
             </h1>
 
             <p class="welcome-description">
-                Connecting CMC with mission hospitals and healthcare
-                communities to strengthen, support, revive and rebuild
-                healthcare services.
+                A platform for medical professionals, students, and individuals
+                who share the ethos of CMC Vellore &mdash;
+                &ldquo;Not to be ministered unto, but to minister&rdquo;.
             </p>
 
 
@@ -344,18 +310,6 @@
                 <div id="searchSuggestions" class="search-suggestions"></div>
 
             </div>
-
-        </div>
-
-
-        <div class="welcome-visual">
-
-            <div class="india-visual-glow"></div>
-
-            <img
-                src="/images/cmc-india-vellore.jpg"
-                alt="India map with Vellore Fort"
-                class="india-visual">
 
         </div>
 
@@ -439,30 +393,6 @@
 
 
 
-<!-- Data explorer (route #/explorer): raw version II API modules -->
-<div data-view="explorer" hidden>
-
-    <header class="page-header">
-        <div class="page-header-main">
-            <div class="api-icon gray page-header-icon"><i class="bi bi-database"></i></div>
-            <div class="page-header-text">
-                <div class="eyebrow">Tools</div>
-                <h1>Data explorer</h1>
-                <p>Inspect the raw records behind the version II API endpoints.</p>
-            </div>
-        </div>
-    </header>
-
-    <section class="module-grid" id="apiExplorerGrid">
-
-        <!-- Cards generated from apiModules via JavaScript -->
-
-    </section>
-
-</div>
-
-
-
 <!-- Ported modules (route #/<module>) -->
 <div data-view="module" id="moduleView" hidden></div>
 
@@ -477,97 +407,12 @@
 
 <footer class="app-footer">
 
-    CMC VConnect © 2026 | Connecting Mission Hospitals
+    &copy; 2026 CMC
 
 </footer>
 
 
 </div>
-</div>
-
-
-
-<!-- =====================================================
-     RAW API RESPONSE (drawer)
-===================================================== -->
-
-<div class="drawer-backdrop" id="apiBackdrop" onclick="closeApiResponse()"></div>
-
-<div
-    id="apiResponse"
-    class="api-response"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="apiResponseTitle">
-
-    <div class="api-response-header">
-
-        <div class="api-icon" id="apiResponseIcon">
-            <i class="bi bi-database"></i>
-        </div>
-
-        <div class="api-response-title">
-            <h2 id="apiResponseTitle">API Response</h2>
-            <code id="apiResponseEndpoint"></code>
-        </div>
-
-        <button
-            type="button"
-            class="btn btn-ghost btn-icon"
-            aria-label="Close"
-            onclick="closeApiResponse()">
-            <i class="bi bi-x-lg"></i>
-        </button>
-
-    </div>
-
-
-    <div class="api-response-toolbar">
-
-        <div class="tabs" role="tablist" aria-label="Response view">
-            <button type="button" class="tab" role="tab" data-view="table" aria-selected="true">
-                <i class="bi bi-table"></i> Table
-            </button>
-            <button type="button" class="tab" role="tab" data-view="json" aria-selected="false">
-                <i class="bi bi-braces"></i> JSON
-            </button>
-        </div>
-
-        <div class="toolbar-search">
-            <div class="input-group">
-                <i class="bi bi-funnel"></i>
-                <input
-                    type="text"
-                    class="input"
-                    id="apiFilter"
-                    placeholder="Filter records..."
-                    aria-label="Filter records"
-                    autocomplete="off">
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-secondary btn-sm" onclick="copyApiResponse()">
-            <i class="bi bi-clipboard"></i>
-            <span>Copy JSON</span>
-        </button>
-
-    </div>
-
-
-    <div class="api-response-body">
-
-        <div id="apiTableView"></div>
-
-        <pre id="apiResponseJson" hidden></pre>
-
-    </div>
-
-
-    <div class="api-response-meta">
-        <span id="apiResponseMeta"></span>
-        <span id="apiResponseStatus"></span>
-    </div>
-
 </div>
 
 
@@ -678,473 +523,18 @@
 <script src="js/modules/research.js"></script>
 <script src="js/modules/learning.js"></script>
 <script src="js/modules/pages.js"></script>
+<script src="js/forms.js"></script>
+<script src="js/modules/help.js"></script>
+<script src="js/modules/missions.js"></script>
+<script src="js/modules/mentorship.js"></script>
+<script src="js/modules/service-commitment.js"></script>
+<script src="js/modules/engagement.js"></script>
+<script src="js/modules/network-consults.js"></script>
+<script src="js/modules/grants.js"></script>
+<script src="js/modules/equipment.js"></script>
+<script src="js/assistant.js"></script>
 
 <script>
-
-
-    /* =====================================================
-       AVAILABLE MODULES
-       Backed by the real /api/v1/:collection routes.
-    ===================================================== */
-
-    const apiModules = [
-
-        { name: "Missions", endpoint: "/api/v1/missions", icon: "bi-hospital", color: "green", description: "Mission hospital information." },
-        { name: "Mission Requests", endpoint: "/api/v1/MissionRequests", icon: "bi-file-earmark-text", color: "blue", description: "Mission request records." },
-        { name: "Mission Specializations", endpoint: "/api/v1/MissionSpecializations", icon: "bi-heart-pulse", color: "red", description: "Mission specializations." },
-        { name: "Mission Hospitals", endpoint: "/api/v1/MissionHospital", icon: "bi-building", color: "purple", description: "Connected mission hospitals." },
-        { name: "Learning Resources", endpoint: "/api/v1/LearningResources", icon: "bi-book", color: "orange", description: "Learning resources." },
-        { name: "MMS Applications", endpoint: `/api/academics/mmsapplication/${currentUser.employeeId}`, icon: "bi-file-medical", color: "teal", description: "MMS applications." },
-        { name: "MMS Other Visits", endpoint: "/api/v1/MmsOtherVisit", icon: "bi-calendar-check", color: "gray", description: "MMS other visit records." },
-        { name: "Students", endpoint: "/api/v1/students", icon: "bi-people", color: "blue", description: "Student information." },
-        { name: "Newsletter", endpoint: "/api/v1/ConnectNewsletter", icon: "bi-newspaper", color: "pink", description: "CMC VConnect newsletters." },
-        { name: "Mentee Roles", endpoint: "/api/v1/MenteeRole", icon: "bi-person-badge", color: "green", description: "Mentee role information." },
-        { name: "Missions Stream", endpoint: "/api/v1/MissionsStream", icon: "bi-diagram-3", color: "orange", description: "Mission stream information." }
-
-    ];
-
-
-    // Dashboard tiles (ported modules, rendered by App) ...
-    const apiModuleGrid =
-        document.getElementById("apiModuleGrid");
-
-    // ... and the raw API cards, now on the Data explorer page.
-    const apiExplorerGrid =
-        document.getElementById("apiExplorerGrid");
-
-
-    /* =====================================================
-       RENDER MODULE CARDS
-    ===================================================== */
-
-    function renderApiCards() {
-
-        apiExplorerGrid.innerHTML = "";
-
-        apiModules.forEach((module, index) => {
-
-            const card =
-                document.createElement("button");
-
-            card.type = "button";
-            card.className = "api-card";
-            card.dataset.name = module.name.toLowerCase();
-            card.dataset.description = module.description.toLowerCase();
-            card.style.animationDelay = `${Math.min(index, 10) * 30}ms`;
-
-            card.innerHTML = `
-
-                <div class="api-card-top">
-
-                    <div class="api-icon ${module.color}">
-                        <i class="bi ${module.icon}"></i>
-                    </div>
-
-                    <div class="api-arrow">
-                        <i class="bi bi-arrow-right"></i>
-                    </div>
-
-                </div>
-
-                <h3>${module.name}</h3>
-
-                <p>${module.description}</p>
-
-                <div class="api-status">
-                    <span class="status-dot"></span>
-                    API Module
-                </div>
-
-            `;
-
-            card.addEventListener("click", () => fetchApiData(module));
-
-            apiExplorerGrid.appendChild(card);
-
-        });
-
-    }
-
-
-    /* =====================================================
-       FETCH REAL API DATA
-       Sends the JWT so verifyJWT-protected routes accept it.
-    ===================================================== */
-
-    let apiRequestId = 0;
-    let apiRows = null;
-
-    async function fetchApiData(module) {
-
-        const responseBox =
-            document.getElementById("apiResponse");
-
-        const responseJson =
-            document.getElementById("apiResponseJson");
-
-        const requestId = ++apiRequestId;
-
-        openApiDrawer(module);
-
-        responseBox.classList.add("active");
-
-        responseJson.textContent = "Loading...";
-
-        UI.progress(true);
-
-        let ok = false;
-        let result;
-        let status = "";
-
-        try {
-
-            const token =
-                sessionStorage.getItem("accessToken");
-
-            const response =
-                await fetch(module.endpoint, {
-
-                    headers: token
-                        ? { "Authorization": `Bearer ${token}` }
-                        : {}
-
-                });
-
-            status = `HTTP ${response.status}`;
-
-            result =
-                await response.json();
-
-            ok = response.ok && result && result.success !== false;
-
-        } catch (error) {
-
-            console.error(
-                "API request failed:",
-                error
-            );
-
-            result = { success: false, message: "Invalid request" };
-
-        } finally {
-
-            UI.progress(false);
-
-        }
-
-        // A newer request has started; ignore this stale response.
-        if (requestId !== apiRequestId) {
-            return;
-        }
-
-        responseJson.textContent =
-            JSON.stringify(result, null, 4);
-
-        renderApiResult(module, result, ok, status);
-
-    }
-
-
-    function closeApiResponse() {
-
-        document
-            .getElementById("apiResponse")
-            .classList.remove("active");
-
-        document
-            .getElementById("apiBackdrop")
-            .classList.remove("active");
-
-        document.body.style.overflow = "";
-
-        apiExplorerGrid
-            .querySelectorAll(".api-card.is-loading")
-            .forEach(card => card.classList.remove("is-loading"));
-
-    }
-
-
-    /* =====================================================
-       API DRAWER PRESENTATION
-       Table view for array payloads + raw JSON view.
-    ===================================================== */
-
-    const MAX_TABLE_ROWS = 500;
-
-    function openApiDrawer(module) {
-
-        document.getElementById("apiResponseTitle").textContent = module.name;
-        document.getElementById("apiResponseEndpoint").textContent = `GET ${module.endpoint}`;
-
-        const icon = document.getElementById("apiResponseIcon");
-        icon.className = `api-icon ${module.color}`;
-        icon.innerHTML = `<i class="bi ${module.icon}"></i>`;
-
-        document.getElementById("apiBackdrop").classList.add("active");
-        document.body.style.overflow = "hidden";
-
-        document.getElementById("apiFilter").value = "";
-        document.getElementById("apiResponseMeta").textContent = "Loading records…";
-        document.getElementById("apiResponseStatus").innerHTML = '<span class="spinner" style="width:12px;height:12px"></span>';
-
-        apiRows = null;
-
-        // Skeleton while loading
-        document.getElementById("apiTableView").innerHTML =
-            `<div class="table-skeleton" aria-hidden="true">${
-                Array.from({ length: 8 }, () =>
-                    '<div class="row"><span class="skeleton"></span><span class="skeleton"></span><span class="skeleton"></span><span class="skeleton"></span></div>'
-                ).join("")
-            }</div>`;
-
-        setApiView("table");
-
-        apiExplorerGrid.querySelectorAll(".api-card").forEach(card => {
-            card.classList.toggle("is-loading", card.dataset.name === module.name.toLowerCase());
-        });
-
-        requestAnimationFrame(() =>
-            document.querySelector("#apiResponse .api-response-header button").focus()
-        );
-
-    }
-
-
-    function renderApiResult(module, result, ok, status) {
-
-        const statusEl = document.getElementById("apiResponseStatus");
-
-        statusEl.innerHTML = "";
-
-        const badge = document.createElement("span");
-        badge.className = `badge ${ok ? "badge-success" : "badge-danger"}`;
-        badge.textContent = status || (ok ? "OK" : "Error");
-        statusEl.appendChild(badge);
-
-        apiExplorerGrid.querySelectorAll(".api-card.is-loading")
-            .forEach(card => card.classList.remove("is-loading"));
-
-        if (!ok) {
-
-            const message = (result && result.message) || "The request could not be completed.";
-
-            renderApiState("error", "bi-exclamation-octagon", "Couldn't load this module", message);
-
-            document.getElementById("apiResponseMeta").textContent = "Request failed";
-
-            UI.toast(`${module.name} failed to load`, { type: "error", message });
-
-            return;
-
-        }
-
-        const rows =
-            Array.isArray(result?.data) ? result.data :
-            Array.isArray(result) ? result :
-            null;
-
-        if (!rows || !rows.length || typeof rows[0] !== "object" || rows[0] === null) {
-
-            apiRows = null;
-
-            renderApiState("", "bi-inbox", "No records to tabulate", "Switch to the JSON view to inspect the full response.");
-
-            document.getElementById("apiResponseMeta").textContent =
-                rows ? "0 records" : "Response loaded";
-
-            if (!rows || !rows.length) {
-                setApiView(rows ? "table" : "json");
-            }
-
-            return;
-
-        }
-
-        apiRows = rows;
-
-        renderApiTable("");
-
-        UI.toast(`${module.name} loaded`, {
-            type: "success",
-            message: `${rows.length} record${rows.length === 1 ? "" : "s"} retrieved.`,
-            timeout: 2500
-        });
-
-    }
-
-
-    function renderApiState(kind, icon, title, message) {
-
-        const view = document.getElementById("apiTableView");
-
-        view.innerHTML = `
-            <div class="empty-state response-state ${kind}">
-                <i class="bi ${icon}"></i>
-                <strong></strong>
-                <span></span>
-            </div>`;
-
-        view.querySelector("strong").textContent = title;
-        view.querySelector("span").textContent = message;
-
-    }
-
-
-    function formatCell(value) {
-
-        if (value === null || value === undefined || value === "") {
-            return { text: "—", className: "is-null" };
-        }
-
-        if (typeof value === "boolean") {
-            return { text: value ? "Yes" : "No", className: value ? "is-bool-true" : "" };
-        }
-
-        if (typeof value === "object") {
-
-            const json = JSON.stringify(value);
-
-            return { text: json.length > 80 ? json.slice(0, 80) + "…" : json, title: json };
-
-        }
-
-        return { text: String(value), title: String(value) };
-
-    }
-
-
-    function renderApiTable(query) {
-
-        if (!apiRows) {
-            return;
-        }
-
-        const q = query.trim().toLowerCase();
-
-        const filtered = q
-            ? apiRows.filter(row => JSON.stringify(row).toLowerCase().includes(q))
-            : apiRows;
-
-        const columns = [];
-
-        apiRows.slice(0, 100).forEach(row => {
-            Object.keys(row).forEach(key => {
-                if (!columns.includes(key)) {
-                    columns.push(key);
-                }
-            });
-        });
-
-        const table = document.createElement("table");
-        table.className = "data-table";
-
-        const headRow = table.createTHead().insertRow();
-
-        columns.forEach(col => {
-            const th = document.createElement("th");
-            th.textContent = col;
-            headRow.appendChild(th);
-        });
-
-        const body = table.createTBody();
-
-        filtered.slice(0, MAX_TABLE_ROWS).forEach(row => {
-
-            const tr = body.insertRow();
-
-            columns.forEach(col => {
-
-                const td = tr.insertCell();
-                const cell = formatCell(row[col]);
-
-                td.textContent = cell.text;
-
-                if (cell.className) {
-                    td.className = cell.className;
-                }
-
-                if (cell.title) {
-                    td.title = cell.title;
-                }
-
-            });
-
-        });
-
-        const view = document.getElementById("apiTableView");
-
-        if (!filtered.length) {
-
-            renderApiState("", "bi-search", "No matching records", "Try a different filter.");
-
-        } else {
-
-            view.innerHTML = "";
-            view.appendChild(table);
-
-        }
-
-        const shown = Math.min(filtered.length, MAX_TABLE_ROWS);
-
-        document.getElementById("apiResponseMeta").textContent =
-            q
-                ? `${shown} of ${filtered.length} matching · ${apiRows.length} total`
-                : `Showing ${shown} of ${apiRows.length} record${apiRows.length === 1 ? "" : "s"}`;
-
-    }
-
-
-    function setApiView(view) {
-
-        document.querySelectorAll("#apiResponse .tab").forEach(tab => {
-            tab.setAttribute("aria-selected", tab.dataset.view === view ? "true" : "false");
-        });
-
-        document.getElementById("apiTableView").hidden = view !== "table";
-        document.getElementById("apiResponseJson").hidden = view !== "json";
-        document.querySelector("#apiResponse .toolbar-search").style.visibility = view === "table" ? "" : "hidden";
-
-    }
-
-
-    async function copyApiResponse() {
-
-        try {
-
-            await navigator.clipboard.writeText(
-                document.getElementById("apiResponseJson").textContent
-            );
-
-            UI.toast("Copied to clipboard", { type: "success", timeout: 2000 });
-
-        } catch (error) {
-
-            UI.toast("Couldn't copy", { type: "error", message: "Your browser blocked clipboard access." });
-
-        }
-
-    }
-
-
-    document.querySelectorAll("#apiResponse .tab").forEach(tab =>
-        tab.addEventListener("click", () => setApiView(tab.dataset.view))
-    );
-
-    document.getElementById("apiFilter").addEventListener("input", event =>
-        renderApiTable(event.target.value)
-    );
-
-    document.addEventListener("keydown", event => {
-
-        if (event.key === "Escape" &&
-            document.getElementById("apiResponse").classList.contains("active") &&
-            !document.querySelector(".modal-backdrop:not([hidden])")) {
-
-            closeApiResponse();
-
-        }
-
-    });
 
 
     /* =====================================================
@@ -1154,6 +544,9 @@
 
     const searchInput =
         document.getElementById("globalSearch");
+
+    const apiModuleGrid =
+        document.getElementById("apiModuleGrid");
 
 
     function filterModules() {
@@ -1264,12 +657,6 @@
     /* =====================================================
        HEADER / NAVIGATION
     ===================================================== */
-
-    function showNotificationPopup() {
-
-        UI.toggleDropdown("notificationDropdown");
-
-    }
 
 
     function toggleSidebar(open) {
@@ -1418,7 +805,6 @@
 
     document.addEventListener("DOMContentLoaded", function () {
 
-        renderApiCards();
         loadUserInformation();
 
         // Ported modules: sidebar, dashboard tiles and hash routing

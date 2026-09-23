@@ -214,6 +214,9 @@
 
         cleanup = null;
 
+        // Dialogs belong to the page that opened them.
+        document.querySelectorAll('.modal-backdrop[id^="kitDialog"]:not([hidden])').forEach(el => UI.closeModal(el.id));
+
         const { id, params } = parseHash();
 
         window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
@@ -239,7 +242,13 @@
         }
 
         const module = find(id);
-        const view = document.getElementById("moduleView");
+
+        // Fresh element per route: modules bind listeners on their view,
+        // and those must not survive into the next module.
+        const previous = document.getElementById("moduleView");
+        const view = previous.cloneNode(false);
+
+        previous.replaceWith(view);
 
         showView("module");
         setActiveNav(id);

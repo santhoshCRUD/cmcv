@@ -402,3 +402,17 @@
 @keyframes slow-zoom {
     to { transform: scale(1.12); }
 }
+
+/* Git "Who can connect?" copy (views/home.html) */
+.auth-brand-note {
+    margin-top: var(--space-6);
+    max-width: 460px;
+    color: rgba(255, 255, 255, .82);
+    line-height: 1.65;
+}
+
+.auth-brand-note strong {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: var(--white);
+}

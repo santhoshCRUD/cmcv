@@ -46,7 +46,7 @@
                 <div class="profile-banner-text">
                     <h2>${name}</h2>
                     <span class="text-muted">${student.course_name || ""} - Batch of ${student.batch || ""}</span>
-                    <ul class="meta-list">
+                    <ul class="contact-meta">
                         <li><i class="bi bi-person-vcard"></i> Admission No: ${student.admissionNo || "—"}</li>
                         ${student.phoneNumber1 ? html`<li><i class="bi bi-telephone"></i> ${student.phoneNumber1}</li>` : ""}
                         ${student.email ? html`<li><i class="bi bi-envelope"></i> ${student.email}</li>` : ""}
@@ -58,17 +58,17 @@
             ${student.aboutme ? section("A Bit About Me", html`<div class="prose">${multiline(student.aboutme)}</div>`) : ""}
             <div class="two-col">
                 ${section("Course Details", html`
-                    <dl class="detail-grid">
-                        <div class="detail-grid-item"><dt>Quota Name</dt><dd>${student.quotaName?.quotaName || "—"}</dd></div>
-                        <div class="detail-grid-item"><dt>Quota Category</dt><dd>${student.quotaCategory?.quotaCategory || "—"}</dd></div>
-                        <div class="detail-grid-item"><dt>Course joining date</dt><dd>${date(student.doj)}</dd></div>
-                        <div class="detail-grid-item"><dt>Expected date of completion</dt><dd>${date(student.expectedDateOfCompletion)}</dd></div>
+                    <dl class="info-grid">
+                        <div class="info-grid-item"><dt>Quota Name</dt><dd>${student.quotaName?.quotaName || "—"}</dd></div>
+                        <div class="info-grid-item"><dt>Quota Category</dt><dd>${student.quotaCategory?.quotaCategory || "—"}</dd></div>
+                        <div class="info-grid-item"><dt>Course joining date</dt><dd>${date(student.doj)}</dd></div>
+                        <div class="info-grid-item"><dt>Expected date of completion</dt><dd>${date(student.expectedDateOfCompletion)}</dd></div>
                     </dl>`)}
                 ${section("Sponsorship Details", html`
-                    <dl class="detail-grid">
-                        <div class="detail-grid-item"><dt>Number of years of service</dt><dd>${student.serviceDuration || "—"}</dd></div>
-                        <div class="detail-grid-item"><dt>Sponsoring Body name</dt><dd>${student.sponsoringBody?.sponsoringBodyName || "—"}</dd></div>
-                        <div class="detail-grid-item detail-grid-wide"><dt>Allotted Hospital</dt><dd>${allotted}</dd></div>
+                    <dl class="info-grid">
+                        <div class="info-grid-item"><dt>Number of years of service</dt><dd>${student.serviceDuration || "—"}</dd></div>
+                        <div class="info-grid-item"><dt>Sponsoring Body name</dt><dd>${student.sponsoringBody?.sponsoringBodyName || "—"}</dd></div>
+                        <div class="info-grid-item info-grid-wide"><dt>Allotted Hospital</dt><dd>${allotted}</dd></div>
                     </dl>`)}
             </div>
             ${section(`Hospital Associated with the ${student.sponsoringBody?.sponsoringBodyName || "sponsoring body"}`, html`<div id="sponsorHospitals">${skeletonCards(3)}</div>`)}

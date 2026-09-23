@@ -36,6 +36,8 @@
     <!-- Design system -->
     <link rel="stylesheet" href="./styles/design-system.css">
     <link rel="stylesheet" href="./styles/auth.css">
+    <link rel="stylesheet" href="./styles/modules.css">
+    <link rel="stylesheet" href="./styles/forms.css">
 
 
     <!-- Bootstrap JS (kept for parity with the original page) -->
@@ -97,27 +99,30 @@
 
                 <span class="eyebrow">
                     <i class="bi bi-broadcast"></i>
-                    CMC V Connect Portal
+                    Connect, Communicate, Collaborate
                 </span>
 
-                <h1>Your gateway to campus, wherever you go.</h1>
+                <h1>A chance to serve together</h1>
 
                 <p>
-                    Connecting CMC with mission hospitals and healthcare
-                    communities to strengthen, support, revive and rebuild
-                    healthcare services.
+                    CMCV Connect is an online platform designed to foster
+                    collaboration and connection among individuals who align
+                    with the ethos of CMC Vellore: &ldquo;not to be served but
+                    to serve.&rdquo;
                 </p>
 
-                <ul class="auth-features">
-                    <li><i class="bi bi-hospital"></i> Mission hospitals &amp; requests</li>
-                    <li><i class="bi bi-book"></i> Learning resources &amp; newsletters</li>
-                    <li><i class="bi bi-file-medical"></i> MMS applications &amp; visits</li>
-                </ul>
+                <p class="auth-brand-note">
+                    <strong>Who can connect?</strong>
+                    Anyone with a heart for service&hellip; health professionals,
+                    volunteers, donors, well-wishers, and anyone interested in
+                    India&rsquo;s healthcare. Students passionate about serving in
+                    different regions of India are especially encouraged to join.
+                </p>
 
             </div>
 
             <div class="auth-brand-footer">
-                © CMC Vellore 2026 &nbsp;·&nbsp; Version loading
+                &copy; 2026 CMC
             </div>
 
         </aside>
@@ -143,7 +148,7 @@
                     <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
                 </div>
 
-                <p>Your gateway to campus, wherever you go.</p>
+                <p>Connect, Communicate, Collaborate</p>
 
             </div>
 
@@ -401,7 +406,7 @@
 
 
             <footer class="auth-footer login-footer">
-                © CMC Vellore 2026 &nbsp;|&nbsp; Version loading
+                &copy; 2026 CMC
             </footer>
 
         </main>
@@ -425,6 +430,9 @@
     ========================================================= -->
 
     <script src="ui.js"></script>
+    <script src="js/ui-kit.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/public-registration.js"></script>
 
     <script
         src="login.js"
@@ -501,16 +509,9 @@
 
 
         /*
-         * Registration
+         * Registration: js/public-registration.js
+         * (git: requestLoginForm -> LoginRequest)
          */
-
-        function newRegistration() {
-
-            alert(
-                "Working on it."
-            );
-
-        }
 
 
 

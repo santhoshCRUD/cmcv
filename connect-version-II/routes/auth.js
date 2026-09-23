@@ -117,7 +117,12 @@ function buildUserResponse(user, fallbackEmail) {
         // "Missions Mentor", "VConnect Guest") that the git code
         // uses to show/hide modules.
         roles:
-            Array.isArray(user.roles) ? user.roles : []
+            Array.isArray(user.roles) ? user.roles : [],
+
+        // Account-level role (git: usrDetails.data.role, e.g. "Admin"
+        // for the FOV admin dashboard)
+        role:
+            typeof user.role === "string" ? user.role : ""
 
     };
 
@@ -199,7 +204,8 @@ router.post("/login", async (req, res) => {
                 "profile.designationId": 1,
                 "profile.avatar": 1,
                 "profile.admissionNo": 1,
-                "roles": 1
+                "roles": 1,
+                "role": 1
             }
         ).lean();
 
@@ -603,7 +609,8 @@ router.get(
                     "profile.designationId": 1,
                     "profile.avatar": 1,
                 "profile.admissionNo": 1,
-                    "roles": 1
+                    "roles": 1,
+                "role": 1
                 }
             ).lean();
 

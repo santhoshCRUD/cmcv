@@ -736,8 +736,4 @@ async function checkUserAndLogin(email, provider) {
     }
 }
 
-function newRegistration() {
-
-    alert("Working on it");
-
-}
+// newRegistration() lives in js/public-registration.js

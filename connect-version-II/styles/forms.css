@@ -374,8 +374,12 @@
     margin-top: var(--space-2);
 }
 
+.formio-host .invalid-feedback:empty,
+.formio-host .formio-errors:empty {
+    display: none;
+}
+
 .formio-host .formio-errors .error,
-.formio-host .invalid-feedback,
 .formio-host .formio-errors .form-text.error {
     display: flex;
     align-items: flex-start;
@@ -385,8 +389,7 @@
     color: var(--danger-700);
 }
 
-.formio-host .formio-errors .error::before,
-.formio-host .invalid-feedback::before {
+.formio-host .formio-errors .error::before {
     content: "";
     flex-shrink: 0;
     width: 14px;

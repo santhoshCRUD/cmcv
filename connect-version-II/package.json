@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "seed:equipment": "node scripts/seed-equipment.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",

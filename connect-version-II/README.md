@@ -49,4 +49,33 @@ js/modules/ home.js (dashboard widgets per audience), hospitals.js, grand-rounds
 
 Access follows renderPostHomePage() in the git code: faculty/postgraduate -> missions view, student -> student view, external user by roles (Missions / student / VConnect Guest)
 
-Phase 2 (form and workflow modules): MMS, Mission Visits, Sabbatical, Mentorship, Legal Help, Finance, Equipment, Library Access, Manpower Request, Network Consults, FOV/SAM Grants, Research Request form, Feedback
+Phase 2 - form and workflow modules
+
+js/forms.js + styles/forms.css (FormIO host: every form definition still comes from the FormIO collection by formKey, rendered in version II dialogs with one loading state, validation message style, font and colour set; Forms.confirm / Forms.prompt replace window.confirm)
+
+vendor/formio (Form.io 4.21.7 from the git assets, plus its date picker / rich-text editor served locally instead of cdn.form.io); vendor/forms (samTrainingReportForm, which the git code shipped inside formLoad.js)
+
+js/modules/ help.js (Legal Help, Finance, Library Access, NABH Entry Level, Feedback, Research Request form), missions.js (Manpower Requests, hospital administrator workspace with mission requests + message thread), mentorship.js (Mission Mentors / Mentees, meetings), service-commitment.js, engagement.js (Mission Engagement, Mandatory Mission Service, Mission Visits), network-consults.js (dashboard, themes, requests, consults, nodal, patient workspace with Q&A), grants.js (Grants, FOV, SAM with applicant/admin dashboards), equipment.js (register, requests, admin dashboard, history)
+
+routes/connectApp.js (write allowlist for the Phase 2 collections; Asset writes need "Missions"; "students" only returns the caller's own record; missionHospital only accepts student feedback)
+
+routes/uploads.js (POST /api/uploads: form attachments stored on disk and served from /uploads - replaces uploadToS3, which the git code never defined)
+
+routes/public.js ("Register now" on the login page: the cmcvconnectLoginApplication form, stored in LoginRequest for the Missions Office)
+
+routes/assistant.js + knowledge/modules.js + js/assistant.js (module guide chatbot, "Ask the guide" on every page; answers only from the knowledge base built from the git content; uses Claude when ANTHROPIC_API_KEY is set, keyword search otherwise)
+
+scripts/seed-equipment.js (npm run seed:equipment - loads the Asset Recycling Committee list that the git Equipment page started with)
+
+Mission Sabbatical stays "Coming Soon", as in the git code.
+
+
+Run locally
+
+1. Install Node.js 20+ and MongoDB (or use a MongoDB connection string).
+2. cd connect-version-II
+3. npm install
+4. Copy .env.example to .env and fill in MONGO_URI and JWT_SECRET (ANTHROPIC_API_KEY is optional).
+5. npm start  (then open http://localhost:7000/login)
+   Do not use "npx serve" - the pages need the API routes served by app.js.
+6. Optional: npm run seed:equipment

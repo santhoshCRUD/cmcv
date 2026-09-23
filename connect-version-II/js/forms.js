@@ -21,10 +21,13 @@
  */
 (function () {
 
-    const { html, esc, raw, openDialog } = Kit;
+    const { html, openDialog } = Kit;
 
     const SCRIPT = "vendor/formio/formio.full.min.js";
     const STYLE = "vendor/formio/formio.full.min.css";
+
+    const LOCAL_LIBS = ["flatpickr-formio", "quill", "shortcut-buttons-flatpickr"];
+    const READY_TIMEOUT = 20000;
 
     const cache = new Map();
     let loader = null;
@@ -53,7 +56,19 @@
             const script = document.createElement("script");
 
             script.src = SCRIPT;
-            script.onload = () => window.Formio ? resolve(window.Formio) : reject(new Error("Form library unavailable"));
+            script.onload = () => {
+
+                if (!window.Formio) return reject(new Error("Form library unavailable"));
+
+                // Date picker and rich-text editor are served from this app
+                // (vendor/formio/lib) instead of cdn.form.io, so forms also
+                // work where that CDN is unreachable.
+                const local = new URL("vendor/formio/lib", document.baseURI).href.replace(/\/$/, "");
+                LOCAL_LIBS.forEach(lib => window.Formio.cdn?.setOverrideUrl?.(lib, local));
+
+                resolve(window.Formio);
+
+            };
             script.onerror = () => reject(new Error("Couldn't load the form library"));
 
             document.head.appendChild(script);
@@ -71,13 +86,17 @@
 
         if (!cache.has(formKey)) {
 
-            cache.set(formKey, ConnectAPI.rows({ collection: "FormIO", query: { formKey } }).then(rows => {
+            cache.set(formKey, ConnectAPI.rows({ collection: "FormIO", query: { formKey } }).then(async rows => {
 
-                if (!rows[0]) {
-                    throw new Error("This form is not available right now. Please contact the Missions office.");
-                }
+                if (rows[0]) return rows[0];
 
-                return rows[0];
+                // Forms the git code bundled with the page instead of the
+                // FormIO collection (e.g. samTrainingReportForm).
+                const bundled = await fetch(`vendor/forms/${encodeURIComponent(formKey)}.json`).then(r => r.ok ? r.json() : null).catch(() => null);
+
+                if (bundled) return bundled;
+
+                throw new Error("This form is not available right now. Please contact the Missions office.");
 
             }).catch(error => {
                 cache.delete(formKey);
@@ -311,7 +330,13 @@
 
         bindValidationToast(form);
 
-        await form.ready;
+        // A component whose library can't be fetched leaves form.ready pending.
+        const ready = await Promise.race([form.ready.then(() => true), new Promise(r => setTimeout(() => r(false), READY_TIMEOUT))]);
+
+        if (!ready) {
+            host.innerHTML = String(errorMarkup("Part of this form could not be loaded. Please check your connection and try again."));
+            return null;
+        }
 
         if (submission) {
             form.submission = { data: structuredClone(submission) };
