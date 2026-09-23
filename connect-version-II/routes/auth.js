@@ -107,7 +107,13 @@ function buildUserResponse(user, fallbackEmail) {
             profile.designationId || "",
 
         avatar:
-            profile.avatar || ""
+            profile.avatar || "",
+
+        // Legacy role names (e.g. "Missions", "Council Member",
+        // "Missions Mentor", "VConnect Guest") that the git code
+        // uses to show/hide modules.
+        roles:
+            Array.isArray(user.roles) ? user.roles : []
 
     };
 
@@ -187,7 +193,8 @@ router.post("/login", async (req, res) => {
                 "profile.unitId": 1,
                 "profile.designation": 1,
                 "profile.designationId": 1,
-                "profile.avatar": 1
+                "profile.avatar": 1,
+                "roles": 1
             }
         ).lean();
 
@@ -266,7 +273,10 @@ router.post("/login", async (req, res) => {
                 role: userRole,
 
                 employeeId:
-                    profile.employeeNo
+                    profile.employeeNo,
+
+                roles:
+                    Array.isArray(user.roles) ? user.roles : []
 
             });
 
@@ -581,7 +591,8 @@ router.get(
                     "profile.unitId": 1,
                     "profile.designation": 1,
                     "profile.designationId": 1,
-                    "profile.avatar": 1
+                    "profile.avatar": 1,
+                    "roles": 1
                 }
             ).lean();
 

@@ -9,6 +9,7 @@ const connectDB = require("./db");
 const authRoutes = require("./routes/auth");
 const academicsRoutes = require("./routes/academics");
 const connectRoutes = require("./routes/connect");
+const connectAppRoutes = require("./routes/connectApp");
 //const graphRoutes = require("./routes/graphapi");
 const v1Routes = require("./routes/v1");
 
@@ -41,6 +42,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/academics", academicsRoutes);
 app.use("/api/connect", connectRoutes);
+app.use("/api/connectApp", connectAppRoutes);
 //app.use("/api/graph", graphRoutes);
 app.use("/api/v1", v1Routes);
 
