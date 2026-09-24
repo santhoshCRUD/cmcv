@@ -185,6 +185,114 @@
 
 
     // -----------------------------------------------------------------
+    // Collapsible sidebar (desktop): full menu <-> logo + icon rail.
+    // The choice is kept per browser; home.html restores it before paint.
+    // -----------------------------------------------------------------
+
+    const SIDEBAR_KEY = "cmcv.sidebar";
+
+    function setSidebarCollapsed(collapsed) {
+
+        document.documentElement.classList.toggle("sidebar-collapsed", collapsed);
+
+        const button = document.getElementById("sidebarCollapse");
+
+        if (button) {
+            const label = collapsed ? "Expand menu" : "Collapse menu";
+            button.setAttribute("aria-expanded", String(!collapsed));
+            button.setAttribute("aria-label", label);
+            button.title = label;
+        }
+
+        try { localStorage.setItem(SIDEBAR_KEY, collapsed ? "collapsed" : "expanded"); } catch (error) { /* private mode */ }
+
+        if (!collapsed) hideTip();
+
+    }
+
+    const isRail = () => document.documentElement.classList.contains("sidebar-collapsed") && window.matchMedia("(min-width: 1025px)").matches;
+
+    let tip = null;
+
+    function showTip(item) {
+
+        const label = item.querySelector("span")?.textContent.trim();
+
+        if (!label || !isRail()) return;
+
+        if (!tip) {
+            tip = document.createElement("div");
+            tip.className = "nav-tip";
+            tip.setAttribute("role", "tooltip");
+            document.body.appendChild(tip);
+        }
+
+        const box = item.getBoundingClientRect();
+
+        tip.textContent = label;
+        tip.style.left = `${box.right + 12}px`;
+        tip.style.top = `${box.top + box.height / 2}px`;
+        tip.classList.add("is-visible");
+
+    }
+
+    function hideTip() {
+        tip?.classList.remove("is-visible");
+    }
+
+    function initSidebar() {
+
+        const sidebar = document.getElementById("sidebar");
+        const button = document.getElementById("sidebarCollapse");
+
+        if (!sidebar || !button) return;
+
+        setSidebarCollapsed(document.documentElement.classList.contains("sidebar-collapsed"));
+
+        button.addEventListener("click", () => setSidebarCollapsed(!document.documentElement.classList.contains("sidebar-collapsed")));
+
+        const itemOf = event => event.target.closest?.(".nav-item, .sidebar-logout, [data-avatar]");
+
+        sidebar.addEventListener("mouseover", event => { const item = itemOf(event); if (item) showTip(item); });
+        sidebar.addEventListener("mouseout", hideTip);
+        sidebar.addEventListener("focusin", event => { const item = itemOf(event); if (item) showTip(item); });
+        sidebar.addEventListener("focusout", hideTip);
+        sidebar.querySelector(".sidebar-nav")?.addEventListener("scroll", hideTip, { passive: true });
+
+    }
+
+
+    // -----------------------------------------------------------------
+    // Module background theme: a light wash of the module colour and a
+    // faint watermark of its icon (styles/shell.css).
+    // -----------------------------------------------------------------
+
+    function setTheme(module) {
+
+        const column = document.querySelector(".main-column");
+
+        if (!column) return;
+
+        column.querySelector(".module-watermark")?.remove();
+
+        if (!module) {
+            delete column.dataset.theme;
+            delete column.dataset.module;
+            return;
+        }
+
+        column.dataset.theme = module.color || "blue";
+        column.dataset.module = module.id;
+
+        const mark = document.createElement("i");
+        mark.className = `bi ${module.icon || "bi-grid"} module-watermark`;
+        mark.setAttribute("aria-hidden", "true");
+        column.prepend(mark);
+
+    }
+
+
+    // -----------------------------------------------------------------
     // Router
     // -----------------------------------------------------------------
 
@@ -214,6 +322,8 @@
 
         cleanup = null;
 
+        hideTip();
+
         // Dialogs belong to the page that opened them.
         document.querySelectorAll('.modal-backdrop[id^="kitDialog"]:not([hidden])').forEach(el => UI.closeModal(el.id));
 
@@ -226,6 +336,7 @@
             showView("home");
             setActiveNav(id === "modules" ? "modules" : "home");
             setTitle("Dashboard");
+            setTheme(null);
 
             const home = find("home");
 
@@ -252,6 +363,8 @@
 
         showView("module");
         setActiveNav(id);
+
+        setTheme(module && canAccess(module) ? module : null);
 
         if (!module) {
 
@@ -301,6 +414,7 @@
 
     function start() {
 
+        initSidebar();
         renderNav();
         renderTiles();
 
@@ -321,6 +435,7 @@
         hasRole,
         userType,
         find,
+        setSidebarCollapsed,
         modules: () => modules.slice()
     };
 

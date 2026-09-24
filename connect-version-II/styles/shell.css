@@ -1,0 +1,249 @@
+/* =====================================================================
+   App shell extras
+   - collapsible sidebar (desktop): full menu <-> logo + icon rail
+   - per-module light background theme (colour wash + icon watermark)
+===================================================================== */
+
+:root {
+    --sidebar-rail-w: 76px;
+}
+
+
+/* ---------- Collapse toggle ---------- */
+
+.sidebar-collapse {
+    position: absolute;
+    top: calc(var(--header-h) / 2 - 13px);
+    right: -13px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--gray-600);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.sidebar-collapse:hover {
+    color: var(--accent-600);
+    box-shadow: var(--shadow-md);
+}
+
+.sidebar-collapse:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+.sidebar-collapse .bi {
+    font-size: 12px;
+    transition: transform var(--dur-base, 200ms) var(--ease);
+}
+
+.sidebar-brand .brand-home {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar-brand .brand-home:hover {
+    text-decoration: none;
+}
+
+@media (min-width: 1025px) {
+
+    .app-shell {
+        transition: grid-template-columns 220ms var(--ease);
+    }
+
+    html.sidebar-collapsed .app-shell {
+        grid-template-columns: var(--sidebar-rail-w) minmax(0, 1fr);
+    }
+
+    html.sidebar-collapsed .sidebar-collapse .bi {
+        transform: rotate(180deg);
+    }
+
+    html.sidebar-collapsed .sidebar-brand {
+        justify-content: center;
+        padding: 0;
+    }
+
+    html.sidebar-collapsed .sidebar-brand .wordmark,
+    html.sidebar-collapsed .nav-item span,
+    html.sidebar-collapsed .sidebar-user-info {
+        display: none;
+    }
+
+    html.sidebar-collapsed .sidebar-brand img {
+        width: 38px;
+    }
+
+    html.sidebar-collapsed .sidebar-nav {
+        padding: var(--space-3) var(--space-2);
+        scrollbar-width: none;
+    }
+
+    /* Section labels become thin dividers */
+    html.sidebar-collapsed .nav-section-label {
+        height: 1px;
+        margin: var(--space-3) var(--space-3);
+        padding: 0;
+        overflow: hidden;
+        background: rgba(255, 255, 255, .1);
+        color: transparent;
+    }
+
+    html.sidebar-collapsed .nav-item {
+        justify-content: center;
+        height: 42px;
+        padding: 0;
+    }
+
+    html.sidebar-collapsed .nav-item .bi {
+        width: auto;
+        font-size: 1.15rem;
+    }
+
+    html.sidebar-collapsed .nav-item.active {
+        box-shadow: inset 3px 0 0 var(--accent-400);
+    }
+
+    html.sidebar-collapsed .sidebar-footer {
+        padding: var(--space-2);
+    }
+
+    html.sidebar-collapsed .sidebar-user {
+        flex-direction: column;
+        gap: var(--space-2);
+        padding: var(--space-2) 0;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .sidebar-collapse {
+        display: none;
+    }
+}
+
+/* Tooltip for the icon rail (one element, positioned by app-shell.js) */
+.nav-tip {
+    position: fixed;
+    z-index: var(--z-dropdown);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--gray-900);
+    color: var(--white);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    pointer-events: none;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease);
+}
+
+.nav-tip.is-visible {
+    opacity: 1;
+}
+
+.nav-tip::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+
+/* ---------- Module background themes ---------- */
+
+.main-column {
+    position: relative;
+    --theme: var(--accent-600);
+}
+
+.main-column[data-theme="blue"]   { --theme: var(--mod-blue); }
+.main-column[data-theme="green"]  { --theme: var(--mod-green); }
+.main-column[data-theme="red"]    { --theme: var(--mod-red); }
+.main-column[data-theme="purple"] { --theme: var(--mod-purple); }
+.main-column[data-theme="orange"] { --theme: var(--mod-orange); }
+.main-column[data-theme="teal"]   { --theme: var(--mod-teal); }
+.main-column[data-theme="gray"]   { --theme: var(--mod-gray); }
+.main-column[data-theme="pink"]   { --theme: var(--mod-pink); }
+
+.main-column[data-theme] {
+    background:
+        radial-gradient(1100px 420px at 100% 0%, color-mix(in srgb, var(--theme) 9%, transparent), transparent 70%),
+        radial-gradient(700px 320px at 0% 0%, color-mix(in srgb, var(--theme) 5%, transparent), transparent 70%),
+        linear-gradient(180deg, color-mix(in srgb, var(--theme) 3%, var(--bg)) 0, var(--bg) 520px);
+    background-repeat: no-repeat;
+}
+
+/* Large faint icon of the module, top right, behind the content */
+.module-watermark {
+    position: absolute;
+    top: calc(var(--header-h) + var(--space-4));
+    right: clamp(-60px, -3vw, -20px);
+    z-index: 0;
+    color: var(--theme);
+    font-size: clamp(180px, 22vw, 300px);
+    line-height: 1;
+    opacity: .055;
+    pointer-events: none;
+    user-select: none;
+    animation: watermark-in 400ms var(--ease) both;
+}
+
+@keyframes watermark-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: .055; transform: none; }
+}
+
+.main-column .page {
+    position: relative;
+    z-index: 1;
+}
+
+.main-column {
+    overflow-x: clip;
+}
+
+/* The module's colour carries into its header and quiet accents */
+.main-column[data-theme] .page-header .eyebrow {
+    color: var(--theme);
+}
+
+.main-column[data-theme] .topbar {
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--theme) 55%, transparent);
+}
+
+@media (max-width: 640px) {
+
+    .module-watermark {
+        font-size: 160px;
+        right: -40px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .app-shell,
+    .module-watermark {
+        transition: none;
+        animation: none;
+    }
+}

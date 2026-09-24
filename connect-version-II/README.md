@@ -66,6 +66,8 @@ routes/public.js ("Register now" on the login page: the cmcvconnectLoginApplicat
 routes/assistant.js + knowledge/modules.js + js/assistant.js (module guide chatbot, "Ask the guide" on every page; answers only from the knowledge base built from the git content; uses Claude when ANTHROPIC_API_KEY is set, keyword search otherwise)
 
 scripts/seed-equipment.js (npm run seed:equipment - loads the Asset Recycling Committee list that the git Equipment page started with)
+js/map-kit.js + styles/maps.css + vendor/leaflet (maps on Leaflet with Map / Satellite base maps and no API key - the git Google Maps key only works on the production domain; Mission Hospitals is a list + map explorer with clustered pins, popups, directions, distance from CMC Vellore and Near me)
+styles/shell.css (menu collapses to a logo + icon rail with the arrow on its edge, remembered per browser; every module gets a light background in its own colour with a faint watermark of its icon)
 config/collections.js (every collection and formKey the original app uses, with its module - shared by the data API, the sync/check scripts and a future admin project)
 services/live-source.js (reads from the live CMC server for collections not in the local database)
 scripts/check-data.js, scripts/sync-data.js, scripts/check-forms.js, scripts/sync-forms.js (npm run check:data / sync:data / check:forms / sync:forms)

@@ -41,6 +41,11 @@
     <link rel="stylesheet" href="./styles/forms.css">
     <link rel="stylesheet" href="./styles/phase2.css">
     <link rel="stylesheet" href="./styles/maps.css">
+    <link rel="stylesheet" href="./styles/shell.css">
+    <script>
+        // Restore the collapsed menu before first paint (js/app-shell.js keeps it in sync).
+        try { if (localStorage.getItem("cmcv.sidebar") === "collapsed") document.documentElement.classList.add("sidebar-collapsed"); } catch (e) {}
+    </script>
 
 </head>
 
@@ -56,13 +61,26 @@
 
 <aside class="sidebar" id="sidebar" aria-label="Main navigation">
 
+    <button
+        type="button"
+        class="sidebar-collapse"
+        id="sidebarCollapse"
+        aria-controls="sidebar"
+        aria-expanded="true"
+        aria-label="Collapse menu"
+        title="Collapse menu">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+
     <div class="sidebar-brand">
 
-        <img
-            src="/images/cmc-logo-white-transparent.png"
-            alt="CMC">
+        <a href="#/" class="brand-home" aria-label="CMC V Connect - Dashboard">
+            <img
+                src="/images/cmc-logo-white-transparent.png"
+                alt="CMC">
 
-        <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+            <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+        </a>
 
         <button
             type="button"

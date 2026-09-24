@@ -50,8 +50,9 @@ module.exports = [
         summary: "CMC's mission hospital network comprises around 200 hospitals across the country, primarily serving rural and underserved regions. In many of these areas, these hospitals are the only source of accessible, affordable, and dependable healthcare. The interactive map allows you to view them and identify opportunities to contribute.",
         steps: [
             "Open Mission Hospitals from the menu.",
-            "Use the State filter (Missions users can also filter by department and manpower needs) and switch between Network and Non Network hospitals.",
-            "Open a hospital to see its details, departments, bed strength and gallery."
+            "The Map view lists the hospitals beside the map. Click a hospital (in the list or on its pin) to zoom to it and see its photo, beds, departments, open staff requests, distance from CMC Vellore and directions. Switch between Map and Satellite at the top right of the map.",
+            "Search by hospital or state, use the Network and Needs staff quick filters, or open Filters for state (Missions users also get department and manpower needs). \"Near me\" sorts hospitals by distance from you; \"Show all\" zooms back out. Tiles shows the same hospitals as cards.",
+            "Open a hospital (View details) to see its details, departments, bed strength, gallery and location on a satellite map."
         ],
         keywords: ["hospital", "hospitals", "map", "network", "mission hospital", "state", "location"]
     },
