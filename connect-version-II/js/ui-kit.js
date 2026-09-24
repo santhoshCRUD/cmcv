@@ -13,8 +13,6 @@
     const FALLBACK_IMAGE =
         "https://s3.amazonaws.com/img.studenthub.in/CMCVConnect_Portal/Pictures/_43782473c4ed75b1e167091821a4d700_Pictures.png";
 
-    // Google Maps browser key used by the git code (dynamicRender.js loadGoogleMapsScript)
-    const GOOGLE_MAPS_KEY = "AIzaSyCwln9Lfdk4lJMfbIKbJyk7ctVL3fe3Bfk";
 
 
     // -----------------------------------------------------------------
@@ -517,42 +515,15 @@
 
 
     // -----------------------------------------------------------------
-    // Google Maps (lazy, same key as the git code)
+    // Maps (js/map-kit.js, Leaflet). The git code used Google Maps with
+    // a key restricted to the production domain.
     // -----------------------------------------------------------------
 
-    let mapsPromise = null;
+    // points: [{ id, lat, lng, title, info (html string) }]
+    // -> { map, markers: [{ point, marker }] } or null
+    async function renderMap(element, points, { zoom = 6, satellite = false } = {}) {
 
-    function loadGoogleMaps() {
-
-        if (window.google?.maps) {
-            return Promise.resolve(window.google.maps);
-        }
-
-        if (!mapsPromise) {
-
-            mapsPromise = new Promise((resolve, reject) => {
-
-                const script = document.createElement("script");
-
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}`;
-                script.async = true;
-                script.onload = () => window.google?.maps ? resolve(window.google.maps) : reject(new Error("Google Maps unavailable"));
-                script.onerror = () => { mapsPromise = null; reject(new Error("Google Maps failed to load")); };
-
-                document.head.appendChild(script);
-
-            });
-
-        }
-
-        return mapsPromise;
-
-    }
-
-    // points: [{ lat, lng, title, info (html string) }]
-    async function renderMap(element, points, { zoom = 6 } = {}) {
-
-        const valid = points.filter(p => !isNaN(parseFloat(p.lat)) && !isNaN(parseFloat(p.lng)));
+        const valid = points.filter(p => MapKit.validPoint(p.lat, p.lng));
 
         if (!valid.length) {
             element.innerHTML = String(emptyState("bi-geo-alt", "No locations to show", "None of these records have map coordinates."));
@@ -563,47 +534,40 @@
 
         try {
 
-            const maps = await loadGoogleMaps();
-
-            element.innerHTML = "";
-
-            const map = new maps.Map(element, { center: { lat: parseFloat(valid[0].lat), lng: parseFloat(valid[0].lng) }, zoom });
-            const bounds = new maps.LatLngBounds();
-            const infoWindow = new maps.InfoWindow();
+            const L = await MapKit.load();
+            const map = await MapKit.create(element, { satellite, scrollWheelZoom: false });
+            const group = valid.length > 12 ? MapKit.clusterGroup(L) : L.featureGroup();
 
             const markers = valid.map(point => {
 
-                const position = { lat: parseFloat(point.lat), lng: parseFloat(point.lng) };
-                const marker = new maps.Marker({ position, map, title: point.title });
+                const marker = L.marker([MapKit.toNumber(point.lat), MapKit.toNumber(point.lng)], {
+                    icon: MapKit.pin(L, { label: point.title || "" }),
+                    title: point.title || "",
+                    riseOnHover: true
+                });
 
-                bounds.extend(position);
+                if (point.info) marker.bindPopup(String(point.info), { className: "mapkit-popup", maxWidth: 300 });
 
-                if (point.info) {
-                    marker.addListener("click", () => {
-                        infoWindow.setContent(String(point.info));
-                        infoWindow.open(map, marker);
-                    });
-                }
+                group.addLayer(marker);
 
                 return { point, marker };
 
             });
 
-            if (valid.length > 1) {
+            group.addTo(map);
 
-                map.fitBounds(bounds);
-
-                maps.event.addListenerOnce(map, "idle", () => {
-                    if (map.getZoom() > 18) map.setZoom(18);
-                });
-
+            if (valid.length === 1) {
+                map.setView(markers[0].marker.getLatLng(), zoom > 6 ? zoom : 12);
+            } else {
+                map.fitBounds(L.featureGroup(markers.map(m => m.marker)).getBounds(), { padding: [32, 32], maxZoom: 12 });
             }
 
             return { map, markers };
 
         } catch (error) {
 
-            element.innerHTML = String(emptyState("bi-map", "Map unavailable", "Google Maps could not be loaded. The list view still works."));
+            console.warn("Map failed to load:", error);
+            element.innerHTML = String(emptyState("bi-map", "Map unavailable", "The map could not be loaded. Please check your connection."));
 
             return null;
 
@@ -637,7 +601,6 @@
         openDialog,
         openVideo,
         dataTable,
-        loadGoogleMaps,
         renderMap
     };
 
