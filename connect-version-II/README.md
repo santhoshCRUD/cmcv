@@ -88,3 +88,9 @@ the git code, so a new local database needs a copy of that collection:
     mongoimport --uri "<your MONGO_URI>" --collection FormIO --file FormIO.json
 
 Then run "npm run check:forms" to see which definitions are present.
+
+The lookup (services/formio.js, GET /api/forms/<formKey>) accepts the collection under any
+capitalisation (FormIO, formIO, formio), matches formKey ignoring case and surrounding spaces,
+unwraps definitions stored in a nested field (form, schema, definition, formJson ...) and looks in
+the database from MONGO_URI first, then FORMIO_DB (optional .env setting), then any other database
+on the same server.

@@ -13,6 +13,7 @@ const connectAppRoutes = require("./routes/connectApp");
 const publicRoutes = require("./routes/public");
 const { router: uploadRoutes, UPLOAD_DIR } = require("./routes/uploads");
 const assistantRoutes = require("./routes/assistant");
+const formRoutes = require("./routes/forms");
 //const graphRoutes = require("./routes/graphapi");
 const v1Routes = require("./routes/v1");
 
@@ -49,6 +50,7 @@ app.use("/api/connectApp", connectAppRoutes);
 app.use("/api/public", publicRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/assistant", assistantRoutes);
+app.use("/api/forms", formRoutes);
 //app.use("/api/graph", graphRoutes);
 app.use("/api/v1", v1Routes);
 

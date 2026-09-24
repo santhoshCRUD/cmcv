@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const { findDefinition } = require("../services/formio");
 
 const router = express.Router();
 
@@ -84,9 +85,7 @@ router.get("/registration-form", async (req, res) => {
 
     try {
 
-        const form = await mongoose.connection.db
-            .collection("FormIO")
-            .findOne({ formKey: REGISTRATION_FORM_KEY });
+        const form = await findDefinition(REGISTRATION_FORM_KEY);
 
         if (!form) {
 

@@ -86,9 +86,20 @@
 
         if (!cache.has(formKey)) {
 
-            cache.set(formKey, ConnectAPI.rows({ collection: "FormIO", query: { formKey } }).then(async rows => {
+            cache.set(formKey, (async () => {
 
-                if (rows[0]) return rows[0];
+                const token = sessionStorage.getItem("accessToken");
+                const response = await fetch(`/api/forms/${encodeURIComponent(formKey)}`, {
+                    headers: { Accept: "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }
+                });
+                const result = await response.json().catch(() => null);
+
+                if (response.ok && result?.success && result.data) return result.data;
+
+                if (response.status === 401) {
+                    sessionStorage.clear();
+                    window.location.href = "/login";
+                }
 
                 // Forms the git code bundled with the page instead of the
                 // FormIO collection (e.g. samTrainingReportForm).
@@ -96,11 +107,11 @@
 
                 if (bundled) return bundled;
 
-                console.warn(`FormIO definition "${formKey}" was not found in the FormIO collection (run "npm run check:forms" on the server).`);
+                console.warn(`FormIO definition "${formKey}" was not found (run "npm run check:forms" on the server).`);
 
-                throw new Error("This form is not available right now. Please contact the Missions office.");
+                throw new Error(result?.message || "This form is not available right now. Please contact the Missions office.");
 
-            }).catch(error => {
+            })().catch(error => {
                 cache.delete(formKey);
                 throw error;
             }));

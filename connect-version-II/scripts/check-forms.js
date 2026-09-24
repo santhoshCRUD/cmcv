@@ -40,33 +40,37 @@ const REQUIRED = {
 
     await mongoose.connect(process.env.MONGO_URI);
 
-    const db = mongoose.connection.db;
-    const names = (await db.listCollections().toArray()).map(c => c.name);
+    const { formCollections, findDefinition, listFormKeys } = require("../services/formio");
 
-    console.log(`Database: ${db.databaseName}`);
+    console.log(`Database in MONGO_URI: ${mongoose.connection.db.databaseName}`);
 
-    if (!names.includes("FormIO")) {
-        const similar = names.filter(n => /form/i.test(n));
-        console.log("\n✗ There is no collection named \"FormIO\" in this database.");
-        console.log(similar.length ? `  Collections with "form" in the name: ${similar.join(", ")}` : "  No collection name contains \"form\".");
-        console.log("  Import the FormIO collection from the production CMC V Connect database (see README).");
+    const collections = await formCollections();
+
+    if (!collections.length) {
+        console.log("\n✗ No FormIO collection (any capitalisation) was found in any database on this server.");
+        console.log("  Import the FormIO collection from the production CMC V Connect database (see README),");
+        console.log("  or set FORMIO_DB in .env if the forms are in a database this user can't list.");
+    } else {
+        console.log(`Form definitions read from: ${collections.map(c => `${c.dbName}.${c.name}`).join(", ")}`);
     }
-
-    const present = new Set(names.includes("FormIO")
-        ? (await db.collection("FormIO").find({}, { projection: { formKey: 1 } }).toArray()).map(f => f.formKey)
-        : []);
 
     console.log("");
 
     let missing = 0;
 
-    Object.entries(REQUIRED).forEach(([key, used]) => {
-        const ok = present.has(key);
-        if (!ok) missing++;
-        console.log(`${ok ? "✓" : "✗"} ${key.padEnd(30)} ${used}`);
-    });
+    for (const [key, used] of Object.entries(REQUIRED)) {
+        const definition = await findDefinition(key);
+        if (!definition) missing++;
+        console.log(`${definition ? "✓" : "✗"} ${key.padEnd(30)} ${used}${definition ? ` (${definition.components.length} top-level components)` : ""}`);
+    }
 
-    console.log(missing ? `\n${missing} form definition(s) missing - those forms will show "This form is not available right now".` : "\nAll form definitions found.");
+    if (missing) {
+        const all = await listFormKeys();
+        console.log(`\n${missing} form definition(s) not found. formKeys that do exist:`);
+        console.log("  " + (all.map(k => k.formKey).filter(Boolean).sort().join(", ") || "(none)"));
+    } else {
+        console.log("\nAll form definitions found.");
+    }
 
     await mongoose.disconnect();
 
