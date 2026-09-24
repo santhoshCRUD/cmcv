@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
-const REQUIRED = require("./form-keys");
+const { FORM_KEYS: REQUIRED } = require("../config/collections");
 
 (async () => {
 

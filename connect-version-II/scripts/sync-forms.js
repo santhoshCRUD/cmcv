@@ -5,39 +5,34 @@
  *
  *   npm run sync:forms            only forms missing locally
  *   npm run sync:forms -- --all   refresh every form from the live server
+ *
+ * Also run by `npm run sync:data`.
  */
+const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
-const REQUIRED = require("./form-keys");
+const { FORM_KEYS } = require("../config/collections");
 
-(async () => {
 
-    if (!process.env.MONGO_URI) {
-        console.error("MONGO_URI is not set (see .env.example).");
-        process.exit(1);
-    }
-
-    await mongoose.connect(process.env.MONGO_URI);
+async function syncForms({ refreshAll = false } = {}) {
 
     const { findDefinition, fetchRemote, remoteUrl, clearCache } = require("../services/formio");
 
     if (!remoteUrl()) {
-        console.error("FORMIO_REMOTE_URL is off - nothing to sync from.");
-        process.exit(1);
+        console.log("The live CMC server is turned off - forms not synced.");
+        return { copied: 0, failed: 0 };
     }
 
-    const refreshAll = process.argv.includes("--all");
     const target = mongoose.connection.db.collection("FormIO");
 
-    console.log(`Copying forms from ${remoteUrl()}fetchCollectionData`);
-    console.log(`into ${mongoose.connection.db.databaseName}.FormIO\n`);
+    console.log(`Forms: ${remoteUrl()}fetchCollectionData -> ${mongoose.connection.db.databaseName}.FormIO`);
 
     let copied = 0, failed = 0;
 
-    for (const key of Object.keys(REQUIRED)) {
+    for (const key of Object.keys(FORM_KEYS)) {
 
         if (!refreshAll && await findDefinition(key, { remote: false })) {
             console.log(`- ${key.padEnd(30)} already local`);
@@ -47,8 +42,12 @@ const REQUIRED = require("./form-keys");
         const definition = await fetchRemote(key);
 
         if (!definition) {
-            failed++;
-            console.log(`✗ ${key.padEnd(30)} not received`);
+            if (fs.existsSync(path.join(__dirname, "..", "vendor", "forms", `${key}.json`))) {
+                console.log(`- ${key.padEnd(30)} not received, the bundled copy in vendor/forms is used`);
+            } else {
+                failed++;
+                console.log(`✗ ${key.padEnd(30)} not received`);
+            }
             continue;
         }
 
@@ -67,15 +66,37 @@ const REQUIRED = require("./form-keys");
 
     clearCache();
 
-    console.log(`\n${copied} copied, ${failed} not received.`);
+    return { copied, failed };
 
-    if (failed) console.log("Forms not received still load from the live server when it is reachable. Run again later, or check network / VPN access.");
+}
 
-    await mongoose.disconnect();
 
-    process.exit(failed ? 2 : 0);
+if (require.main === module) {
 
-})().catch(error => {
-    console.error(error.message);
-    process.exit(1);
-});
+    (async () => {
+
+        if (!process.env.MONGO_URI) {
+            console.error("MONGO_URI is not set (see .env.example).");
+            process.exit(1);
+        }
+
+        await mongoose.connect(process.env.MONGO_URI);
+
+        const { copied, failed } = await syncForms({ refreshAll: process.argv.includes("--all") });
+
+        console.log(`\n${copied} copied, ${failed} not received.`);
+
+        if (failed) console.log("Forms not received still load from the live server when it is reachable. Run again later, or check network / VPN access.");
+
+        await mongoose.disconnect();
+
+        process.exit(failed ? 2 : 0);
+
+    })().catch(error => {
+        console.error(error.message);
+        process.exit(1);
+    });
+
+}
+
+module.exports = { syncForms };

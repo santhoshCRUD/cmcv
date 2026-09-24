@@ -33,106 +33,22 @@ const router = express.Router();
 //   - collections must be on an allowlist, and writes have
 //     their own (smaller) allowlist
 //   - server-side JS / pipeline-escape operators are rejected
+//   - a collection that is not in the local database (yet) is
+//     read from the live CMC server instead, with the same
+//     access rules applied first; writes always stay local
+//     (services/live-source.js, npm run sync:data)
 // =====================================================
 
 
 // -----------------------------------------------------
-// Collections the front-end may read.
-// Taken from every collection referenced in the git code.
-// "users" is intentionally NOT here (see routes/auth.js).
+// Collections the front-end may read / write: every
+// collection the git code references, listed with its
+// module in config/collections.js. "users" is
+// intentionally NOT there (see routes/auth.js).
 // -----------------------------------------------------
 
-const READ_COLLECTIONS = new Set([
-    "Asset",
-    "BioEthics",
-    "CardBuilder",
-    "ClinicalSnip",
-    "ConclaveHsptl",
-    "ConnectFeedback",
-    "ConnectNewsletter",
-    "CouncilMembers",
-    "Faculties",
-    "FinancialHelp",
-    "FormIO",
-    "FovApplication",
-    "GrandRounds",
-    "GrantsAwardee",
-    "GrantsList",
-    "HeadOfOrganization",
-    "HospitalAdmins",
-    "InformationCardBuilder",
-    "LearningResources",
-    "LegalHelp",
-    "LibraryAccess",
-    "LoginRequest",
-    "ManPowerInterest",
-    "MenteeRole",
-    "MentorRole",
-    "MissionDepartments",
-    "MissionHospital",
-    "MissionRequests",
-    "MissionSpecializations",
-    "MissionsInstructions",
-    "MissionsMentorshipMeetings",
-    "MissionsStream",
-    "MmsApplication",
-    "MmsDepHsptlAll",
-    "MmsOtherVisit",
-    "MmsVisitComplt",
-    "MsnPublications",
-    "MsnVisitApp",
-    "NCAllotDocLog",
-    "NCPatientAllotLog",
-    "NetConsltPatient",
-    "NetConsltPatientQuery",
-    "NetConsltRegApp",
-    "NetConsltTheme",
-    "NewsData",
-    "missionHospital",
-    "ResearchLegacies",
-    "ResearchNews",
-    "ResearchPublications",
-    "ResearchRequest",
-    "Thought",
-    "WeeklyManna",
-    "WhatsNew",
-    "samProjectApplicationForm",
-    "samTrainingReportForm",
-    "AssetRequest",
-    "students"
-]);
-
-
-// -----------------------------------------------------
-// Collections the front-end may write to - exactly the
-// collections the git code inserts into / updates.
-// -----------------------------------------------------
-
-const WRITE_COLLECTIONS = new Set([
-    "Asset",                        // Equipment register (git: TODO "insertCollectionData Asset")
-    "AssetRequest",                 // Equipment requests (git: local store -> /api/requests TODO)
-    "ConnectFeedback",
-    "FinancialHelp",
-    "FovApplication",
-    "LegalHelp",
-    "LibraryAccess",
-    "ManPowerInterest",
-    "MenteeRole",
-    "MentorRole",
-    "MissionRequests",
-    "MissionsMentorshipMeetings",
-    "MmsApplication",
-    "MmsOtherVisit",
-    "MsnVisitApp",
-    "NCAllotDocLog",
-    "NetConsltPatient",
-    "NetConsltPatientQuery",
-    "NetConsltRegApp",
-    "ResearchRequest",
-    "missionHospital",              // Service Commitment feedback (git writes this exact name)
-    "samProjectApplicationForm",
-    "samTrainingReportForm"
-]);
+const { READ_COLLECTIONS, WRITE_COLLECTIONS } = require("../config/collections");
+const live = require("../services/live-source");
 
 
 // Writes that need a role (reads of these stay open).
@@ -404,10 +320,71 @@ function assertRole(name, user) {
 
 
 // =====================================================
+// LOCAL OR LIVE
+// =====================================================
+
+const LOCAL_TTL_MS = 30 * 1000;
+let localNames = { at: 0, names: null };
+
+async function isLocal(name) {
+
+    if (!localNames.names || Date.now() - localNames.at > LOCAL_TTL_MS) {
+        const list = await mongoose.connection.db.listCollections({}, { nameOnly: true }).toArray();
+        localNames = { at: Date.now(), names: new Set(list.map(c => c.name)) };
+    }
+
+    return localNames.names.has(name);
+
+}
+
+function forgetLocalNames() {
+    localNames = { at: 0, names: null };
+}
+
+// Same definition the client sent (extended JSON left as-is for the
+// legacy server), with the owner scope folded in.
+async function runLiveFetch(requestType, def, user) {
+
+    const body = { ...def };
+    const scope = OWNER_SCOPES[def.collection];
+
+    // The git code always sends this with the ...FromDB endpoint.
+    if (requestType === "fetchCollectionDataFromDB" && !body.queryType) {
+        body.queryType = "standard";
+    }
+
+    if (scope) {
+        body.query = { $and: [def.query || {}, scope.filter(user)] };
+        body.projection = scope.exclude;
+        if (body.options) {
+            body.options = { ...body.options };
+            delete body.options.projection;
+        }
+    }
+
+    try {
+
+        const data = live.rowsOf(await live.post(requestType, body));
+
+        return { success: true, collection: def.collection, count: data.length, data, source: "live" };
+
+    } catch (error) {
+
+        live.warnOnce(def.collection, `[CONNECTAPP][WARN] ${def.collection} is not in the local database and ${error.message}`);
+
+        // Modules render their empty state; the client shows one notice.
+        return { success: true, collection: def.collection, count: 0, data: [], source: "unavailable" };
+
+    }
+
+}
+
+
+// =====================================================
 // OPERATIONS
 // =====================================================
 
-async function runFetch(def, user) {
+async function runFetch(def, user, requestType = "fetchCollectionData") {
 
     if (!def || typeof def !== "object") {
         throw httpError(400, "Invalid request");
@@ -422,6 +399,10 @@ async function runFetch(def, user) {
     assertSafe(def.query);
     assertSafe(def.projection);
     assertSafe(options);
+
+    if (live.liveUrl() && !(await isLocal(def.collection))) {
+        return runLiveFetch(requestType, def, user);
+    }
 
     let filter = normalizeIdFilter(revive(def.query || {}, false));
 
@@ -492,6 +473,8 @@ async function runInsert(def, user, { meteorIds }) {
 
     const result = await collection.insertOne(record);
 
+    forgetLocalNames();
+
     return {
         success: true,
         collection: def.collection,
@@ -552,6 +535,11 @@ async function runUpdate(def, user) {
     assertSafe(selector);
     assertSafe(data);
 
+    // Records shown from the live server are read-only here.
+    if (live.liveUrl() && !(await isLocal(def.collection))) {
+        throw httpError(409, "This record comes from the live CMC server and can't be changed from this copy. Run \"npm run sync:data\" to work on a local copy.");
+    }
+
     const result = await collection.updateMany(
         normalizeIdFilter(revive(selector, false)),
         revive(data, true)
@@ -569,8 +557,8 @@ async function runUpdate(def, user) {
 
 const HANDLERS = {
 
-    fetchCollectionData: runFetch,
-    fetchCollectionDataFromDB: runFetch,
+    fetchCollectionData: (def, user) => runFetch(def, user, "fetchCollectionData"),
+    fetchCollectionDataFromDB: (def, user) => runFetch(def, user, "fetchCollectionDataFromDB"),
 
     insertCollectionData: (def, user) => runInsert(def, user, { meteorIds: true }),
     insertCollectionDataInDB: (def, user) => runInsert(def, user, { meteorIds: false }),

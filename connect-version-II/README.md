@@ -66,6 +66,9 @@ routes/public.js ("Register now" on the login page: the cmcvconnectLoginApplicat
 routes/assistant.js + knowledge/modules.js + js/assistant.js (module guide chatbot, "Ask the guide" on every page; answers only from the knowledge base built from the git content; uses Claude when ANTHROPIC_API_KEY is set, keyword search otherwise)
 
 scripts/seed-equipment.js (npm run seed:equipment - loads the Asset Recycling Committee list that the git Equipment page started with)
+config/collections.js (every collection and formKey the original app uses, with its module - shared by the data API, the sync/check scripts and a future admin project)
+services/live-source.js (reads from the live CMC server for collections not in the local database)
+scripts/check-data.js, scripts/sync-data.js, scripts/check-forms.js, scripts/sync-forms.js (npm run check:data / sync:data / check:forms / sync:forms)
 
 Mission Sabbatical stays "Coming Soon", as in the git code.
 
@@ -80,26 +83,33 @@ Run locally
    Do not use "npx serve" - the pages need the API routes served by app.js.
 6. Optional: npm run seed:equipment
 
-Forms: every form (Legal Help, MMS, FOV, Network Consults ...) is a Form.io definition found by
-formKey in the FormIO collection - the same collection the original CMC V Connect uses. The git
-app never had local copies: it fetches them from the live CMC server
-(https://academics.cmcvellore.edu.in/api/connectApp/fetchCollectionData, see utils.js).
+Data: the original CMC V Connect has no database of its own - every module reads the live CMC
+server (https://academics.cmcvellore.edu.in/api/connectApp/, utils.js in the git code). Version II
+has its own MongoDB (MONGO_URI). config/collections.js lists every collection the original app uses
+(extracted from app.js, formLoad.js, dynamicRender.js and modal.js) with its module, and every
+formKey. For each collection:
 
-Version II looks in your local database first and, when a form isn't there, fetches it from that
-same live server. So forms open as soon as this computer can reach the CMC server (on campus
-network / VPN if it is restricted). To keep a local copy so forms also open offline:
+  - in the local database  -> read and written locally
+  - not in it (yet)        -> read from the live CMC server with the same access rules
+                              (so a fresh database already shows real hospitals, news, grants ...);
+                              records shown this way are read-only
 
-    npm run sync:forms           copies the forms missing from your database (FormIO collection)
-    npm run sync:forms -- --all  refreshes every form from the live server
-    npm run check:forms          shows, per form, whether it is local or from the live server
+Commands:
 
-Alternatively copy the collection directly from the production database:
+    npm run check:data               where each collection comes from (local / live / missing)
+    npm run sync:data                copy every collection missing locally + all forms
+    npm run sync:data -- --refresh   also update collections that are already local
+    npm run sync:data -- --only MissionHospital,NewsData
+    npm run check:forms              the same check for Form.io definitions
+    npm run sync:forms               copy only the forms
 
-    mongoexport --uri "<production MONGO_URI>" --collection FormIO --out FormIO.json
-    mongoimport --uri "<your MONGO_URI>" --collection FormIO --file FormIO.json
+The live server must be reachable from your computer (campus network / VPN if it is restricted).
+Personal student records ("students") are never copied. CMC_LIVE_URL=off in .env uses the local
+database only.
 
-The lookup (services/formio.js, GET /api/forms/<formKey>) accepts the collection under any
-capitalisation (FormIO, formIO, formio), matches formKey ignoring case and surrounding spaces,
-unwraps definitions stored in a nested field (form, schema, definition, formJson ...) and looks in
-the database from MONGO_URI first, then FORMIO_DB (optional .env setting), then any other database
-on the same server, then the live server (FORMIO_REMOTE_URL; set it to "off" to disable).
+Forms: every form is a Form.io definition found by formKey in the FormIO collection. The lookup
+(services/formio.js, GET /api/forms/<formKey>) accepts the collection under any capitalisation
+(FormIO, formIO, formio), matches formKey ignoring case and surrounding spaces, unwraps definitions
+stored in a nested field (form, schema, definition, formJson ...) and looks in the database from
+MONGO_URI first, then FORMIO_DB (optional .env setting), then any other database on the same
+server, then the live server.

@@ -50,7 +50,25 @@
 
         }
 
+        noteSource(result);
+
         return result;
+
+    }
+
+    // The server reads collections missing from its database from the
+    // live CMC server; say once per session when that server is unreachable.
+    let unavailableNoted = false;
+
+    function noteSource(result) {
+
+        const parts = Array.isArray(result?.results) ? result.results : [result];
+
+        if (unavailableNoted || !parts.some(r => r && r.source === "unavailable")) return;
+
+        unavailableNoted = true;
+
+        window.UI?.toast?.("Some information couldn’t be loaded", { type: "warning", message: "The CMC server can’t be reached right now. Please check your connection and try again.", timeout: 9000 });
 
     }
 

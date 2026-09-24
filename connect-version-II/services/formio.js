@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const live = require("./live-source");
 
 
 // =====================================================
@@ -17,12 +18,9 @@ const mongoose = require("mongoose");
 //     definition, formJson, ...) are unwrapped to { components }
 //   - not in any local database: fetched from the live CMC server,
 //     exactly as the git app does (utils.js globalUrl +
-//     fetchCollectionData). FORMIO_REMOTE_URL overrides the address,
-//     FORMIO_REMOTE_URL=off turns this off.
+//     fetchCollectionData). CMC_LIVE_URL (or FORMIO_REMOTE_URL for
+//     forms only) overrides the address; "off" turns this off.
 // =====================================================
-
-const DEFAULT_REMOTE_URL = "https://academics.cmcvellore.edu.in/api/connectApp/";
-const REMOTE_TIMEOUT_MS = 15000;
 
 const NESTED_FIELDS = ["form", "schema", "definition", "formJson", "formDefinition", "json", "formio", "formIO", "data"];
 
@@ -127,13 +125,7 @@ function normalize(doc) {
 }
 
 function remoteUrl() {
-
-    const value = (process.env.FORMIO_REMOTE_URL ?? DEFAULT_REMOTE_URL).trim();
-
-    if (!value || /^(off|false|no|none|0)$/i.test(value)) return null;
-
-    return value.endsWith("/") ? value : `${value}/`;
-
+    return live.normalizeUrl(process.env.FORMIO_REMOTE_URL ?? process.env.CMC_LIVE_URL ?? live.DEFAULT_URL);
 }
 
 // Same request the git app sends: POST fetchCollectionData, no auth.
@@ -145,20 +137,7 @@ async function fetchRemote(formKey) {
 
     try {
 
-        const response = await fetch(`${base}fetchCollectionData`, {
-            method: "POST",
-            headers: { Accept: "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({ collection: "FormIO", query: { formKey } }),
-            signal: AbortSignal.timeout(REMOTE_TIMEOUT_MS)
-        });
-
-        if (!response.ok) {
-            console.warn(`[FORMIO][WARN] ${base} answered ${response.status} for "${formKey}".`);
-            return null;
-        }
-
-        const body = await response.json();
-        const docs = Array.isArray(body) ? body : (body && Array.isArray(body.data) ? body.data : []);
+        const docs = live.rowsOf(await live.post("fetchCollectionData", { collection: "FormIO", query: { formKey } }, { base, cacheable: false }));
 
         docs.sort((a, b) => (String(a.isDeleted) === "true") - (String(b.isDeleted) === "true"));
 
@@ -171,7 +150,7 @@ async function fetchRemote(formKey) {
 
     } catch (error) {
 
-        console.warn(`[FORMIO][WARN] Can't reach ${base} for "${formKey}": ${error.message}`);
+        console.warn(`[FORMIO][WARN] "${formKey}": ${error.message}`);
 
         return null;
 
