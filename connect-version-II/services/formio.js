@@ -15,12 +15,20 @@ const mongoose = require("mongoose");
 //     then any other database on the same server
 //   - definitions stored under a nested field (form, schema,
 //     definition, formJson, ...) are unwrapped to { components }
+//   - not in any local database: fetched from the live CMC server,
+//     exactly as the git app does (utils.js globalUrl +
+//     fetchCollectionData). FORMIO_REMOTE_URL overrides the address,
+//     FORMIO_REMOTE_URL=off turns this off.
 // =====================================================
+
+const DEFAULT_REMOTE_URL = "https://academics.cmcvellore.edu.in/api/connectApp/";
+const REMOTE_TIMEOUT_MS = 15000;
 
 const NESTED_FIELDS = ["form", "schema", "definition", "formJson", "formDefinition", "json", "formio", "formIO", "data"];
 
 const cache = new Map();
 let collectionsPromise = null;
+let lastReport = "";
 
 
 function escapeRegex(value) {
@@ -67,10 +75,17 @@ async function formCollections() {
 
             }
 
-            if (!found.length) {
-                console.warn("[FORMIO][WARN] No FormIO collection found in any database on this connection.");
-            } else {
-                console.log(`[FORMIO][INFO] Form definitions read from: ${found.map(f => `${f.dbName}.${f.name}`).join(", ")}`);
+            // Log only when the answer changes (lookups re-scan after a miss).
+            const report = found.map(f => `${f.dbName}.${f.name}`).join(", ");
+
+            if (report !== lastReport || !found.length && !lastReport) {
+                if (!found.length) {
+                    if (lastReport !== null) console.warn("[FORMIO][WARN] No FormIO collection found in any database on this connection.");
+                    lastReport = null;
+                } else {
+                    console.log(`[FORMIO][INFO] Form definitions read from: ${report}`);
+                    lastReport = report;
+                }
             }
 
             return found;
@@ -111,13 +126,60 @@ function normalize(doc) {
 
 }
 
-async function findDefinition(formKey) {
+function remoteUrl() {
 
-    const key = String(formKey || "").trim();
+    const value = (process.env.FORMIO_REMOTE_URL ?? DEFAULT_REMOTE_URL).trim();
 
-    if (!key) return null;
+    if (!value || /^(off|false|no|none|0)$/i.test(value)) return null;
 
-    if (cache.has(key)) return cache.get(key);
+    return value.endsWith("/") ? value : `${value}/`;
+
+}
+
+// Same request the git app sends: POST fetchCollectionData, no auth.
+async function fetchRemote(formKey) {
+
+    const base = remoteUrl();
+
+    if (!base) return null;
+
+    try {
+
+        const response = await fetch(`${base}fetchCollectionData`, {
+            method: "POST",
+            headers: { Accept: "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify({ collection: "FormIO", query: { formKey } }),
+            signal: AbortSignal.timeout(REMOTE_TIMEOUT_MS)
+        });
+
+        if (!response.ok) {
+            console.warn(`[FORMIO][WARN] ${base} answered ${response.status} for "${formKey}".`);
+            return null;
+        }
+
+        const body = await response.json();
+        const docs = Array.isArray(body) ? body : (body && Array.isArray(body.data) ? body.data : []);
+
+        docs.sort((a, b) => (String(a.isDeleted) === "true") - (String(b.isDeleted) === "true"));
+
+        for (const doc of docs) {
+            const definition = normalize(doc);
+            if (definition) return definition;
+        }
+
+        return null;
+
+    } catch (error) {
+
+        console.warn(`[FORMIO][WARN] Can't reach ${base} for "${formKey}": ${error.message}`);
+
+        return null;
+
+    }
+
+}
+
+async function findLocal(key) {
 
     const collections = await formCollections();
     const loose = new RegExp(`^\\s*${escapeRegex(key).replace(/\s+/g, "\\s*")}\\s*$`, "i");
@@ -136,15 +198,32 @@ async function findDefinition(formKey) {
 
             const definition = normalize(doc);
 
-            if (definition) {
-                cache.set(key, definition);
-                return definition;
-            }
+            if (definition) return definition;
 
             console.warn(`[FORMIO][WARN] ${dbName}.${name} has formKey "${doc.formKey}" but no components to render.`);
 
         }
 
+    }
+
+    return null;
+
+}
+
+// options.remote = false: local databases only (used by sync:forms).
+async function findDefinition(formKey, options = {}) {
+
+    const key = String(formKey || "").trim();
+
+    if (!key) return null;
+
+    if (options.remote !== false && cache.has(key)) return cache.get(key);
+
+    const definition = (await findLocal(key)) || (options.remote === false ? null : await fetchRemote(key));
+
+    if (definition) {
+        if (options.remote !== false) cache.set(key, definition);
+        return definition;
     }
 
     // Not found: look again next time (the collection may be imported meanwhile).
@@ -174,4 +253,4 @@ function clearCache() {
 }
 
 
-module.exports = { findDefinition, listFormKeys, formCollections, clearCache };
+module.exports = { findDefinition, fetchRemote, remoteUrl, listFormKeys, formCollections, clearCache };

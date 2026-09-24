@@ -80,17 +80,26 @@ Run locally
    Do not use "npx serve" - the pages need the API routes served by app.js.
 6. Optional: npm run seed:equipment
 
-Forms: every form (Legal Help, MMS, FOV, Network Consults ...) is a Form.io definition read from the
-FormIO collection by formKey - the same collection the original CMC V Connect uses. They are not in
-the git code, so a new local database needs a copy of that collection:
+Forms: every form (Legal Help, MMS, FOV, Network Consults ...) is a Form.io definition found by
+formKey in the FormIO collection - the same collection the original CMC V Connect uses. The git
+app never had local copies: it fetches them from the live CMC server
+(https://academics.cmcvellore.edu.in/api/connectApp/fetchCollectionData, see utils.js).
+
+Version II looks in your local database first and, when a form isn't there, fetches it from that
+same live server. So forms open as soon as this computer can reach the CMC server (on campus
+network / VPN if it is restricted). To keep a local copy so forms also open offline:
+
+    npm run sync:forms           copies the forms missing from your database (FormIO collection)
+    npm run sync:forms -- --all  refreshes every form from the live server
+    npm run check:forms          shows, per form, whether it is local or from the live server
+
+Alternatively copy the collection directly from the production database:
 
     mongoexport --uri "<production MONGO_URI>" --collection FormIO --out FormIO.json
     mongoimport --uri "<your MONGO_URI>" --collection FormIO --file FormIO.json
-
-Then run "npm run check:forms" to see which definitions are present.
 
 The lookup (services/formio.js, GET /api/forms/<formKey>) accepts the collection under any
 capitalisation (FormIO, formIO, formio), matches formKey ignoring case and surrounding spaces,
 unwraps definitions stored in a nested field (form, schema, definition, formJson ...) and looks in
 the database from MONGO_URI first, then FORMIO_DB (optional .env setting), then any other database
-on the same server.
+on the same server, then the live server (FORMIO_REMOTE_URL; set it to "off" to disable).
