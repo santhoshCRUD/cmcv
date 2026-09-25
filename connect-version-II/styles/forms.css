@@ -1,0 +1,816 @@
+/* =====================================================================
+   FORMS
+   FormIO (bootstrap template) forms rendered by js/forms.js, restyled
+   with the design-system tokens so every form - legacy definitions from
+   the FormIO collection included - shares one look, one loading state
+   and one validation style. Everything is scoped to .formio-host.
+===================================================================== */
+
+.formio-host {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text);
+    position: relative;
+}
+
+.formio-host *,
+.formio-host *::before,
+.formio-host *::after {
+    box-sizing: border-box;
+}
+
+/* Saving: block input, keep the page readable */
+.formio-host.is-saving {
+    pointer-events: none;
+}
+
+.formio-host.is-saving::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, .45);
+    border-radius: var(--radius-md);
+}
+
+/* Loading skeleton */
+.form-loading {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+}
+
+.form-loading-field {
+    height: 44px;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+}
+
+.form-loading-tall {
+    height: 96px;
+}
+
+
+/* ---------------------------------------------------------------------
+   Layout (bootstrap grid subset)
+--------------------------------------------------------------------- */
+
+.formio-host .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 calc(var(--space-2) * -1);
+}
+
+.formio-host .row > [class*="col"] {
+    flex: 1 0 0%;
+    min-width: 0;
+    padding: 0 var(--space-2);
+}
+
+.formio-host .row > [class*="col-"] {
+    flex: 0 0 auto;
+}
+
+.formio-host .col-md-1  { width: 8.333%; }
+.formio-host .col-md-2  { width: 16.667%; }
+.formio-host .col-md-3  { width: 25%; }
+.formio-host .col-md-4  { width: 33.333%; }
+.formio-host .col-md-5  { width: 41.667%; }
+.formio-host .col-md-6  { width: 50%; }
+.formio-host .col-md-7  { width: 58.333%; }
+.formio-host .col-md-8  { width: 66.667%; }
+.formio-host .col-md-9  { width: 75%; }
+.formio-host .col-md-10 { width: 83.333%; }
+.formio-host .col-md-11 { width: 91.667%; }
+.formio-host .col-md-12,
+.formio-host .col-12,
+.formio-host .col-sm-12 { width: 100%; }
+
+@media (max-width: 767px) {
+    .formio-host .row > [class*="col-md-"] {
+        width: 100%;
+    }
+}
+
+.formio-host .d-flex { display: flex; }
+.formio-host .d-none { display: none !important; }
+.formio-host .flex-wrap { flex-wrap: wrap; }
+.formio-host .justify-content-between { justify-content: space-between; }
+.formio-host .justify-content-end { justify-content: flex-end; }
+.formio-host .align-items-center { align-items: center; }
+.formio-host .float-right,
+.formio-host .float-end { float: right; }
+.formio-host .text-right,
+.formio-host .text-end { text-align: right; }
+.formio-host .text-center { text-align: center; }
+.formio-host .text-muted { color: var(--text-muted); }
+.formio-host .text-danger { color: var(--danger-700); }
+.formio-host .w-100 { width: 100%; }
+.formio-host .mb-0 { margin-bottom: 0; }
+.formio-host .mb-2 { margin-bottom: var(--space-2); }
+.formio-host .mt-2 { margin-top: var(--space-2); }
+.formio-host .mt-3 { margin-top: var(--space-3); }
+.formio-host .ml-auto { margin-left: auto; }
+.formio-host .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.formio-host .list-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    list-style: none;
+}
+
+.formio-host .clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* ---------------------------------------------------------------------
+   Fields
+--------------------------------------------------------------------- */
+
+.formio-host .form-group,
+.formio-host .formio-component {
+    margin-bottom: var(--space-4);
+}
+
+.formio-host .formio-component-hidden,
+.formio-host .formio-hidden {
+    margin: 0;
+}
+
+.formio-host .formio-component-button,
+.formio-host .formio-component-htmlelement,
+.formio-host .formio-component-content {
+    margin-bottom: var(--space-3);
+}
+
+.formio-host label,
+.formio-host .col-form-label,
+.formio-host .control-label {
+    display: inline-block;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.formio-host label.field-required::after,
+.formio-host .field-required::after {
+    content: " *";
+    color: var(--danger-600);
+}
+
+.formio-host .form-control,
+.formio-host .choices__inner {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px var(--space-4);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: var(--text-sm);
+    line-height: 1.45;
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.formio-host textarea.form-control {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.formio-host .form-control::placeholder {
+    color: var(--gray-400);
+}
+
+.formio-host .form-control:hover,
+.formio-host .choices__inner:hover {
+    border-color: var(--gray-400);
+}
+
+.formio-host .form-control:focus,
+.formio-host .choices.is-focused .choices__inner,
+.formio-host .choices.is-open .choices__inner {
+    outline: none;
+    border-color: var(--accent-500);
+    box-shadow: var(--ring);
+}
+
+.formio-host .form-control:disabled,
+.formio-host .form-control[readonly],
+.formio-host .choices.is-disabled .choices__inner,
+.formio-host .formio-disabled-input .form-control {
+    background: var(--surface-muted);
+    color: var(--gray-700);
+    cursor: default;
+}
+
+.formio-host select.form-control {
+    appearance: none;
+    padding-right: 36px;
+    background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3E%3Cpath d='M1.6 5.1a.6.6 0 0 1 .9 0L8 10.6l5.5-5.5a.6.6 0 1 1 .9.9l-6 6a.6.6 0 0 1-.9 0l-6-6a.6.6 0 0 1 0-.9'/%3E%3C/svg%3E") no-repeat right 14px center / 12px;
+}
+
+.formio-host .form-text,
+.formio-host .help-block,
+.formio-host .formio-component .text-muted {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+/* Prefix / suffix */
+.formio-host .input-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+.formio-host .input-group > .form-control {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.formio-host .input-group-prepend,
+.formio-host .input-group-append {
+    display: flex;
+}
+
+.formio-host .input-group-text {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-muted);
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+}
+
+.formio-host .input-group-prepend .input-group-text {
+    border-right: 0;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.formio-host .input-group-append .input-group-text {
+    border-left: 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.formio-host .input-group-prepend + .form-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.formio-host .input-group > .form-control:has(+ .input-group-append) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Checkboxes & radios */
+.formio-host .form-check,
+.formio-host .checkbox,
+.formio-host .radio {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+}
+
+.formio-host .form-check-inline {
+    display: inline-flex;
+    margin-right: var(--space-4);
+}
+
+.formio-host .form-check-label {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    font-weight: 500;
+    color: var(--gray-800);
+    cursor: pointer;
+}
+
+.formio-host .form-check-input,
+.formio-host input[type="checkbox"],
+.formio-host input[type="radio"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    accent-color: var(--accent-600);
+    cursor: pointer;
+}
+
+/* Choices.js (select / tags) */
+.formio-host .choices {
+    margin-bottom: 0;
+}
+
+.formio-host .choices__inner {
+    padding: 6px var(--space-3);
+}
+
+.formio-host .choices__list--dropdown,
+.formio-host .choices__list[aria-expanded] {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 30;
+}
+
+.formio-host .choices__list--dropdown .choices__item--selectable.is-highlighted,
+.formio-host .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+    background: var(--accent-50);
+    color: var(--accent-600);
+}
+
+.formio-host .choices__list--multiple .choices__item {
+    background: var(--accent-600);
+    border-color: var(--accent-600);
+    border-radius: var(--radius-full);
+}
+
+.formio-host .choices[data-type*="select-one"]::after {
+    border-color: var(--gray-500) transparent transparent;
+}
+
+
+/* ---------------------------------------------------------------------
+   Validation messages (same look as .field-error in the design system)
+--------------------------------------------------------------------- */
+
+.formio-host .has-error .form-control,
+.formio-host .has-error .choices__inner,
+.formio-host .is-invalid,
+.formio-host .formio-error-wrapper .form-control {
+    border-color: var(--danger-600);
+    background-color: #fffafa;
+}
+
+.formio-host .has-error .form-control:focus,
+.formio-host .is-invalid:focus {
+    box-shadow: var(--ring-danger);
+}
+
+.formio-host .formio-error-wrapper,
+.formio-host .has-message {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: inherit;
+}
+
+.formio-host .formio-errors,
+.formio-host .invalid-feedback {
+    display: block;
+    margin-top: var(--space-2);
+}
+
+.formio-host .invalid-feedback:empty,
+.formio-host .formio-errors:empty {
+    display: none;
+}
+
+.formio-host .formio-errors .error,
+.formio-host .formio-errors .form-text.error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--danger-700);
+}
+
+.formio-host .formio-errors .error::before {
+    content: "";
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.9.9 0 0 0-.9.99l.35 3.51a.55.55 0 0 0 1.1 0l.35-3.51A.9.9 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.9.9 0 0 0-.9.99l.35 3.51a.55.55 0 0 0 1.1 0l.35-3.51A.9.9 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* The form-level error list duplicates the inline messages; the host shows a toast instead. */
+.formio-host .alert-danger[ref="errorRef"],
+.formio-host .formio-error-summary {
+    display: none;
+}
+
+.formio-host .alert {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface-muted);
+    margin-bottom: var(--space-4);
+}
+
+.formio-host .alert-success { background: var(--success-50); border-color: transparent; color: var(--success-600); }
+.formio-host .alert-warning { background: var(--warning-50); border-color: transparent; color: var(--warning-600); }
+.formio-host .alert-info    { background: var(--accent-50);  border-color: transparent; color: var(--accent-600); }
+.formio-host .alert-danger  { background: var(--danger-50);  border-color: transparent; color: var(--danger-700); }
+
+
+/* ---------------------------------------------------------------------
+   Buttons - FormIO emits bootstrap classes; map them to design-system ones
+--------------------------------------------------------------------- */
+
+.formio-host .btn {
+    height: auto;
+    min-height: 40px;
+    padding: 0 var(--space-4);
+}
+
+.formio-host .btn-sm,
+.formio-host .btn-xs {
+    min-height: 32px;
+    padding: 0 var(--space-3);
+}
+
+.formio-host .btn-success {
+    --btn-bg: var(--accent-600);
+    --btn-fg: var(--white);
+    --btn-border: var(--accent-600);
+    --btn-bg-hover: #1d4ed8;
+}
+
+.formio-host .btn-default,
+.formio-host .btn-light,
+.formio-host .btn-info,
+.formio-host .btn-outline-primary,
+.formio-host .btn-outline-secondary {
+    --btn-bg: var(--surface);
+    --btn-fg: var(--gray-800);
+    --btn-border: var(--border-strong);
+    --btn-bg-hover: var(--gray-50);
+}
+
+.formio-host .btn-warning {
+    --btn-bg: var(--warning-50);
+    --btn-fg: var(--warning-600);
+    --btn-border: transparent;
+    --btn-bg-hover: #fef3c7;
+}
+
+.formio-host .btn-link {
+    --btn-bg: transparent;
+    --btn-border: transparent;
+    --btn-fg: var(--accent-600);
+    --btn-bg-hover: var(--accent-50);
+}
+
+.formio-host .btn-block {
+    width: 100%;
+}
+
+.formio-host .btn.is-loading {
+    color: transparent !important;
+}
+
+/* FormIO's own spinner inside the submit button */
+.formio-host .btn .fa-refresh.fa-spin,
+.formio-host .btn .fa-cog.fa-spin {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------------------
+   Panels, tables, wizard, tabs, file upload
+--------------------------------------------------------------------- */
+
+.formio-host .card,
+.formio-host .panel {
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+    background: var(--surface);
+}
+
+.formio-host .card-header,
+.formio-host .panel-heading {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-muted);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.formio-host .card-title,
+.formio-host .panel-title {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.formio-host .card-body,
+.formio-host .panel-body {
+    padding: var(--space-4);
+}
+
+.formio-host .card-body > .formio-component:last-child {
+    margin-bottom: 0;
+}
+
+.formio-host .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.formio-host .table th,
+.formio-host .table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.formio-host .table th {
+    background: var(--surface-muted);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.formio-host .table-responsive,
+.formio-host .formio-component-datagrid,
+.formio-host .formio-component-editgrid {
+    overflow-x: auto;
+}
+
+.formio-host .list-group {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.formio-host .list-group-item {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.formio-host .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.formio-host .list-group-header {
+    background: var(--surface-muted);
+    font-weight: 600;
+}
+
+/* Wizard breadcrumb */
+.formio-host .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0 0 var(--space-5);
+    list-style: none;
+}
+
+.formio-host .pagination .page-item .page-link {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    background: var(--surface);
+    color: var(--gray-700);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.formio-host .pagination .page-item.active .page-link {
+    background: var(--accent-600);
+    border-color: var(--accent-600);
+    color: var(--white);
+}
+
+.formio-host .formio-wizard-nav-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* Tabs component */
+.formio-host .nav-tabs {
+    display: flex;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.formio-host .nav-tabs .nav-link {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 2px solid transparent;
+    color: var(--gray-600);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.formio-host .nav-tabs .nav-link.active {
+    border-bottom-color: var(--accent-600);
+    color: var(--accent-600);
+}
+
+/* File upload */
+.formio-host .fileSelector {
+    padding: var(--space-5);
+    border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+    color: var(--gray-600);
+    text-align: center;
+}
+
+.formio-host .fileSelector.fileDragOver {
+    border-color: var(--accent-500);
+    background: var(--accent-50);
+}
+
+.formio-host .fileSelector a,
+.formio-host a {
+    color: var(--accent-600);
+    font-weight: 600;
+}
+
+.formio-host .progress {
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--gray-100);
+    overflow: hidden;
+}
+
+.formio-host .progress-bar {
+    height: 100%;
+    background: var(--accent-600);
+}
+
+/* Read-only (preview) mode */
+.formio-host .formio-read-only .form-control,
+.formio-host .formio-read-only .choices__inner {
+    background: var(--surface-muted);
+    border-color: var(--border);
+}
+
+.formio-host hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: var(--space-4) 0;
+}
+
+.formio-host h1, .formio-host h2, .formio-host h3,
+.formio-host h4, .formio-host h5, .formio-host h6 {
+    margin: 0 0 var(--space-3);
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.3;
+}
+
+.formio-host h1 { font-size: var(--text-xl); }
+.formio-host h2 { font-size: var(--text-lg); }
+.formio-host h3, .formio-host h4 { font-size: var(--text-base); }
+.formio-host h5, .formio-host h6 { font-size: var(--text-sm); }
+
+.formio-host p {
+    margin: 0 0 var(--space-3);
+    line-height: 1.6;
+}
+
+
+/* ---------------------------------------------------------------------
+   Icons: FormIO uses Font Awesome 4 class names. The common ones are
+   drawn from Bootstrap Icons (the version II icon set); anything else
+   falls back to the bundled Font Awesome font.
+--------------------------------------------------------------------- */
+
+@font-face {
+    font-family: "FontAwesome";
+    src: url("../vendor/formio/fonts/fontawesome-webfont.woff2") format("woff2"),
+         url("../vendor/formio/fonts/fontawesome-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.formio-host .fa,
+.formio-host .glyphicon {
+    display: inline-block;
+    font: normal normal normal 14px/1 "FontAwesome";
+    font-size: inherit;
+    -webkit-font-smoothing: antialiased;
+}
+
+.formio-host .fa-calendar::before,
+.formio-host .fa-question-circle::before,
+.formio-host .fa-plus::before,
+.formio-host .fa-trash::before,
+.formio-host .fa-remove::before,
+.formio-host .fa-times::before,
+.formio-host .fa-times-circle-o::before,
+.formio-host .fa-cloud-upload::before,
+.formio-host .fa-edit::before,
+.formio-host .fa-pencil::before,
+.formio-host .fa-check::before,
+.formio-host .fa-exclamation-circle::before,
+.formio-host .fa-bars::before,
+.formio-host .fa-arrows::before,
+.formio-host .fa-clock-o::before,
+.formio-host .fa-search::before,
+.formio-host .fa-eye::before,
+.formio-host .fa-camera::before,
+.formio-host .fa-download::before,
+.formio-host .fa-file::before,
+.formio-host .fa-info-circle::before {
+    font-family: "bootstrap-icons";
+}
+
+.formio-host .fa-calendar::before           { content: "\f1f6"; }
+.formio-host .fa-question-circle::before    { content: "\f505"; color: var(--gray-400); }
+.formio-host .fa-plus::before               { content: "\f4fe"; }
+.formio-host .fa-trash::before              { content: "\f78b"; }
+.formio-host .fa-remove::before,
+.formio-host .fa-times::before,
+.formio-host .fa-times-circle-o::before     { content: "\f62a"; }
+.formio-host .fa-cloud-upload::before       { content: "\f2c0"; }
+.formio-host .fa-edit::before,
+.formio-host .fa-pencil::before             { content: "\f4cb"; }
+.formio-host .fa-check::before              { content: "\f26e"; }
+.formio-host .fa-exclamation-circle::before { content: "\f333"; }
+.formio-host .fa-bars::before               { content: "\f479"; }
+.formio-host .fa-arrows::before             { content: "\f14e"; }
+.formio-host .fa-clock-o::before            { content: "\f293"; }
+.formio-host .fa-search::before             { content: "\f52a"; }
+.formio-host .fa-eye::before                { content: "\f341"; }
+.formio-host .fa-camera::before             { content: "\f220"; }
+.formio-host .fa-download::before           { content: "\f30a"; }
+.formio-host .fa-file::before               { content: "\f392"; }
+.formio-host .fa-info-circle::before        { content: "\f431"; }
+
+.formio-host .fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Tooltips (tippy, bundled with FormIO) */
+.tippy-box {
+    background: var(--gray-900);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+}
+
+/* Flatpickr calendar pops out of the dialog - keep it above */
+.flatpickr-calendar {
+    z-index: 2000 !important;
+    font-family: var(--font-sans);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background: var(--accent-600);
+    border-color: var(--accent-600);
+}
+
+/* Confirm / prompt dialogs */
+.confirm-message {
+    margin: 0;
+    color: var(--gray-700);
+    line-height: 1.6;
+}
+
+.kit-dialog-sm {
+    max-width: 440px;
+}
+
+textarea.input,
+.input.textarea {
+    height: auto;
+    min-height: 96px;
+    padding: var(--space-3) var(--space-4);
+    resize: vertical;
+    line-height: 1.5;
+}

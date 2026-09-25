@@ -1,0 +1,575 @@
+/* =====================================================================
+   Maps (js/map-kit.js) and the Mission Hospitals explorer
+===================================================================== */
+
+/* ---------- MapKit base ---------- */
+
+.mapkit {
+    font-family: var(--font-sans);
+    background: #e8eef3;
+    z-index: 0;
+}
+
+.mapkit .leaflet-control-attribution {
+    font-size: 10px;
+    background: rgba(255, 255, 255, .78);
+}
+
+.mapkit .leaflet-bar a,
+.mapkit .leaflet-control-zoom a {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    color: var(--gray-700);
+}
+
+.mapkit .leaflet-top.leaflet-right .leaflet-control-zoom {
+    margin-top: 8px;
+}
+
+.mapkit .leaflet-control-zoom {
+    border: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.mapkit-switch {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, .94);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(6px);
+}
+
+.mapkit-switch button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--gray-600);
+    font: 600 12px/1 var(--font-sans);
+    cursor: pointer;
+}
+
+.mapkit-switch button.is-active {
+    background: var(--brand-700);
+    color: var(--white);
+}
+
+/* Pins: a rounded drop with an icon; network = solid, other = outlined */
+.mapkit-pin-wrap {
+    background: none;
+    border: 0;
+}
+
+.mapkit-pin {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2.5px solid var(--mod-purple);
+    border-radius: 50% 50% 50% 4px;
+    transform: rotate(-45deg);
+    background: var(--mod-purple);
+    color: var(--white);
+    box-shadow: 0 6px 14px -4px rgba(76, 29, 149, .55);
+    transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.mapkit-pin i {
+    transform: rotate(45deg);
+    font-size: 15px;
+}
+
+.mapkit-pin-outline {
+    background: var(--white);
+    color: var(--mod-purple);
+}
+
+.leaflet-marker-icon:hover .mapkit-pin,
+.leaflet-marker-icon.is-hover .mapkit-pin {
+    transform: rotate(-45deg) scale(1.18);
+    box-shadow: 0 10px 20px -6px rgba(76, 29, 149, .7);
+}
+
+.leaflet-marker-icon.is-hover .mapkit-pin::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: inherit;
+    border: 2px solid var(--mod-purple);
+    opacity: .5;
+    animation: mapkit-ping 1.1s var(--ease) infinite;
+}
+
+@keyframes mapkit-ping {
+    from { transform: scale(.8); opacity: .6; }
+    to { transform: scale(1.35); opacity: 0; }
+}
+
+.mapkit-hub {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    background: var(--brand-700);
+    box-shadow: 0 0 0 6px rgba(16, 38, 79, .18), var(--shadow-md);
+}
+
+.mapkit-hub img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.mapkit-cluster-wrap {
+    background: none;
+}
+
+.mapkit-cluster {
+    display: grid;
+    place-items: center;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: var(--mod-purple);
+    color: var(--white);
+    font: 700 13px/1 var(--font-sans);
+    box-shadow: 0 0 0 6px rgba(124, 58, 237, .22), 0 0 0 12px rgba(124, 58, 237, .10);
+    transition: transform var(--dur-fast) var(--ease);
+}
+
+.mapkit-cluster:hover {
+    transform: scale(1.08);
+}
+
+/* Legend dots */
+.mapkit-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--mod-purple);
+    vertical-align: -1px;
+}
+
+.mapkit-dot-solid { background: var(--mod-purple); }
+.mapkit-dot-outline { background: var(--white); }
+.mapkit-dot-hub { background: var(--brand-700); border-color: var(--brand-700); }
+
+/* Popups */
+.mapkit-popup .leaflet-popup-content-wrapper {
+    padding: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.mapkit-popup .leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+    min-width: 240px;
+    font: 400 var(--text-sm)/1.45 var(--font-sans);
+    color: var(--text);
+}
+
+.mapkit-popup .leaflet-popup-content > strong,
+.mapkit-popup .leaflet-popup-content > .map-info {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+}
+
+.mapkit-popup .leaflet-popup-content > strong + br + *,
+.mapkit-popup .leaflet-popup-content br {
+    line-height: 1.8;
+}
+
+.mapkit-popup a.leaflet-popup-close-button {
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .9);
+    color: var(--gray-700);
+    font: 400 18px/26px var(--font-sans);
+}
+
+.map-canvas.mapkit {
+    border-radius: var(--radius-md);
+}
+
+
+/* ---------- Mission Hospitals explorer ---------- */
+
+.hx-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.hx-stats:empty {
+    display: none;
+}
+
+.hx-stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 68px;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+}
+
+.hx-stat > i {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--mod-purple) 10%, white);
+    color: var(--mod-purple);
+    font-size: 18px;
+}
+
+.hx-stat strong {
+    display: block;
+    font-size: var(--text-xl);
+    line-height: 1.1;
+    color: var(--text);
+}
+
+.hx-stat span {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+.hx-toolbar {
+    flex-wrap: wrap;
+}
+
+.hx-quick {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.hx-count {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+}
+
+.hx {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: var(--space-4);
+    height: clamp(460px, calc(100vh - 300px), 820px);
+}
+
+.hx-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.hx-list-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.hx-list-actions {
+    display: flex;
+    gap: 2px;
+}
+
+.hx-rows {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: var(--space-2);
+    overflow-y: auto;
+    list-style: none;
+}
+
+.hx-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease);
+}
+
+.hx-row:hover,
+.hx-row:focus-visible {
+    background: var(--gray-50);
+    outline: none;
+}
+
+.hx-row.is-selected {
+    background: color-mix(in srgb, var(--mod-purple) 8%, white);
+    box-shadow: inset 3px 0 0 var(--mod-purple);
+}
+
+.hx-thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--mod-purple) 8%, white);
+    color: var(--mod-purple);
+}
+
+.hx-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hx-row-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.hx-row-body strong {
+    overflow: hidden;
+    font-size: var(--text-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hx-row-meta {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+.hx-row-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.hx-row-tags:empty {
+    display: none;
+}
+
+.hx-row-go {
+    color: var(--gray-300);
+}
+
+.hx-row .skeleton-text {
+    flex: 1;
+}
+
+.hx-empty {
+    padding: var(--space-6) var(--space-2);
+}
+
+.hx-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hx-tag-network {
+    background: color-mix(in srgb, var(--mod-purple) 10%, white);
+    color: var(--mod-purple);
+}
+
+.hx-tag-needs {
+    background: var(--warning-50);
+    color: var(--warning-600);
+}
+
+.hx-map {
+    position: relative;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.hx-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.hx-canvas > .empty-state,
+.hx-canvas > .map-loading {
+    height: 100%;
+}
+
+.hx-legend {
+    position: absolute;
+    left: var(--space-3);
+    top: var(--space-3);
+    z-index: 500;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, .94);
+    box-shadow: var(--shadow-md);
+    font-size: 12px;
+    color: var(--gray-700);
+    pointer-events: none;
+}
+
+.hx-link {
+    stroke: var(--brand-700);
+    stroke-opacity: .7;
+}
+
+.hx-you {
+    stroke: var(--white);
+    fill: var(--accent-600);
+    fill-opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(37, 99, 235, .6));
+}
+
+/* Popup card */
+.hx-pop-img {
+    height: 120px;
+    overflow: hidden;
+    background: var(--gray-100);
+}
+
+.hx-pop-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hx-pop-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.hx-pop-body .hx-tag {
+    align-self: flex-start;
+}
+
+.hx-pop h4 {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.3;
+}
+
+.hx-pop-meta {
+    margin: 0 !important;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+.hx-pop-facts {
+    display: grid;
+    gap: 4px;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    color: var(--gray-700);
+}
+
+.hx-pop-facts i {
+    width: 18px;
+    color: var(--mod-purple);
+}
+
+.hx-pop-facts .is-needs,
+.hx-pop-facts .is-needs i {
+    color: var(--warning-600);
+}
+
+.hx-pop-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.hx-pop-actions .btn-primary,
+.mapkit-popup .hx-pop-actions .btn-primary:hover {
+    color: var(--white);
+}
+
+.hx-location {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.hx-location .map-caption {
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+
+    .hx {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56vh auto;
+        height: auto;
+    }
+
+    .hx-map {
+        order: -1;
+        height: 56vh;
+    }
+
+    .hx-list {
+        max-height: 60vh;
+    }
+
+    .hx-legend {
+        top: auto;
+        bottom: 28px;
+        right: 64px;
+        border-radius: var(--radius-md);
+        gap: 4px var(--space-2);
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .leaflet-marker-icon.is-hover .mapkit-pin::after {
+        animation: none;
+    }
+}

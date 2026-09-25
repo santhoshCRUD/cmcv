@@ -1,0 +1,135 @@
+{
+  "title": "SAM Project — Training Report",
+  "name": "samTrainingReport",
+  "path": "samtrainingreport",
+  "display": "form",
+  "type": "form",
+  "components": [
+    {
+      "type": "content",
+      "key": "reportHeader",
+      "input": false,
+      "html": "<div class=\"sam-header text-center mb-4\">\n  <p class=\"sam-eyebrow\">Post-Training</p>\n  <h2 class=\"sam-title\">Training Report</h2>\n  <p class=\"sam-subtitle\">Tell us how your time at CMC Vellore went, so we can share your progress with the MBBS 1978 Alumni Batch and the Missions Office.</p>\n</div>"
+    },
+    {
+      "type": "textfield",
+      "key": "samGrantId",
+      "label": "SAM Grant ID",
+      "input": true,
+      "disabled": true,
+      "tableView": true
+    },
+    {
+      "type": "textfield",
+      "key": "reportStatus",
+      "label": "Report Status",
+      "input": true,
+      "disabled": true,
+      "hidden": true,
+      "defaultValue": "Draft",
+      "clearOnHide": false,
+      "tableView": false
+    },
+    {
+      "type": "columns",
+      "key": "columnsReportBasics",
+      "input": false,
+      "columns": [
+        {
+          "width": 6,
+          "size": "md",
+          "components": [
+            {
+              "type": "textfield",
+              "key": "trainingArea",
+              "label": "Area Trained In",
+              "validate": {
+                "required": true
+              },
+              "input": true
+            }
+          ]
+        },
+        {
+          "width": 6,
+          "size": "md",
+          "components": [
+            {
+              "type": "datetime",
+              "key": "trainingCompletedDate",
+              "label": "Training Completed On",
+              "format": "dd-MM-yyyy",
+              "enableTime": false,
+              "validate": {
+                "required": true
+              },
+              "input": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "key": "reportSummary",
+      "label": "What did you learn, and how will you apply it at your mission hospital?",
+      "autoExpand": true,
+      "rows": 6,
+      "validate": {
+        "required": true
+      },
+      "input": true
+    },
+    {
+      "type": "textarea",
+      "key": "reportImpact",
+      "label": "Expected impact on patient care at your hospital",
+      "description": "Optional, but helpful for the Grant Committee's records.",
+      "autoExpand": true,
+      "rows": 3,
+      "validate": {
+        "required": false
+      },
+      "input": true
+    },
+    {
+      "type": "file",
+      "key": "reportDocuments",
+      "label": "Supporting documents (certificate, photos, etc.)",
+      "storage": "base64",
+      "webcam": false,
+      "multiple": true,
+      "filePattern": ".pdf,.jpg,.jpeg,.png",
+      "fileMaxSize": "5MB",
+      "validate": {
+        "required": false
+      },
+      "input": true
+    },
+    {
+      "type": "button",
+      "key": "saveDraft",
+      "label": "Save as Draft",
+      "action": "event",
+      "event": "saveDraft",
+      "size": "lg",
+      "block": false,
+      "customClass": "sam-btn-outline d-inline-block px-4 me-2",
+      "input": true,
+      "tableView": false
+    },
+    {
+      "type": "button",
+      "key": "submit",
+      "label": "Submit Report",
+      "action": "submit",
+      "size": "lg",
+      "block": false,
+      "customClass": "sam-btn-gold d-inline-block px-4",
+      "input": true,
+      "tableView": false,
+      "theme": "primary"
+    }
+  ],
+  "formKey": "samTrainingReportForm"
+}

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="description"
+        content="Your Gateway to Campus, Wherever You Go"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#0b1b3a">
+
+    <title>Sign in | CMC V Connect</title>
+
+
+    <!-- Typography + icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    >
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Design system -->
+    <link rel="stylesheet" href="./styles/design-system.css">
+    <link rel="stylesheet" href="./styles/auth.css">
+    <link rel="stylesheet" href="./styles/modules.css">
+    <link rel="stylesheet" href="./styles/forms.css">
+
+
+    <!-- Bootstrap JS (kept for parity with the original page) -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <!-- JQuery -->
+    <script
+        defer
+        src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+    </script>
+
+
+    <!-- Microsoft MSAL -->
+    <script
+        defer
+        src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js">
+    </script>
+
+
+    <!-- Google -->
+    <script
+        defer
+        src="https://accounts.google.com/gsi/client">
+    </script>
+
+</head>
+
+
+<body>
+
+    <div class="auth-shell">
+
+
+        <!-- =========================================================
+             BRAND PANEL (desktop)
+        ========================================================= -->
+
+        <aside class="auth-brand">
+
+            <div class="auth-brand-bg">
+                <img
+                    src="/images/login-page.png"
+                    alt=""
+                >
+            </div>
+
+            <div class="auth-logo">
+                <img
+                    src="/images/cmc-logo-white-transparent.png"
+                    alt="CMC"
+                >
+                <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+            </div>
+
+            <div class="auth-brand-copy">
+
+                <span class="eyebrow">
+                    <i class="bi bi-broadcast"></i>
+                    Connect, Communicate, Collaborate
+                </span>
+
+                <h1>A chance to serve together</h1>
+
+                <p>
+                    CMCV Connect is an online platform designed to foster
+                    collaboration and connection among individuals who align
+                    with the ethos of CMC Vellore: &ldquo;not to be served but
+                    to serve.&rdquo;
+                </p>
+
+                <p class="auth-brand-note">
+                    <strong>Who can connect?</strong>
+                    Anyone with a heart for service&hellip; health professionals,
+                    volunteers, donors, well-wishers, and anyone interested in
+                    India&rsquo;s healthcare. Students passionate about serving in
+                    different regions of India are especially encouraged to join.
+                </p>
+
+            </div>
+
+            <div class="auth-brand-footer">
+                &copy; 2026 CMC
+            </div>
+
+        </aside>
+
+
+
+        <!-- =========================================================
+             SIGN-IN
+        ========================================================= -->
+
+        <main class="auth-main">
+
+
+            <!-- Mobile / tablet hero -->
+
+            <div class="auth-mobile-header">
+
+                <div class="auth-logo">
+                    <img
+                        src="/images/cmc-logo-white-transparent.png"
+                        alt="CMC"
+                    >
+                    <span class="wordmark">CMC <span class="v">V</span> CONNECT</span>
+                </div>
+
+                <p>Connect, Communicate, Collaborate</p>
+
+            </div>
+
+
+            <section class="auth-card" aria-labelledby="signInTitle">
+
+                <header class="auth-card-header">
+
+                    <h2 id="signInTitle">Sign in</h2>
+
+                    <p>Choose your account type to continue.</p>
+
+                </header>
+
+
+                <!-- Account type tabs -->
+
+                <div class="segmented" role="tablist" aria-label="Account type">
+
+                    <button
+                        type="button"
+                        class="segmented-btn"
+                        role="tab"
+                        id="tab-faculty"
+                        aria-controls="panel-faculty"
+                        aria-selected="true"
+                        data-tab="faculty"
+                    >
+                        <i class="bi bi-briefcase"></i>
+                        Faculty &amp; Staff
+                    </button>
+
+                    <button
+                        type="button"
+                        class="segmented-btn"
+                        role="tab"
+                        id="tab-student"
+                        aria-controls="panel-student"
+                        aria-selected="false"
+                        tabindex="-1"
+                        data-tab="student"
+                    >
+                        <i class="bi bi-mortarboard"></i>
+                        Student
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MICROSOFT (Faculty & Staff)
+                ================================================= -->
+
+                <form
+                    class="provider-panel"
+                    id="panel-faculty"
+                    role="tabpanel"
+                    aria-labelledby="tab-faculty"
+                    novalidate
+                    data-provider="microsoft"
+                >
+
+                    <div class="provider-intro">
+
+                        <span class="provider-logo" aria-hidden="true">
+                            <svg viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+                        </span>
+
+                        <div>
+                            <strong>Faculty Login</strong>
+                            For CMC Faculty &amp; Staff. Use your CMC Microsoft account.
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="microsoftEmail">
+                            Work email
+                        </label>
+
+                        <div class="input-group">
+
+                            <i class="bi bi-envelope"></i>
+
+                            <input
+                                type="text"
+                                id="microsoftEmail"
+                                class="input provider-input"
+                                placeholder="example@cmcvellore.ac.in"
+                                autocomplete="username"
+                                inputmode="email"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                aria-describedby="microsoftDomains microsoftLoginError"
+                            >
+
+                        </div>
+
+                        <div class="field-hint" id="microsoftDomains">
+
+                            <span class="sr-only">Supported domains:</span>
+
+                            <div class="domain-chips">
+                                <span class="badge">@cmcvellore.ac.in</span>
+                                <span class="badge">@cmcvellore.edu.in</span>
+                                <span class="badge">@cmc.in</span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="microsoftLoginError"
+                            class="login-error field-error"
+                            role="alert"
+                        ></div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-dark btn-lg btn-block btn-login"
+                    >
+                        <span>Continue with Microsoft</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+
+                </form>
+
+
+
+                <!-- =================================================
+                     GOOGLE (Students)
+                ================================================= -->
+
+                <form
+                    class="provider-panel"
+                    id="panel-student"
+                    role="tabpanel"
+                    aria-labelledby="tab-student"
+                    novalidate
+                    hidden
+                    data-provider="google"
+                >
+
+                    <div class="provider-intro">
+
+                        <span class="provider-logo" aria-hidden="true">
+                            <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+                        </span>
+
+                        <div>
+                            <strong>Student Login</strong>
+                            For CMC Students. Use your CMC student Google account.
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="googleEmailPrefix">
+                            Student email
+                        </label>
+
+                        <div class="input-group">
+
+                            <i class="bi bi-envelope"></i>
+
+                            <input
+                                type="text"
+                                id="googleEmailPrefix"
+                                class="input provider-input"
+                                placeholder="example@cmc.edu.in"
+                                autocomplete="username"
+                                inputmode="email"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                aria-describedby="googleDomains googleLoginError"
+                            >
+
+                        </div>
+
+                        <div class="field-hint" id="googleDomains">
+
+                            <span class="sr-only">Supported domain:</span>
+
+                            <div class="domain-chips">
+                                <span class="badge">@cmc.edu.in</span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="googleLoginError"
+                            class="login-error field-error"
+                            role="alert"
+                        ></div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-dark btn-lg btn-block btn-login"
+                    >
+                        <span>Continue with Google</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+
+
+                    <!-- Google renders its sign-in button here (see googleSignIn() in login.js) -->
+                    <div class="google-fallback">
+
+                        <p>If the Google window didn't open, continue here:</p>
+
+                        <div id="googleSignInButton"></div>
+
+                    </div>
+
+                </form>
+
+
+
+                <!-- =================================================
+                     REGISTRATION
+                ================================================= -->
+
+                <div class="auth-divider">New to CMC V Connect?</div>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-block registration-btn"
+                    onclick="newRegistration()"
+                >
+                    <i class="bi bi-person-plus"></i>
+                    <span>Register now</span>
+                </button>
+
+
+                <!-- Password help: sign-in is via SSO, so resets
+                     happen at the identity provider. -->
+
+                <div class="auth-help">
+                    <span>Forgot your password?</span>
+                    <a href="https://passwordreset.microsoftonline.com/" target="_blank" rel="noopener">Reset Microsoft</a>
+                    <span aria-hidden="true">·</span>
+                    <a href="https://accounts.google.com/signin/recovery" target="_blank" rel="noopener">Reset Google</a>
+                </div>
+
+            </section>
+
+
+            <footer class="auth-footer login-footer">
+                &copy; 2026 CMC
+            </footer>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         GOOGLE HIDDEN CONTAINERS
+    ========================================================= -->
+
+    <div id="googleSignInButtonmb" class="hidden-google-slot"></div>
+
+    <div id="googleSignInButtonhp" class="hidden-google-slot"></div>
+
+
+
+    <!-- =========================================================
+         UI HELPERS + LOGIN JS
+    ========================================================= -->
+
+    <script src="ui.js"></script>
+    <script src="js/ui-kit.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/public-registration.js"></script>
+
+    <script
+        src="login.js"
+        defer>
+    </script>
+
+
+
+    <!-- =========================================================
+         PAGE FUNCTIONS
+    ========================================================= -->
+
+    <script>
+
+        /*
+         * Google email validation
+         *
+         * The field now accepts the full email
+         * address (same behavior as the Microsoft
+         * field). Validation of the domain happens
+         * in loginGoogleUser() in login.js.
+         */
+
+        const googleInput =
+            document.getElementById(
+                "googleEmailPrefix"
+            );
+
+
+        if (googleInput) {
+
+            googleInput.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+                }
+            );
+
+        }
+
+
+
+        /*
+         * Microsoft email validation
+         */
+
+        const microsoftInput =
+            document.getElementById(
+                "microsoftEmail"
+            );
+
+
+        if (microsoftInput) {
+
+            microsoftInput.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+                }
+            );
+
+        }
+
+
+
+        /*
+         * Registration: js/public-registration.js
+         * (git: requestLoginForm -> LoginRequest)
+         */
+
+
+
+        /* =====================================================
+           UI ENHANCEMENTS (presentation only)
+           The login flow itself still lives in login.js:
+           loginMicrosoftUser() / loginGoogleUser().
+        ===================================================== */
+
+        (function () {
+
+            const TAB_KEY = "cmcLoginTab";
+
+            const tabs =
+                [...document.querySelectorAll(".segmented-btn")];
+
+
+            /* Account-type tabs */
+
+            function selectTab(name, focus) {
+
+                tabs.forEach(tab => {
+
+                    const active = tab.dataset.tab === name;
+
+                    tab.setAttribute("aria-selected", active ? "true" : "false");
+                    tab.tabIndex = active ? 0 : -1;
+
+                    document.getElementById(tab.getAttribute("aria-controls")).hidden = !active;
+
+                    if (active && focus) {
+                        tab.focus();
+                    }
+
+                });
+
+                try {
+                    localStorage.setItem(TAB_KEY, name);
+                } catch (e) { /* storage unavailable */ }
+
+            }
+
+            tabs.forEach((tab, index) => {
+
+                tab.addEventListener("click", () => selectTab(tab.dataset.tab));
+
+                tab.addEventListener("keydown", event => {
+
+                    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+                        return;
+                    }
+
+                    const next = tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+
+                    selectTab(next.dataset.tab, true);
+
+                });
+
+            });
+
+            try {
+
+                const saved = localStorage.getItem(TAB_KEY);
+
+                if (saved === "student" || saved === "faculty") {
+                    selectTab(saved);
+                }
+
+            } catch (e) { /* storage unavailable */ }
+
+
+            /* Submit (click or Enter) -> existing login functions,
+               with a loading state while the user check runs. */
+
+            document.querySelectorAll(".provider-panel").forEach(form => {
+
+                form.addEventListener("submit", async event => {
+
+                    event.preventDefault();
+
+                    const button = form.querySelector("button[type=submit]");
+
+                    UI.setLoading(button, true);
+
+                    try {
+
+                        if (form.dataset.provider === "microsoft") {
+                            await loginMicrosoftUser();
+                        } else {
+                            await loginGoogleUser();
+                        }
+
+                    } finally {
+
+                        UI.setLoading(button, false);
+
+                    }
+
+                });
+
+            });
+
+
+            /* Validation styling: login.js writes messages into
+               #microsoftLoginError / #googleLoginError via innerText.
+               Mirror that onto the matching input. */
+
+            const pairs = [
+                ["microsoftLoginError", "microsoftEmail"],
+                ["googleLoginError", "googleEmailPrefix"]
+            ];
+
+            pairs.forEach(([errorId, inputId]) => {
+
+                const error = document.getElementById(errorId);
+                const input = document.getElementById(inputId);
+
+                new MutationObserver(() => {
+
+                    const hasError = error.textContent.trim().length > 0;
+
+                    input.setAttribute("aria-invalid", hasError ? "true" : "false");
+
+                    if (hasError) {
+
+                        error.classList.remove("is-shaking");
+                        void error.offsetWidth;
+                        error.classList.add("is-shaking");
+
+                    }
+
+                }).observe(error, { childList: true, characterData: true, subtree: true });
+
+                input.addEventListener("input", () => {
+
+                    if (input.getAttribute("aria-invalid") === "true") {
+                        error.innerText = "";
+                    }
+
+                });
+
+            });
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>

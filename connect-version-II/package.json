@@ -1,0 +1,37 @@
+{
+  "name": "cmc-connectv2",
+  "version": "1.0.0",
+  "description": "CMC Connect Version 2",
+  "main": "server.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed:equipment": "node scripts/seed-equipment.js",
+    "check:forms": "node scripts/check-forms.js",
+    "sync:forms": "node scripts/sync-forms.js",
+    "check:data": "node scripts/check-data.js",
+    "sync:data": "node scripts/sync-data.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@azure/msal-node": "^5.3.1",
+    "axios": "^1.19.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "bootstrap": "^5.3.8",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.7.4",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
